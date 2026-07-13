@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Dash Lite · Tyneside Games</title>
+    <meta name="description" content="Browser Geometry Dash–style runner — a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(#0a0a2a, #1a0033);
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff00ff;
+            overflow: hidden;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(10, 0, 30, 0.92);
+            border-bottom: 1px solid #ff00ff;
+            font-size: 13px;
+        }
+        .back-bar a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #ff00ff; }
+        .game-wrap {
+            padding-top: 3rem;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+        }
+        canvas {
+            border: 6px solid #ff00ff;
+            background: #000;
+            box-shadow: 0 0 40px #ff00ff,
+                        0 0 80px #00ffff;
+            image-rendering: pixelated;
+        }
+        .header {
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 20px #ff00ff;
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+        .score {
+            font-size: 22px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px #00ffff;
+        }
+        .instructions {
+            margin-top: 15px;
+            font-size: 15px;
+            opacity: 0.85;
+            line-height: 1.4;
+        }
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 0, 30, 0.95);
+            padding: 30px 50px;
+            border: 5px solid #ff00ff;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 50px #ff00ff;
+            min-width: 320px;
+        }
+        .game-over h2 {
+            color: #ff00ff;
+            margin: 0 0 15px 0;
+            font-size: 36px;
+            text-shadow: 0 0 20px #ff00ff;
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: transparent;
+            color: #00ffff;
+            border: 3px solid #00ffff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: #00ffff;
+            color: #000;
+            box-shadow: 0 0 20px #00ffff;
+        }
+        .progress {
+            height: 6px;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            width: 0%;
+            margin-top: 8px;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="/">← Tyneside Games</a>
+        <span class="brand">Geometry Dash Lite · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+    <div class="game-container">
+        <div class="header">GEOMETRY DASH</div>
+        <div class="score">SCORE: <span id="score">0</span>m</div>
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+        <div class="progress" id="progress"></div>
+        
+        <div class="instructions">
+            HOLD ↑ ARROW or CLICK/TAP to JUMP<br>
+            <span style="font-size:13px; opacity:0.6;">Tap precisely • Real Geometry Dash-style physics</span>
+        </div>
+    </div>
+
+    <div id="gameOverScreen" class="game-over">
+        <h2>GAME OVER</h2>
+        <p style="margin:5px 0 15px; font-size:22px;">Distance: <span id="finalScore" style="color:#00ffff;">0</span>m</p>
+        <button onclick="restartGame()">TRY AGAIN</button>
+        <a href="/" style="margin-top:14px;color:#00ffff;font-size:13px;text-decoration:none;">Back to shelf</a>
+        <div style="margin-top:20px; font-size:13px; opacity:0.6;">High Score: <span id="highScore">0</span>m</div>
+    </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const progressBar = document.getElementById('progress');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const finalScoreElement = document.getElementById('finalScore');
+        const highScoreElement = document.getElementById('highScore');
+
+        const GRAVITY = 0.95;
+        const JUMP_FORCE = -15.2;
+        const GROUND_Y = 320;
+        const GAME_WIDTH = canvas.width;
+        const GAME_HEIGHT = canvas.height;
+
+        let player = {
+            x: 120,
+            y: GROUND_Y,
+            width: 28,
+            height: 28,
+            vy: 0,
+            onGround: true
+        };
+
+        let obstacles = [];
+        let particles = [];
+        let score = 0;
+        let highScore = localStorage.getItem('gdHighScore') || 0;
+        let gameSpeed = 6;
+        let gameRunning = true;
+        let frame = 0;
+        let isJumping = false;
+        let lastObstacle = 0;
+
+        highScoreElement.textContent = highScore;
+
+        class Obstacle {
+            constructor(x) {
+                this.x = x;
+                this.y = GROUND_Y + 4;
+                this.width = 26;
+                this.height = 36;
+                this.spike = true;
+            }
+            
+            draw() {
+                // Draw spike
+                ctx.fillStyle = '#ff0088';
+                ctx.strokeStyle = '#ff44aa';
+                ctx.lineWidth = 3;
+                
+                const points = [
+                    {x: this.x + this.width/2, y: this.y},
+                    {x: this.x, y: this.y + this.height},
+                    {x: this.x + this.width, y: this.y + this.height}
+                ];
+                
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+                ctx.lineTo(points[1].x, points[1].y);
+                ctx.lineTo(points[2].x, points[2].y);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+                
+                // Glow
+                ctx.shadowColor = '#ff00ff';
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 6;
+                this.vy = (Math.random() - 0.5) * 6 - 2;
+                this.life = 28;
+                this.color = Math.random() > 0.5 ? '#00ffff' : '#ff00ff';
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.3;
+                this.life--;
+            }
+            
+            draw() {
+                const alpha = this.life / 28;
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, 6, 6);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function createObstacle() {
+            const lastX = obstacles.length > 0 ? obstacles[obstacles.length-1].x : 0;
+            // Tighter gaps tuned for the lower, slower jump arc
+            const gap = 175 + Math.random() * 65;
+            const newX = Math.max(lastX + gap, GAME_WIDTH + 70);
+            
+            obstacles.push(new Obstacle(newX));
+        }
+
+        function drawBackground() {
+            // Dark gradient background
+            const grad = ctx.createLinearGradient(0, 0, 0, GAME_HEIGHT);
+            grad.addColorStop(0, '#0a001f');
+            grad.addColorStop(1, '#1a0033');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+            
+            // Grid lines (Geometry Dash style)
+            ctx.strokeStyle = 'rgba(255, 0, 255, 0.15)';
+            ctx.lineWidth = 2;
+            for (let x = 0; x < GAME_WIDTH; x += 60) {
+                ctx.beginPath();
+                ctx.moveTo(x - (frame * 2 % 60), 0);
+                ctx.lineTo(x - (frame * 2 % 60) + 40, GAME_HEIGHT);
+                ctx.stroke();
+            }
+            for (let y = 80; y < GAME_HEIGHT - 60; y += 55) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(GAME_WIDTH, y + Math.sin(frame / 20) * 8);
+                ctx.stroke();
+            }
+            
+            // Ground
+            ctx.fillStyle = '#220033';
+            ctx.fillRect(0, GROUND_Y + 30, GAME_WIDTH, GAME_HEIGHT - GROUND_Y);
+            
+            // Ground highlight
+            ctx.fillStyle = '#440066';
+            ctx.fillRect(0, GROUND_Y + 28, GAME_WIDTH, 8);
+        }
+
+        function drawPlayer() {
+            ctx.save();
+            ctx.translate(player.x + player.width/2, player.y + player.height/2);
+            
+            // Rotation based on velocity (icon tilt)
+            const rotation = Math.max(-0.6, Math.min(0.9, player.vy * 0.04));
+            ctx.rotate(rotation);
+            
+            // Main cube
+            ctx.fillStyle = '#00ddff';
+            ctx.shadowColor = '#00ffff';
+            ctx.shadowBlur = 25;
+            ctx.fillRect(-player.width/2, -player.height/2, player.width, player.height);
+            
+            // Inner detail
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#0099bb';
+            ctx.fillRect(-player.width/2 + 5, -player.height/2 + 5, player.width - 10, player.height - 10);
+            
+            // Icon eye / detail
+            ctx.fillStyle = '#000';
+            ctx.fillRect(4, -6, 9, 9);
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(6, -4, 4, 4);
+            
+            ctx.restore();
+            
+            // Jump trail particles
+            if (player.vy < -4 && Math.random() > 0.6) {
+                particles.push(new Particle(player.x + 8, player.y + player.height - 4));
+            }
+        }
+
+        function updatePhysics() {
+            if (!gameRunning) return;
+            
+            player.vy += GRAVITY;
+            player.y += player.vy;
+            
+            // Ground collision
+            if (player.y >= GROUND_Y) {
+                if (player.vy > 0) {
+                    player.y = GROUND_Y;
+                    player.vy = 0;
+                    player.onGround = true;
+                    
+                    // Landing particles
+                    if (Math.abs(player.vy) > 8) {
+                        for (let i = 0; i < 8; i++) {
+                            const p = new Particle(player.x + Math.random() * player.width, GROUND_Y + 20);
+                            p.vy = -Math.random() * 4;
+                            particles.push(p);
+                        }
+                    }
+                }
+            } else {
+                player.onGround = false;
+            }
+            
+            // Ceiling
+            if (player.y < 40) {
+                player.y = 40;
+                player.vy = 2;
+            }
+        }
+
+        function updateObstacles() {
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                obs.x -= gameSpeed;
+                
+                // Remove off-screen obstacles
+                if (obs.x < -50) {
+                    obstacles.splice(i, 1);
+                    continue;
+                }
+                
+                // Collision detection
+                if (
+                    player.x + player.width > obs.x + 4 &&
+                    player.x < obs.x + obs.width - 4 &&
+                    player.y + player.height > obs.y + 4 &&
+                    player.y < obs.y + obs.height - 8
+                ) {
+                    gameOver();
+                }
+            }
+        }
+
+        function updateScore() {
+            score += 0.1;
+            const displayScore = Math.floor(score);
+            scoreElement.textContent = displayScore;
+            
+            // Progress bar (visual level feel)
+            const progress = Math.min(100, (displayScore % 100));
+            progressBar.style.width = `${progress}%`;
+            
+            // Increase difficulty over time
+            if (displayScore > 80 && gameSpeed < 11) {
+                gameSpeed = 6 + (displayScore / 90);
+            }
+        }
+
+        function updateParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.update();
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            frame++;
+            
+            drawBackground();
+            updatePhysics();
+            updateObstacles();
+            updateScore();
+            updateParticles();
+            
+            // Spawn obstacles with better spacing tuned for lower/slower jumps
+            if (frame - lastObstacle > 42 || obstacles.length === 0) {
+                createObstacle();
+                lastObstacle = frame;
+            }
+            
+            // Draw obstacles
+            for (let obs of obstacles) {
+                obs.draw();
+            }
+            
+            drawPlayer();
+            
+            // Draw particles
+            for (let p of particles) {
+                p.draw();
+            }
+            
+            // Request next frame
+            requestAnimationFrame(gameLoop);
+        }
+
+        function jump() {
+            if (!gameRunning) return;
+            
+            if (player.onGround) {
+                player.vy = JUMP_FORCE;
+                player.onGround = false;
+                
+                // Jump burst particles
+                for (let i = 0; i < 14; i++) {
+                    const p = new Particle(player.x + 10 + Math.random() * 12, player.y + 24);
+                    p.vy = Math.random() * 3.5 + 0.5;
+                    p.vx = (Math.random() - 0.5) * 6;
+                    particles.push(p);
+                }
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            
+            const final = Math.floor(score);
+            finalScoreElement.textContent = final;
+            
+            if (final > highScore) {
+                highScore = final;
+                localStorage.setItem('gdHighScore', highScore);
+                highScoreElement.textContent = highScore;
+            }
+            
+            // Death explosion
+            for (let i = 0; i < 28; i++) {
+                const p = new Particle(player.x + 14, player.y + 14);
+                p.vx = (Math.random() - 0.5) * 14;
+                p.vy = (Math.random() - 0.5) * 14 - 3;
+                p.life = 45;
+                particles.push(p);
+            }
+            
+            setTimeout(() => {
+                gameOverScreen.style.display = 'flex';
+            }, 420);
+        }
+
+        function restartGame() {
+            // Reset everything
+            player.y = GROUND_Y;
+            player.vy = 0;
+            player.onGround = true;
+            
+            obstacles = [];
+            particles = [];
+            score = 0;
+            gameSpeed = 6;
+            frame = 0;
+            lastObstacle = 0;
+            gameRunning = true;
+            
+            scoreElement.textContent = '0';
+            progressBar.style.width = '0%';
+            gameOverScreen.style.display = 'none';
+            
+            // Spawn first obstacle
+            createObstacle();
+            lastObstacle = 10;
+            
+            gameLoop();
+        }
+
+        // Input handlers
+        function handleInput(e) {
+            let shouldJump = false;
+            
+            if (e.type === 'keydown' && (e.key === ' ' || e.key === 'ArrowUp')) {
+                e.preventDefault();
+                shouldJump = true;
+            } 
+            else if (e.type === 'mousedown' || e.type === 'touchstart') {
+                e.preventDefault();
+                shouldJump = true;
+            }
+            
+            if (shouldJump) {
+                if (!gameRunning) return;
+                if (gameOverScreen.style.display === 'flex') return;
+                jump();
+            }
+        }
+
+        document.addEventListener('keydown', handleInput);
+        canvas.addEventListener('mousedown', handleInput);
+        canvas.addEventListener('touchstart', handleInput, { passive: false });
+
+        // Keyboard release for better feel (optional double jump prevention)
+        document.addEventListener('keyup', (e) => {
+            if (e.key === ' ') {
+                isJumping = false;
+            }
+        });
+
+        // Initialize and start
+        function init() {
+            // Add a few starting obstacles for immediate challenge
+            obstacles.push(new Obstacle(520));
+            obstacles.push(new Obstacle(780));
+            
+            // Start the game loop
+            gameLoop();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

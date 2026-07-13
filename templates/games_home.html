@@ -31,30 +31,39 @@
     <div class="max-w-4xl mx-auto px-6">
       <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-4">The shelf</h2>
       <p class="text-center text-zinc-600 max-w-2xl mx-auto mb-12">
-        Games will land here as they're worth sharing. Empty shelves are honest shelves.
+        {% if games %}
+          {{ games | length }} game{% if games | length != 1 %}s{% endif %} ready to play in the browser.
+        {% else %}
+          Games will land here as they're worth sharing. Empty shelves are honest shelves.
+        {% endif %}
       </p>
 
-      <div class="rounded-3xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-10 sm:p-14 text-center">
-        <p class="text-5xl mb-4" aria-hidden="true">🎲</p>
-        <h3 class="text-2xl font-semibold tyne-blue mb-3">Nothing playable yet</h3>
-        <p class="text-zinc-600 max-w-lg mx-auto">
-          This is the home for hobby projects — browser games, prototypes, silly tools.
-          When something is good enough to click, it'll show up here with a short note and a link.
-        </p>
-        <p class="mt-6 text-sm text-zinc-500">
-          Status: waiting for the first WIP to graduate.
-        </p>
-      </div>
-
-      {# Future games: add cards here or drive from content later
-      <div class="mt-10 grid sm:grid-cols-2 gap-6">
-        <a href="/games/example/" class="block rounded-3xl bg-zinc-100 p-8 hover:ring-2 hover:ring-amber-brand transition no-underline">
-          <h3 class="font-semibold text-xl tyne-blue">Game title</h3>
-          <p class="text-zinc-600 mt-2">One-line description.</p>
-          <p class="mt-4 text-sm font-medium text-amber-600">Play →</p>
-        </a>
-      </div>
-      #}
+      {% if games %}
+        <div class="grid sm:grid-cols-2 gap-6">
+          {% for game in games %}
+            <a href="{{ game.path }}"
+               class="group block rounded-3xl bg-zinc-50 border border-zinc-100 p-8 hover:ring-2 hover:ring-amber-brand hover:bg-white transition no-underline">
+              <div class="flex items-start justify-between gap-4">
+                <span class="text-4xl" aria-hidden="true">{{ game.emoji | default("🎮") }}</span>
+                <span class="text-xs font-semibold uppercase tracking-wide text-amber-700 bg-amber-50 px-3 py-1 rounded-full">
+                  {{ game.status | default("playable") }}
+                </span>
+              </div>
+              <h3 class="mt-4 font-semibold text-2xl tyne-blue group-hover:text-tyne">{{ game.title }}</h3>
+              <p class="mt-2 text-zinc-600">{{ game.description }}</p>
+              <p class="mt-6 text-sm font-semibold text-amber-600">Play →</p>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="rounded-3xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-10 sm:p-14 text-center">
+          <p class="text-5xl mb-4" aria-hidden="true">🎲</p>
+          <h3 class="text-2xl font-semibold tyne-blue mb-3">Nothing playable yet</h3>
+          <p class="text-zinc-600 max-w-lg mx-auto">
+            This is the home for hobby projects — browser games, prototypes, silly tools.
+          </p>
+        </div>
+      {% endif %}
     </div>
   </section>
 

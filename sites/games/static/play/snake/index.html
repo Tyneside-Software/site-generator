@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake · Tyneside Games</title>
+    <meta name="description" content="Classic neon snake in the browser — a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #111;
+            font-family: 'Courier New', Courier, monospace;
+            color: #0f0;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.85);
+            border-bottom: 1px solid #0f0;
+            font-size: 13px;
+        }
+        .back-bar a {
+            color: #0f0;
+            text-decoration: none;
+        }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.7; }
+        .game-wrap {
+            padding-top: 3rem;
+        }
+        .game-container {
+            text-align: center;
+        }
+        canvas {
+            border: 4px solid #0f0;
+            background-color: #000;
+            box-shadow: 0 0 20px #0f0;
+        }
+        .score {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #0f0;
+        }
+        .instructions {
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 20px 40px;
+            border: 3px solid #0f0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 30px #0f0;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #000;
+            color: #0f0;
+            border: 2px solid #0f0;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0f0;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="/">← Tyneside Games</a>
+        <span class="brand">Snake · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+    <div class="game-container">
+        <div class="score">Score: <span id="score">0</span></div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div class="instructions">
+            Use ARROW KEYS or WASD to move<br>
+            Eat the food • Avoid walls and yourself
+        </div>
+    </div>
+
+    <div id="gameOverScreen" class="game-over">
+        <h2>GAME OVER</h2>
+        <p>Your score: <span id="finalScore">0</span></p>
+        <button onclick="restartGame()">PLAY AGAIN</button>
+        <a href="/" style="margin-top:12px;color:#0f0;font-size:13px;">Back to shelf</a>
+    </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.getElementById('score');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const finalScoreElement = document.getElementById('finalScore');
+
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+
+        let snake = [
+            {x: 10, y: 10}
+        ];
+        let food = {};
+        let dx = 0;
+        let dy = 0;
+        let score = 0;
+        let gameSpeed = 100;
+        let gameInterval;
+        let gameOver = false;
+
+        // Generate random food position
+        function randomFood() {
+            food = {
+                x: Math.floor(Math.random() * tileCount),
+                y: Math.floor(Math.random() * tileCount)
+            };
+            
+            // Make sure food doesn't spawn on snake
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    return randomFood();
+                }
+            }
+        }
+
+        // Draw the game
+        function drawGame() {
+            // Clear canvas
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw snake
+            ctx.fillStyle = '#0f0';
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillRect(
+                    snake[i].x * gridSize, 
+                    snake[i].y * gridSize, 
+                    gridSize - 2, 
+                    gridSize - 2
+                );
+                
+                // Head is brighter
+                if (i === 0) {
+                    ctx.fillStyle = '#0a0';
+                    ctx.fillRect(
+                        snake[0].x * gridSize + 2, 
+                        snake[0].y * gridSize + 2, 
+                        gridSize - 6, 
+                        gridSize - 6
+                    );
+                    ctx.fillStyle = '#0f0';
+                }
+            }
+
+            // Draw food
+            ctx.fillStyle = '#f00';
+            ctx.fillRect(
+                food.x * gridSize + 2, 
+                food.y * gridSize + 2, 
+                gridSize - 4, 
+                gridSize - 4
+            );
+        }
+
+        // Move the snake
+        function moveSnake() {
+            if (gameOver || (dx === 0 && dy === 0)) return;
+
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+
+            // Check wall collision
+            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
+                endGame();
+                return;
+            }
+
+            // Check self collision
+            for (let i = 0; i < snake.length; i++) {
+                if (snake[i].x === head.x && snake[i].y === head.y) {
+                    endGame();
+                    return;
+                }
+            }
+
+            // Add new head
+            snake.unshift(head);
+
+            // Check if ate food
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreElement.textContent = score;
+                randomFood();
+                
+                // Increase speed slightly every 50 points
+                if (score % 50 === 0 && gameSpeed > 40) {
+                    gameSpeed -= 10;
+                    clearInterval(gameInterval);
+                    gameInterval = setInterval(gameLoop, gameSpeed);
+                }
+            } else {
+                snake.pop();
+            }
+        }
+
+        function gameLoop() {
+            moveSnake();
+            drawGame();
+        }
+
+        function endGame() {
+            gameOver = true;
+            clearInterval(gameInterval);
+            finalScoreElement.textContent = score;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        function restartGame() {
+            // Reset all variables
+            snake = [{x: 10, y: 10}];
+            dx = 0;
+            dy = 0;
+            score = 0;
+            gameSpeed = 100;
+            gameOver = false;
+            
+            scoreElement.textContent = '0';
+            gameOverScreen.style.display = 'none';
+            
+            randomFood();
+            clearInterval(gameInterval);
+            gameInterval = setInterval(gameLoop, gameSpeed);
+            drawGame();
+        }
+
+        // Handle keyboard input
+        document.addEventListener('keydown', function(e) {
+            if (gameOver) return;
+
+            switch (e.key.toLowerCase()) {
+                case 'arrowup':
+                case 'w':
+                    if (dy !== 1) { // Prevent reversing directly into self
+                        dx = 0;
+                        dy = -1;
+                    }
+                    break;
+                case 'arrowdown':
+                case 's':
+                    if (dy !== -1) {
+                        dx = 0;
+                        dy = 1;
+                    }
+                    break;
+                case 'arrowleft':
+                case 'a':
+                    if (dx !== 1) {
+                        dx = -1;
+                        dy = 0;
+                    }
+                    break;
+                case 'arrowright':
+                case 'd':
+                    if (dx !== -1) {
+                        dx = 1;
+                        dy = 0;
+                    }
+                    break;
+                case ' ':
+                    // Space to pause/resume (simple implementation)
+                    if (gameInterval) {
+                        clearInterval(gameInterval);
+                        gameInterval = null;
+                    } else {
+                        gameInterval = setInterval(gameLoop, gameSpeed);
+                    }
+                    break;
+            }
+        });
+
+        // Initialize the game
+        function initGame() {
+            randomFood();
+            drawGame();
+            
+            // Start with initial direction hint
+            setTimeout(() => {
+                if (dx === 0 && dy === 0) {
+                    // No initial movement until player presses key
+                }
+            }, 500);
+            
+            // The game starts paused until arrow key is pressed
+            // But we start the interval immediately
+            gameInterval = setInterval(gameLoop, gameSpeed);
+        }
+
+        // Start the game
+        window.onload = initGame;
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Playable games on the shelf (paths relative to site root after build)
+- id: snake
+  title: Snake
+  slug: snake
+  path: /play/snake/
+  description: Classic neon snake. Arrow keys or WASD. Eat food, don't hit walls or yourself.
+  status: playable
+  emoji: "🐍"
+
+- id: geometry-dash
+  title: Geometry Dash Lite
+  slug: geometry-dash
+  path: /play/geometry-dash/
+  description: Hold jump to clear spikes. Browser runner with Geometry Dash–style physics.
+  status: playable
+  emoji: "◆"

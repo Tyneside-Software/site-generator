@@ -14,12 +14,20 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 
 ```
 sites/<id>/          # content per brand (meta.yaml + markdown)
+sites/games/         # games.yaml shelf + static/play/<slug>/index.html
 templates/           # shared Jinja2 templates
 static/              # shared CSS/assets
 src/site_generator/  # build pipeline
 output/<id>/         # local build output (gitignored)
 .github/workflows/   # build + push to Pages repos
 ```
+
+### Adding a game (tyneside.games)
+
+1. Put the game at `sites/games/static/play/<slug>/index.html`
+2. Register it in `sites/games/games.yaml`
+3. `python -m site_generator games` and deploy
+
 
 ## Local build
 
