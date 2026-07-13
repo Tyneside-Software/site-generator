@@ -1,45 +1,35 @@
 {% extends "brand_base.html" %}
 
 {% block body %}
-  <!-- HERO -->
-  <header class="hero text-white py-24 sm:py-28 text-center">
-    <div class="max-w-4xl mx-auto px-6">
-      <p class="text-sm uppercase tracking-[0.2em] text-amber-brand font-semibold mb-4">Tyneside Software</p>
-      <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter">TYNESIDE SOFTWARE</h1>
-      <p class="mt-4 text-2xl sm:text-3xl font-light">
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">Player 1 · Tyneside Software</p>
+      <h1>TYNESIDE<br>SOFTWARE</h1>
+      <p class="hero-tag">
         Software with purpose.<br>
         Jobs with legacy.<br>
         Built from the North East.
       </p>
-      <p class="mt-10 text-lg sm:text-xl max-w-2xl mx-auto text-zinc-200">
-        Logistics &amp; work-management software for field services.<br>
+      <p class="hero-lead">
+        Logistics &amp; work-management software for field services.
         Starting with cleaning — free for local businesses. Charity for new parents.
       </p>
-      <div class="mt-12 flex flex-wrap justify-center gap-4">
-        <a href="#contact"
-           class="bg-white text-tyne px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:scale-105 transition no-underline">
-          Let's build it →
-        </a>
-        <a href="#vision"
-           class="border border-white/40 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:bg-white/10 transition no-underline">
-          The plan
-        </a>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="#contact">Let's build it →</a>
+        <a class="btn btn-magenta btn-lg" href="#vision">The plan</a>
       </div>
-      <p class="mt-8 text-sm opacity-75">
-        Company #17326934 • Incorporated 8 July 2026 • Newcastle upon Tyne
-      </p>
+      <p class="hero-meta">Company #17326934 • Inc. 8 July 2026 • Newcastle upon Tyne</p>
     </div>
   </header>
 
-  <!-- PRODUCT -->
-  <section class="py-20 bg-white" id="product">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue mb-6">Field-service software that runs like clockwork</h2>
-      <p class="text-lg text-zinc-600 max-w-3xl mx-auto">
+  <section class="section" id="product">
+    <div class="wrap center">
+      <h2>// Field-service software</h2>
+      <p class="lede">
         Vertical logistics and work-management for any business that sends people out to jobs —
-        scheduling, routing, customer portals, invoicing, the works. Built to save hours every day.
+        scheduling, routing, customer portals, invoicing. Built to save hours every day.
       </p>
-      <ul class="mt-12 grid sm:grid-cols-2 gap-4 text-left max-w-2xl mx-auto">
+      <ul class="list-neon">
         {% for item in [
           "Job scheduling & dispatch",
           "Routing for travelling teams",
@@ -48,71 +38,56 @@
           "Free for local cleaners (v1)",
           "Proven on real North East jobs",
         ] %}
-          <li class="flex items-start gap-3 bg-zinc-50 rounded-2xl px-5 py-4 text-zinc-700">
-            <span class="text-amber-brand font-bold" aria-hidden="true">✓</span>
-            <span>{{ item }}</span>
-          </li>
+          <li>{{ item }}</li>
         {% endfor %}
       </ul>
     </div>
   </section>
 
-  <!-- VISION -->
-  <section class="py-20 bg-zinc-50" id="vision">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-4">The three-pronged plan</h2>
-      <p class="text-center text-zinc-600 max-w-2xl mx-auto mb-12">
-        Serious tech, real local business support, and genuine social impact — one family of brands.
-      </p>
+  <section class="section section-alt" id="vision">
+    <div class="wrap-wide">
+      <h2>// Three-pronged plan</h2>
+      <p class="lede">Serious tech, local business support, social impact — one family of brands.</p>
       {% include "includes/family_cards.html" %}
     </div>
   </section>
 
-  <!-- JULIE -->
-  <section class="py-20 bg-white" id="julie">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue mb-8">In conversation with Julie Marriott</h2>
-      <blockquote class="bg-zinc-50 rounded-3xl p-8 sm:p-10 italic text-xl leading-relaxed border border-zinc-200 text-zinc-700">
+  <section class="section" id="julie">
+    <div class="wrap">
+      <h2>// High score quote</h2>
+      <blockquote class="quote">
         “You have a real story… you want to share and give back. I see your speed and the directions your brain moves in.”
-        <footer class="mt-6 not-italic text-base text-zinc-500">
-          — Julie Marriott, CEO Family Gateway
-        </footer>
+        <footer>— Julie Marriott, CEO Family Gateway</footer>
       </blockquote>
-      <p class="mt-8 text-zinc-600">
+      <p class="lede" style="margin-top:1.5rem">
         Exploring collaboration on software, jobs, and community impact in the North East.
       </p>
     </div>
   </section>
 
-  <!-- STORY -->
-  <section class="py-20 bg-zinc-50" id="story">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-10">Built by Michael Thomson</h2>
-      <p class="text-lg text-zinc-600 text-center max-w-3xl mx-auto">
-        Ex-Head of Engineering at Advanced • Scaled CloudTrade to £25.8m acquisition •
-        Now CTO &amp; Co-Founder of Cloud Connect (£600k ARR, 40% growth).
+  <section class="section section-alt" id="story">
+    <div class="wrap center">
+      <h2>// Built by Michael Thomson</h2>
+      <p class="lede">
+        Ex-Head of Engineering at Advanced • CloudTrade £25.8m acquisition •
+        CTO &amp; Co-Founder of Cloud Connect (£600k ARR, 40% growth).
       </p>
-      <p class="mt-6 text-lg text-zinc-600 text-center max-w-3xl mx-auto">
-        Born in Seaham 1992. Neurodivergent founder with a 10-year plan to create a jobs engine in Tyneside —
+      <p class="lede">
+        Born Seaham 1992. Neurodivergent founder. 10-year plan: a jobs engine in Tyneside —
         generational wealth, capability, and prosperity for the region.
       </p>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="py-24 bg-tyne text-white text-center">
-    <div class="max-w-2xl mx-auto px-6">
-      <h2 class="text-4xl sm:text-5xl font-bold mb-6">Ready to talk?</h2>
-      <p class="text-xl sm:text-2xl mb-10 text-zinc-200">
-        Coffee in West Moor or Sands of Tyne? Or just drop me a message.
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>Ready to talk?</h2>
+      <p class="lede" style="color:var(--text)">
+        Coffee in West Moor or Sands of Tyne? Or just drop a message.
       </p>
-      <a href="{{ site.mailto }}"
-         class="inline-block bg-white text-tyne px-10 sm:px-12 py-5 sm:py-6 rounded-3xl text-xl sm:text-2xl font-semibold hover:bg-amber-400 transition no-underline">
-        {{ site.email }}
-      </a>
-      <p class="mt-12 text-sm opacity-75">
-        10-year vision already in motion • Lewis starts part-time coding at 13 •
-        Legacy for the family and the North East.
+      <a class="btn btn-fill btn-lg" href="{{ site.mailto }}">{{ site.email }}</a>
+      <p class="hero-meta">
+        10-year vision in motion • Lewis starts coding at 13 • Legacy for family &amp; North East
       </p>
     </div>
   </section>

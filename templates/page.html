@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <article class="page">
-    <h1>{{ page.title }}</h1>
+  <article class="panel">
+    <h2 style="margin-top:0">{{ page.title }}</h2>
     {% if page.body_html %}
-      <div class="prose">
+      <div class="prose" style="color:var(--muted)">
         {{ page.body_html | safe }}
       </div>
     {% else %}
-      <p class="lede">{{ site.tagline }}</p>
-      <p>{{ page.description }}</p>
+      <p class="lede" style="text-align:left;margin:0">{{ site.tagline }}</p>
+      <p style="color:var(--muted)">{{ page.description }}</p>
     {% endif %}
   </article>
 {% endblock %}

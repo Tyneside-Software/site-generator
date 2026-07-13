@@ -1,116 +1,103 @@
 {% extends "brand_base.html" %}
 
 {% block body %}
-  <header class="hero text-white py-24 sm:py-28 text-center">
-    <div class="max-w-4xl mx-auto px-6">
-      <p class="text-sm uppercase tracking-[0.2em] text-amber-brand font-semibold mb-4">Tyneside Charity</p>
-      <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter">TYNESIDE CHARITY</h1>
-      <p class="mt-4 text-2xl sm:text-3xl font-light">
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">Co-op mode · Tyneside Charity</p>
+      <h1>TYNESIDE<br>CHARITY</h1>
+      <p class="hero-tag">
         Welcome home.<br>
-        Practical help for new parents.<br>
-        Paid work for local cleaners.
+        Help for new parents.<br>
+        Paid work for cleaners.
       </p>
-      <p class="mt-10 text-lg sm:text-xl max-w-2xl mx-auto text-zinc-200">
-        Free deep-clean “welcome home” packages for every new parent in the North East —
-        starting in our local postcode. Funded personally and through donations.
+      <p class="hero-lead">
+        Free deep-clean “welcome home” packages for new parents in the North East —
+        starting local. Funded personally and through donations.
       </p>
-      <div class="mt-12 flex flex-wrap justify-center gap-4">
-        <a href="#how"
-           class="bg-white text-tyne px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:scale-105 transition no-underline">
-          How it works →
-        </a>
-        <a href="#contact"
-           class="border border-white/40 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:bg-white/10 transition no-underline">
-          Get involved
-        </a>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="#how">How it works →</a>
+        <a class="btn btn-magenta btn-lg" href="#contact">Get involved</a>
       </div>
     </div>
   </header>
 
-  <section class="py-20 bg-white" id="who">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-12">Who benefits</h2>
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="bg-zinc-50 rounded-3xl p-8 border border-zinc-100">
-          <h3 class="font-semibold text-2xl tyne-blue mb-3">New parents</h3>
-          <p class="text-zinc-600">
-            A deep clean when you come home with a newborn — practical help when it’s needed most.
-            No bill. No stigma. Just support.
-          </p>
+  <section class="section" id="who">
+    <div class="wrap-wide">
+      <h2>// Who benefits</h2>
+      <div class="grid-3">
+        <div class="panel">
+          <h3>New parents</h3>
+          <p>A deep clean when you come home with a newborn. No bill. No stigma. Just support.</p>
         </div>
-        <div class="bg-zinc-50 rounded-3xl p-8 border border-zinc-100">
-          <h3 class="font-semibold text-2xl tyne-blue mb-3">Local cleaners</h3>
-          <p class="text-zinc-600">
-            Paid, meaningful work through the programme. Not free labour —
-            fair pay for professionals delivering community impact.
-          </p>
+        <div class="panel panel-m">
+          <h3>Local cleaners</h3>
+          <p>Paid, meaningful work. Not free labour — fair pay for professionals delivering impact.</p>
         </div>
-        <div class="bg-zinc-50 rounded-3xl p-8 border border-zinc-100">
-          <h3 class="font-semibold text-2xl tyne-blue mb-3">The region</h3>
-          <p class="text-zinc-600">
-            Software runs the jobs in public. Capability stays local.
-            Prosperity built by doing the work, not waiting for subsidies.
-          </p>
+        <div class="panel panel-c">
+          <h3>The region</h3>
+          <p>Software runs the jobs in public. Capability stays local. Prosperity by doing the work.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-20 bg-zinc-50" id="how">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-10">How a welcome-home package works</h2>
-      <ol class="space-y-6 max-w-2xl mx-auto">
-        {% for step in [
-          ("Refer or request", "A family is identified locally — starting with our postcode area — and booked in for a deep clean."),
-          ("Cleaner dispatched", "A local professional is scheduled and routed through Tyneside Software."),
-          ("Home ready", "Parents return to a clean space. Cleaner is paid. Impact is real and measurable."),
-        ] %}
-          <li class="flex gap-5 bg-white rounded-3xl p-6 border border-zinc-100">
-            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tyne text-white font-bold">{{ loop.index }}</span>
-            <div>
-              <h3 class="font-semibold text-xl tyne-blue">{{ step[0] }}</h3>
-              <p class="text-zinc-600 mt-1">{{ step[1] }}</p>
-            </div>
-          </li>
-        {% endfor %}
+  <section class="section section-alt" id="how">
+    <div class="wrap">
+      <h2>// Welcome-home package</h2>
+      <ol class="steps">
+        <li>
+          <span class="n">1</span>
+          <div>
+            <h3>Refer or request</h3>
+            <p>A family is identified locally and booked for a deep clean.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">2</span>
+          <div>
+            <h3>Cleaner dispatched</h3>
+            <p>A local professional is scheduled and routed through Tyneside Software.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">3</span>
+          <div>
+            <h3>Home ready</h3>
+            <p>Parents return to a clean space. Cleaner is paid. Impact is measurable.</p>
+          </div>
+        </li>
       </ol>
     </div>
   </section>
 
-  <section class="py-20 bg-white" id="family">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-4">Social impact + publicity engine</h2>
-      <p class="text-center text-zinc-600 max-w-2xl mx-auto mb-12">
-        The charity isn’t separate from the business — it proves the software, funds cleaners, and does real good.
-      </p>
+  <section class="section" id="family">
+    <div class="wrap-wide">
+      <h2>// Social impact engine</h2>
+      <p class="lede">Not separate from the business — it proves the software, funds cleaners, does real good.</p>
       {% include "includes/family_cards.html" %}
     </div>
   </section>
 
-  <section class="py-20 bg-zinc-50" id="funding">
-    <div class="max-w-3xl mx-auto px-6 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue mb-6">Funded with intent</h2>
-      <p class="text-lg text-zinc-600">
-        Personally funded to start, with room for donations as the programme grows.
-        Every pound goes to cleaners delivering welcome-home packages —
-        not to vanity overhead.
+  <section class="section section-alt" id="funding">
+    <div class="wrap center">
+      <h2>// Funded with intent</h2>
+      <p class="lede">
+        Personally funded to start, room for donations as it grows.
+        Every pound to cleaners delivering packages — not vanity overhead.
       </p>
     </div>
   </section>
 
-  <section id="contact" class="py-24 bg-tyne text-white text-center">
-    <div class="max-w-2xl mx-auto px-6">
-      <h2 class="text-4xl sm:text-5xl font-bold mb-6">Get involved</h2>
-      <p class="text-xl sm:text-2xl mb-10 text-zinc-200">
-        Partner, donate, refer a family, or join as a cleaner. Let’s make welcome-home real.
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>Get involved</h2>
+      <p class="lede" style="color:var(--text)">
+        Partner, donate, refer a family, or join as a cleaner.
       </p>
-      <a href="{{ site.mailto }}"
-         class="inline-block bg-white text-tyne px-10 sm:px-12 py-5 sm:py-6 rounded-3xl text-xl sm:text-2xl font-semibold hover:bg-amber-400 transition no-underline">
-        {{ site.email }}
-      </a>
-      <p class="mt-12 text-sm opacity-75">
-        Delivered with <a href="https://tyneside.cleaning/" class="underline text-white">Tyneside Cleaning</a>
-        · Built on <a href="https://tyneside.software/" class="underline text-white">Tyneside Software</a>
+      <a class="btn btn-fill btn-lg" href="{{ site.mailto }}">{{ site.email }}</a>
+      <p class="hero-meta">
+        With <a href="https://tyneside.cleaning/">Cleaning</a>
+        · On <a href="https://tyneside.software/">Software</a>
       </p>
     </div>
   </section>

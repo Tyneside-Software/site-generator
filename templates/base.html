@@ -6,34 +6,16 @@
   <title>{{ page.title }}</title>
   <meta name="description" content="{{ page.description }}">
   <link rel="canonical" href="https://{{ site.domain }}/">
-  <link rel="stylesheet" href="{{ root }}styles.css">
+  <link rel="icon" href="{{ root }}logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ root }}arcade.css">
 </head>
-<body>
-  <header class="site-header">
+<body class="arcade">
+  {% include "includes/nav.html" %}
+  <main class="section">
     <div class="wrap">
-      <a class="brand" href="{{ home_href }}">{{ site.title }}</a>
-      <nav aria-label="Primary">
-        <a href="{{ home_href }}">Home</a>
-        {% block nav_extra %}{% endblock %}
-      </nav>
+      {% block content %}{% endblock %}
     </div>
-  </header>
-
-  <main class="wrap">
-    {% block content %}{% endblock %}
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap">
-      <p>{{ site.tagline }}</p>
-      <p class="family">
-        {% set others = sites | rejectattr("id", "equalto", site.id) | list %}
-        {% for s in others %}
-          <a href="https://{{ s.domain }}/">{{ s.title }}</a>{% if not loop.last %} · {% endif %}
-        {% endfor %}
-      </p>
-      <p class="copy">&copy; {{ site.title }}</p>
-    </div>
-  </footer>
+  {% include "includes/footer.html" %}
 </body>
 </html>
