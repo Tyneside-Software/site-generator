@@ -77,3 +77,11 @@ jobs:
           site_id: group
           repo: Tyneside-Software/tyneside.group
           token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.games
+        if: ${{ hashFiles('output/games/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: games
+          repo: Tyneside-Software/tyneside.games
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}

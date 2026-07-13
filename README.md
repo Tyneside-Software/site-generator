@@ -1,6 +1,6 @@
 # site-generator
 
-Python static site generator for the **Tyneside** brand websites. One repo builds HTML; four GitHub Pages repos publish it.
+Python static site generator for the **Tyneside** brand websites. One repo builds HTML; GitHub Pages repos publish each site.
 
 | Domain | Site id | Pages repo |
 |--------|---------|------------|
@@ -8,6 +8,7 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.cleaning](https://tyneside.cleaning) | `cleaning` | `Tyneside-Software/tyneside.cleaning` |
 | [tyneside.charity](https://tyneside.charity) | `charity` | `Tyneside-Software/tyneside.charity` |
 | [tyneside.group](https://tyneside.group) | `group` | `Tyneside-Software/tyneside.group` |
+| [tyneside.games](https://tyneside.games) | `games` | `Tyneside-Software/tyneside.games` |
 
 ## Layout
 
@@ -28,7 +29,7 @@ python -m venv .venv
 pip install -e .
 pip install -r requirements.txt
 
-python -m site_generator              # all four
+python -m site_generator              # all sites
 python -m site_generator software     # one site
 python -m site_generator --list
 ```

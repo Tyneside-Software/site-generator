@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Create the five Tyneside-Software public repos (idempotent).
+  Create the Tyneside-Software public repos (idempotent).
 .NOTES
   Must run as a GitHub user with admin on the org.
 #>
@@ -28,6 +28,10 @@ $repos = @(
     @{
         name = "tyneside.group"
         description = "GitHub Pages site for tyneside.group"
+    },
+    @{
+        name = "tyneside.games"
+        description = "GitHub Pages site for tyneside.games — hobby games playground"
     }
 )
 

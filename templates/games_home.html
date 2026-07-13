@@ -1,0 +1,112 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero text-white py-24 sm:py-28 text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <p class="text-sm uppercase tracking-[0.2em] text-amber-brand font-semibold mb-4">Tyneside Games</p>
+      <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter">TYNESIDE GAMES</h1>
+      <p class="mt-4 text-2xl sm:text-3xl font-light">
+        Hobby code.<br>
+        Small games.<br>
+        No rush.
+      </p>
+      <p class="mt-10 text-lg sm:text-xl max-w-2xl mx-auto text-zinc-200">
+        A corner of the internet for experiments, half-finished ideas, and the occasional playable thing.
+        Not a product company. Just for fun. Maybe one will be finished one day.
+      </p>
+      <div class="mt-12 flex flex-wrap justify-center gap-4">
+        <a href="#shelf"
+           class="bg-white text-tyne px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:scale-105 transition no-underline">
+          What's on the shelf →
+        </a>
+        <a href="#about"
+           class="border border-white/40 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:bg-white/10 transition no-underline">
+          Why this exists
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="py-20 bg-white" id="shelf">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-4">The shelf</h2>
+      <p class="text-center text-zinc-600 max-w-2xl mx-auto mb-12">
+        Games will land here as they're worth sharing. Empty shelves are honest shelves.
+      </p>
+
+      <div class="rounded-3xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-10 sm:p-14 text-center">
+        <p class="text-5xl mb-4" aria-hidden="true">🎲</p>
+        <h3 class="text-2xl font-semibold tyne-blue mb-3">Nothing playable yet</h3>
+        <p class="text-zinc-600 max-w-lg mx-auto">
+          This is the home for hobby projects — browser games, prototypes, silly tools.
+          When something is good enough to click, it'll show up here with a short note and a link.
+        </p>
+        <p class="mt-6 text-sm text-zinc-500">
+          Status: waiting for the first WIP to graduate.
+        </p>
+      </div>
+
+      {# Future games: add cards here or drive from content later
+      <div class="mt-10 grid sm:grid-cols-2 gap-6">
+        <a href="/games/example/" class="block rounded-3xl bg-zinc-100 p-8 hover:ring-2 hover:ring-amber-brand transition no-underline">
+          <h3 class="font-semibold text-xl tyne-blue">Game title</h3>
+          <p class="text-zinc-600 mt-2">One-line description.</p>
+          <p class="mt-4 text-sm font-medium text-amber-600">Play →</p>
+        </a>
+      </div>
+      #}
+    </div>
+  </section>
+
+  <section class="py-20 bg-zinc-50" id="about">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue mb-6">Why tyneside.games</h2>
+      <p class="text-lg text-zinc-600">
+        The serious work lives on software, cleaning, and charity.
+        This domain is the pressure valve — a place to write code that doesn't need a business case,
+        a pitch deck, or a roadmap. Pure hobby.
+      </p>
+      <p class="mt-6 text-lg text-zinc-600">
+        Built the same way as the rest of the Tyneside family: simple static pages,
+        North East branding, ship when ready.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white" id="rules">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-10">House rules</h2>
+      <div class="grid sm:grid-cols-3 gap-6">
+        <div class="rounded-3xl bg-zinc-50 p-8 border border-zinc-100">
+          <h3 class="font-semibold text-xl tyne-blue mb-2">No deadlines</h3>
+          <p class="text-zinc-600">Finished is optional. Shipping a half-fun prototype is allowed.</p>
+        </div>
+        <div class="rounded-3xl bg-zinc-50 p-8 border border-zinc-100">
+          <h3 class="font-semibold text-xl tyne-blue mb-2">No sales pitch</h3>
+          <p class="text-zinc-600">Not SaaS. Not freemium. Just games and experiments.</p>
+        </div>
+        <div class="rounded-3xl bg-zinc-50 p-8 border border-zinc-100">
+          <h3 class="font-semibold text-xl tyne-blue mb-2">Share when ready</h3>
+          <p class="text-zinc-600">When something is fun enough for a friend to try, it goes on the shelf.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-24 bg-tyne text-white text-center">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-6">Got a game idea?</h2>
+      <p class="text-xl sm:text-2xl mb-10 text-zinc-200">
+        Or found a bug in something half-built? Messages welcome — replies on hobby time.
+      </p>
+      <a href="{{ site.mailto }}"
+         class="inline-block bg-white text-tyne px-10 sm:px-12 py-5 sm:py-6 rounded-3xl text-xl sm:text-2xl font-semibold hover:bg-amber-400 transition no-underline">
+        {{ site.email }}
+      </a>
+      <p class="mt-12 text-sm opacity-75">
+        Part of <a href="https://tyneside.group/" class="underline text-white">Tyneside Group</a>
+        · Serious stuff at <a href="https://tyneside.software/" class="underline text-white">tyneside.software</a>
+      </p>
+    </div>
+  </section>
+{% endblock %}

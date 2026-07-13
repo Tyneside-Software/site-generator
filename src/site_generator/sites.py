@@ -82,13 +82,27 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.group",
         title="Tyneside Group",
         brand_word="GROUP",
-        tagline="Software. Cleaning. Charity. One North East vision.",
+        tagline="Software. Cleaning. Charity. Games. One North East vision.",
         description=(
             "Tyneside Group — the parent brand uniting software, local entrepreneurs, "
-            "and social impact across Tyneside."
+            "social impact, and hobby games across Tyneside."
         ),
         email="michael@tyneside.software",
         cta_label="Talk to Michael",
+    ),
+    Site(
+        id="games",
+        domain="tyneside.games",
+        repo="tyneside.games",
+        title="Tyneside Games",
+        brand_word="GAMES",
+        tagline="Hobby code. Small games. No rush.",
+        description=(
+            "A playground for hobby games and experiments from Tyneside. "
+            "Nothing commercial — just code for fun. Maybe one will be finished one day."
+        ),
+        email="michael@tyneside.software",
+        cta_label="Say hello",
     ),
 )
 
