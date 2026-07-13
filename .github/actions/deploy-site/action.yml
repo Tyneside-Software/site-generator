@@ -1,0 +1,70 @@
+name: Deploy site repo
+description: Push built static files to a GitHub Pages site repository
+
+inputs:
+  site_id:
+    description: Local output folder under output/
+    required: true
+  repo:
+    description: owner/name of the target site repository
+    required: true
+  token:
+    description: PAT with contents:write on target repos
+    required: true
+  branch:
+    description: Branch to publish (GitHub Pages source)
+    required: false
+    default: main
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout target site repo
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.repo }}
+        token: ${{ inputs.token }}
+        path: _deploy/${{ inputs.site_id }}
+        # Allow empty/new repos without failing hard if branch missing
+        fetch-depth: 0
+
+    - name: Sync built files into site repo
+      shell: bash
+      run: |
+        set -euo pipefail
+        DEST="_deploy/${{ inputs.site_id }}"
+        SRC="output/${{ inputs.site_id }}"
+
+        if [ ! -d "$SRC" ]; then
+          echo "No build output at $SRC — skipping"
+          exit 0
+        fi
+
+        if [ ! -d "$DEST/.git" ]; then
+          echo "Target repo checkout missing for ${{ inputs.repo }}"
+          exit 1
+        fi
+
+        # Remove previous published files (keep .git)
+        find "$DEST" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+
+        cp -a "$SRC"/. "$DEST"/
+
+        # Ensure Pages-friendly markers
+        touch "$DEST/.nojekyll"
+        if [ ! -f "$DEST/CNAME" ]; then
+          echo "Warning: CNAME missing in build for ${{ inputs.site_id }}"
+        fi
+
+        cd "$DEST"
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+        git add -A
+        if git diff --cached --quiet; then
+          echo "No changes for ${{ inputs.repo }}"
+          exit 0
+        fi
+
+        git commit -m "Deploy from site-generator (${GITHUB_SHA:-local})"
+        git push origin "HEAD:${{ inputs.branch }}"

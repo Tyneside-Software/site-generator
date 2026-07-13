@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="canonical" href="https://{{ site.domain }}/">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">{{ site.title }}</a>
+      <nav aria-label="Primary">
+        <a href="/">Home</a>
+        {% block nav_extra %}{% endblock %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>{{ site.tagline }}</p>
+      <p class="family">
+        {% set others = sites | rejectattr("id", "equalto", site.id) | list %}
+        {% for s in others %}
+          <a href="https://{{ s.domain }}/">{{ s.title }}</a>{% if not loop.last %} · {% endif %}
+        {% endfor %}
+      </p>
+      <p class="copy">&copy; {{ site.title }}</p>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article class="page">
+    <h1>{{ page.title }}</h1>
+    {% if page.body_html %}
+      <div class="prose">
+        {{ page.body_html | safe }}
+      </div>
+    {% else %}
+      <p class="lede">{{ site.tagline }}</p>
+      <p>{{ page.description }}</p>
+    {% endif %}
+  </article>
+{% endblock %}
