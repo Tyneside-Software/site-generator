@@ -85,8 +85,22 @@ def _load_games_catalog(content_dir: Path) -> list[dict]:
     return data
 
 
-def _site_context(site: Site, meta: dict, body_html: str = "") -> dict:
+def _root_prefix(depth: int = 0) -> str:
+    """Relative path from a page to the site root (empty string at root)."""
+    if depth <= 0:
+        return ""
+    return "../" * depth
+
+
+def _site_context(
+    site: Site,
+    meta: dict,
+    body_html: str = "",
+    *,
+    depth: int = 0,
+) -> dict:
     content_dir = SITES_DIR / site.id
+    root = _root_prefix(depth)
     return {
         "site": site,
         "page": {
@@ -96,6 +110,9 @@ def _site_context(site: Site, meta: dict, body_html: str = "") -> dict:
         },
         "sites": SITES,
         "games": _load_games_catalog(content_dir),
+        # Relative path to site root for local file:// and nested pages
+        "root": root,
+        "home_href": f"{root}index.html" if root else "index.html",
     }
 
 

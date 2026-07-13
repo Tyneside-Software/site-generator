@@ -1,8 +1,8 @@
-# Playable games on the shelf (paths relative to site root after build)
+# Playable games on the shelf — relative paths (work with file:// and GitHub Pages)
 - id: snake
   title: Snake
   slug: snake
-  path: /play/snake/
+  path: play/snake/index.html
   description: Classic neon snake. Arrow keys or WASD. Eat food, don't hit walls or yourself.
   status: playable
   emoji: "🐍"
@@ -10,7 +10,7 @@
 - id: geometry-dash
   title: Geometry Dash Lite
   slug: geometry-dash
-  path: /play/geometry-dash/
+  path: play/geometry-dash/index.html
   description: Hold jump to clear spikes. Browser runner with Geometry Dash–style physics.
   status: playable
   emoji: "◆"

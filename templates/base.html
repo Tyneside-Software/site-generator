@@ -6,14 +6,14 @@
   <title>{{ page.title }}</title>
   <meta name="description" content="{{ page.description }}">
   <link rel="canonical" href="https://{{ site.domain }}/">
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="{{ root }}styles.css">
 </head>
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="/">{{ site.title }}</a>
+      <a class="brand" href="{{ home_href }}">{{ site.title }}</a>
       <nav aria-label="Primary">
-        <a href="/">Home</a>
+        <a href="{{ home_href }}">Home</a>
         {% block nav_extra %}{% endblock %}
       </nav>
     </div>
