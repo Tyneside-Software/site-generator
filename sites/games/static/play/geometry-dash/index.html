@@ -130,8 +130,8 @@
         <div class="progress" id="progress"></div>
         
         <div class="instructions">
-            HOLD ↑ ARROW or CLICK/TAP to JUMP<br>
-            <span style="font-size:13px; opacity:0.6;">Tap precisely • Real Geometry Dash-style physics</span>
+            SPACE / ↑ / CLICK / TAP to JUMP<br>
+            <span style="font-size:13px; opacity:0.6;">Jump just before a spike • starts easy, speeds up slowly</span>
         </div>
     </div>
 
@@ -153,29 +153,37 @@
         const finalScoreElement = document.getElementById('finalScore');
         const highScoreElement = document.getElementById('highScore');
 
-        const GRAVITY = 0.95;
-        const JUMP_FORCE = -15.2;
-        const GROUND_Y = 320;
+        // Tuned for readable jumps: floaty arc, slow scroll, wide gaps.
+        const GRAVITY = 0.48;
+        const JUMP_FORCE = -11.5;
+        const BASE_SPEED = 3.2;
+        const MAX_SPEED = 6.5;
+        const GROUND_Y = 320; // player top when standing
         const GAME_WIDTH = canvas.width;
         const GAME_HEIGHT = canvas.height;
+        const COYOTE_FRAMES = 8;   // jump shortly after leaving ground
+        const JUMP_BUFFER_FRAMES = 10; // press jump slightly early
+        const SPIKE_W = 22;
+        const SPIKE_H = 28;
 
         let player = {
-            x: 120,
+            x: 100,
             y: GROUND_Y,
             width: 28,
             height: 28,
             vy: 0,
-            onGround: true
+            onGround: true,
+            coyote: 0,
+            jumpBuffer: 0
         };
 
         let obstacles = [];
         let particles = [];
         let score = 0;
         let highScore = localStorage.getItem('gdHighScore') || 0;
-        let gameSpeed = 6;
+        let gameSpeed = BASE_SPEED;
         let gameRunning = true;
         let frame = 0;
-        let isJumping = false;
         let lastObstacle = 0;
 
         highScoreElement.textContent = highScore;
@@ -183,9 +191,10 @@
         class Obstacle {
             constructor(x) {
                 this.x = x;
-                this.y = GROUND_Y + 4;
-                this.width = 26;
-                this.height = 36;
+                // Spike sits on the ground line (player feet)
+                this.width = SPIKE_W;
+                this.height = SPIKE_H;
+                this.y = GROUND_Y + player.height - this.height;
                 this.spike = true;
             }
             
@@ -244,11 +253,12 @@
         }
 
         function createObstacle() {
-            const lastX = obstacles.length > 0 ? obstacles[obstacles.length-1].x : 0;
-            // Tighter gaps tuned for the lower, slower jump arc
-            const gap = 175 + Math.random() * 65;
-            const newX = Math.max(lastX + gap, GAME_WIDTH + 70);
-            
+            const lastX = obstacles.length > 0 ? obstacles[obstacles.length - 1].x : 0;
+            // Wide gaps so one jump clears one spike with time to land before the next
+            // ~ airtime * speed + landing room; scales gently with speed
+            const minGap = 340 + gameSpeed * 28;
+            const gap = minGap + Math.random() * 120;
+            const newX = Math.max(lastX + gap, GAME_WIDTH + 120);
             obstacles.push(new Obstacle(newX));
         }
 
@@ -320,72 +330,78 @@
 
         function updatePhysics() {
             if (!gameRunning) return;
-            
+
             player.vy += GRAVITY;
             player.y += player.vy;
-            
-            // Ground collision
+
             if (player.y >= GROUND_Y) {
-                if (player.vy > 0) {
-                    player.y = GROUND_Y;
-                    player.vy = 0;
-                    player.onGround = true;
-                    
-                    // Landing particles
-                    if (Math.abs(player.vy) > 8) {
-                        for (let i = 0; i < 8; i++) {
-                            const p = new Particle(player.x + Math.random() * player.width, GROUND_Y + 20);
-                            p.vy = -Math.random() * 4;
-                            particles.push(p);
-                        }
+                player.y = GROUND_Y;
+                if (player.vy > 0) player.vy = 0;
+                if (!player.onGround) {
+                    // soft landing dust
+                    for (let i = 0; i < 5; i++) {
+                        const p = new Particle(player.x + Math.random() * player.width, GROUND_Y + 22);
+                        p.vy = -Math.random() * 3;
+                        particles.push(p);
                     }
                 }
+                player.onGround = true;
+                player.coyote = COYOTE_FRAMES;
             } else {
                 player.onGround = false;
+                if (player.coyote > 0) player.coyote--;
             }
-            
-            // Ceiling
-            if (player.y < 40) {
-                player.y = 40;
-                player.vy = 2;
+
+            if (player.jumpBuffer > 0) {
+                player.jumpBuffer--;
+                tryJump();
+            }
+
+            // Soft ceiling
+            if (player.y < 50) {
+                player.y = 50;
+                if (player.vy < 0) player.vy = 0;
             }
         }
 
         function updateObstacles() {
+            // Generous hitbox shrink so the visual spike feels fair
+            const padX = 6;
+            const padTop = 10; // tip is pointy — don't kill on a pixel graze
+
             for (let i = obstacles.length - 1; i >= 0; i--) {
                 const obs = obstacles[i];
                 obs.x -= gameSpeed;
-                
-                // Remove off-screen obstacles
-                if (obs.x < -50) {
+
+                if (obs.x < -60) {
                     obstacles.splice(i, 1);
                     continue;
                 }
-                
-                // Collision detection
-                if (
-                    player.x + player.width > obs.x + 4 &&
-                    player.x < obs.x + obs.width - 4 &&
-                    player.y + player.height > obs.y + 4 &&
-                    player.y < obs.y + obs.height - 8
-                ) {
-                    gameOver();
-                }
+
+                const hit =
+                    player.x + player.width - padX > obs.x + padX &&
+                    player.x + padX < obs.x + obs.width - padX &&
+                    player.y + player.height > obs.y + padTop &&
+                    player.y < obs.y + obs.height;
+
+                if (hit) gameOver();
             }
         }
 
         function updateScore() {
-            score += 0.1;
+            score += 0.08;
             const displayScore = Math.floor(score);
             scoreElement.textContent = displayScore;
-            
-            // Progress bar (visual level feel)
+
             const progress = Math.min(100, (displayScore % 100));
             progressBar.style.width = `${progress}%`;
-            
-            // Increase difficulty over time
-            if (displayScore > 80 && gameSpeed < 11) {
-                gameSpeed = 6 + (displayScore / 90);
+
+            // Slow ramp — stays readable for a long time
+            if (displayScore > 40) {
+                const t = Math.min(1, (displayScore - 40) / 200);
+                gameSpeed = BASE_SPEED + (MAX_SPEED - BASE_SPEED) * t;
+            } else {
+                gameSpeed = BASE_SPEED;
             }
         }
 
@@ -408,8 +424,9 @@
             updateScore();
             updateParticles();
             
-            // Spawn obstacles with better spacing tuned for lower/slower jumps
-            if (frame - lastObstacle > 42 || obstacles.length === 0) {
+            // Spawn based on distance / frames — keep at most a few on screen
+            const spawnEvery = Math.floor(90 + 20 * (BASE_SPEED / gameSpeed));
+            if ((frame - lastObstacle > spawnEvery && obstacles.length < 3) || obstacles.length === 0) {
                 createObstacle();
                 lastObstacle = frame;
             }
@@ -430,20 +447,29 @@
             requestAnimationFrame(gameLoop);
         }
 
+        function tryJump() {
+            if (!gameRunning) return false;
+            if (!(player.onGround || player.coyote > 0)) return false;
+
+            player.vy = JUMP_FORCE;
+            player.onGround = false;
+            player.coyote = 0;
+            player.jumpBuffer = 0;
+
+            for (let i = 0; i < 10; i++) {
+                const p = new Particle(player.x + 10 + Math.random() * 12, player.y + 24);
+                p.vy = Math.random() * 3 + 0.5;
+                p.vx = (Math.random() - 0.5) * 5;
+                particles.push(p);
+            }
+            return true;
+        }
+
         function jump() {
             if (!gameRunning) return;
-            
-            if (player.onGround) {
-                player.vy = JUMP_FORCE;
-                player.onGround = false;
-                
-                // Jump burst particles
-                for (let i = 0; i < 14; i++) {
-                    const p = new Particle(player.x + 10 + Math.random() * 12, player.y + 24);
-                    p.vy = Math.random() * 3.5 + 0.5;
-                    p.vx = (Math.random() - 0.5) * 6;
-                    particles.push(p);
-                }
+            if (!tryJump()) {
+                // buffer early presses so near-miss timing still works
+                player.jumpBuffer = JUMP_BUFFER_FRAMES;
             }
         }
 
@@ -474,68 +500,56 @@
         }
 
         function restartGame() {
-            // Reset everything
             player.y = GROUND_Y;
             player.vy = 0;
             player.onGround = true;
-            
+            player.coyote = COYOTE_FRAMES;
+            player.jumpBuffer = 0;
+
             obstacles = [];
             particles = [];
             score = 0;
-            gameSpeed = 6;
+            gameSpeed = BASE_SPEED;
             frame = 0;
             lastObstacle = 0;
             gameRunning = true;
-            
+
             scoreElement.textContent = '0';
             progressBar.style.width = '0%';
             gameOverScreen.style.display = 'none';
-            
-            // Spawn first obstacle
-            createObstacle();
-            lastObstacle = 10;
-            
+
+            // First spike well off-screen so player can settle
+            obstacles.push(new Obstacle(GAME_WIDTH + 200));
+            lastObstacle = 0;
+
             gameLoop();
         }
 
-        // Input handlers
         function handleInput(e) {
             let shouldJump = false;
-            
-            if (e.type === 'keydown' && (e.key === ' ' || e.key === 'ArrowUp')) {
+
+            if (e.type === 'keydown' && (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W')) {
                 e.preventDefault();
                 shouldJump = true;
-            } 
-            else if (e.type === 'mousedown' || e.type === 'touchstart') {
+            } else if (e.type === 'mousedown' || e.type === 'touchstart') {
                 e.preventDefault();
                 shouldJump = true;
             }
-            
-            if (shouldJump) {
-                if (!gameRunning) return;
-                if (gameOverScreen.style.display === 'flex') return;
-                jump();
-            }
+
+            if (!shouldJump) return;
+            if (gameOverScreen.style.display === 'flex') return;
+            if (!gameRunning) return;
+            jump();
         }
 
         document.addEventListener('keydown', handleInput);
         canvas.addEventListener('mousedown', handleInput);
         canvas.addEventListener('touchstart', handleInput, { passive: false });
 
-        // Keyboard release for better feel (optional double jump prevention)
-        document.addEventListener('keyup', (e) => {
-            if (e.key === ' ') {
-                isJumping = false;
-            }
-        });
-
-        // Initialize and start
         function init() {
-            // Add a few starting obstacles for immediate challenge
-            obstacles.push(new Obstacle(520));
-            obstacles.push(new Obstacle(780));
-            
-            // Start the game loop
+            // One gentle opener — time to learn the jump
+            obstacles.push(new Obstacle(GAME_WIDTH + 180));
+            lastObstacle = 0;
             gameLoop();
         }
 
