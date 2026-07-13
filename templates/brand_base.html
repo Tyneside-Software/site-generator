@@ -7,10 +7,11 @@
   <meta name="description" content="{{ page.description }}">
   <link rel="canonical" href="https://{{ site.domain }}/">
   <link rel="icon" href="{{ root }}logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ root }}arcade.css">
+  <link rel="stylesheet" href="{{ root }}layout.css">
+  <link rel="stylesheet" href="{{ root }}themes.css">
   {% block head_extra %}{% endblock %}
 </head>
-<body class="arcade">
+<body class="site theme-{{ site.id }}">
 
   {% include "includes/nav.html" %}
 

@@ -6,9 +6,11 @@
   </div>
   <p class="legal">
     Tyneside Software Ltd • 10 Abbey Terrace, Newcastle upon Tyne, NE27 0QP<br>
-    Company #17326934 • SIC 58290 • <span class="blink">█</span> Proudly made on the banks of the Tyne
+    Company #17326934 • SIC 58290 • Proudly made on the banks of the Tyne
+    {% if site.id == "games" %}<span class="blink"> █</span>{% endif %}
   </p>
   <p class="legal" style="margin-top:0.75rem;opacity:0.7">
-    &copy; {{ site.title }} · INSERT COIN TO CONTINUE
+    &copy; {{ site.title }}
+    {% if site.id == "games" %} · INSERT COIN TO CONTINUE{% else %} · Part of the Tyneside family{% endif %}
   </p>
 </footer>

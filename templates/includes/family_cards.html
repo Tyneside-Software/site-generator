@@ -24,7 +24,7 @@
   ] %}
   {% for card in cards %}
     <div class="panel {% if site.id == card.id %}active{% elif loop.index == 2 %}panel-m{% elif loop.index == 3 %}panel-c{% endif %}">
-      <p class="pixel-label" style="text-align:left;margin:0 0 0.5rem">STAGE {{ card.n }}</p>
+      <p class="pixel-label" style="text-align:left;margin:0 0 0.5rem">{{ card.n }}</p>
       <h3>{{ card.title }}</h3>
       <p>{{ card.body }}</p>
       <p style="margin-top:1rem">
