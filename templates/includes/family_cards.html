@@ -1,0 +1,39 @@
+{# Three brand cards — highlight current site when present #}
+<div class="grid md:grid-cols-3 gap-8">
+  {% set cards = [
+    {
+      "id": "software",
+      "n": "1",
+      "title": "Software",
+      "body": "Vertical logistics and work-management for any business that sends people out to jobs. Free for local cleaners while we prove the product.",
+      "domain": "tyneside.software",
+    },
+    {
+      "id": "cleaning",
+      "n": "2",
+      "title": "Cleaning ecosystem",
+      "body": "Backing local entrepreneurs with free software, a proper website, and paid work. A living case study from day one.",
+      "domain": "tyneside.cleaning",
+    },
+    {
+      "id": "charity",
+      "n": "3",
+      "title": "Charity",
+      "body": "Free welcome-home deep cleans for new parents in the North East. Cleaners get paid. Families get help. Software runs the work.",
+      "domain": "tyneside.charity",
+    },
+  ] %}
+  {% for card in cards %}
+    <div class="rounded-3xl p-8 {% if site.id == card.id %}bg-tyne text-white ring-2 ring-amber-brand{% else %}bg-zinc-100{% endif %}">
+      <div class="text-5xl mb-6 font-bold {% if site.id == card.id %}text-amber-brand{% else %}text-zinc-300{% endif %}" aria-hidden="true">{{ card.n }}</div>
+      <h3 class="font-semibold text-2xl mb-3 {% if site.id != card.id %}tyne-blue{% endif %}">{{ card.title }}</h3>
+      <p class="{% if site.id == card.id %}text-zinc-200{% else %}text-zinc-600{% endif %}">{{ card.body }}</p>
+      <p class="mt-4">
+        <a href="https://{{ card.domain }}/"
+           class="font-semibold underline-offset-2 hover:underline no-underline {% if site.id == card.id %}text-white{% else %}tyne-blue{% endif %}">
+          {{ card.domain }}
+        </a>
+      </p>
+    </div>
+  {% endfor %}
+</div>

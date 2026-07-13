@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+  <link rel="canonical" href="https://{{ site.domain }}/">
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tyne: {
+              DEFAULT: '#0A2540',
+              deep: '#071a2e',
+              soft: '#143454',
+            },
+            amber: {
+              brand: '#F59E0B',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            '3xl': '1.5rem',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .tyne-blue { color: #0A2540; }
+    .hero {
+      background:
+        linear-gradient(rgba(10, 37, 64, 0.92), rgba(10, 37, 64, 0.96)),
+        url('https://picsum.photos/id/1015/2000/1200');
+      background-size: cover;
+      background-position: center;
+    }
+    a.no-underline { text-decoration: none; }
+  </style>
+  {% block head_extra %}{% endblock %}
+</head>
+<body class="bg-zinc-50 text-zinc-900 antialiased">
+
+  {% include "includes/nav.html" %}
+
+  {% block body %}{% endblock %}
+
+  {% include "includes/footer.html" %}
+
+</body>
+</html>

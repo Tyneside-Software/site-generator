@@ -1,0 +1,111 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero text-white py-24 sm:py-28 text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <p class="text-sm uppercase tracking-[0.2em] text-amber-brand font-semibold mb-4">Tyneside Group</p>
+      <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter">TYNESIDE GROUP</h1>
+      <p class="mt-4 text-2xl sm:text-3xl font-light">
+        Software. Cleaning. Charity.<br>
+        One North East vision.
+      </p>
+      <p class="mt-10 text-lg sm:text-xl max-w-2xl mx-auto text-zinc-200">
+        Bigger than another software company. A three-pronged plan that combines serious tech,
+        real local business support, and genuine social impact — rooted in Tyneside.
+      </p>
+      <div class="mt-12 flex flex-wrap justify-center gap-4">
+        <a href="#brands"
+           class="bg-white text-tyne px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:scale-105 transition no-underline">
+          Our brands →
+        </a>
+        <a href="#why"
+           class="border border-white/40 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-3xl font-semibold text-lg sm:text-xl hover:bg-white/10 transition no-underline">
+          Why we exist
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="py-20 bg-white" id="brands">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-4">The three-pronged plan</h2>
+      <p class="text-center text-zinc-600 max-w-2xl mx-auto mb-12">
+        Each brand stands alone. Together they create a jobs engine for the region.
+      </p>
+      {% include "includes/family_cards.html" %}
+    </div>
+  </section>
+
+  <section class="py-20 bg-zinc-50" id="why">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue text-center mb-8">Why we’re doing this</h2>
+      <div class="space-y-6 text-lg text-zinc-600">
+        <p>
+          Michael grew up in Seaham watching old industries disappear and too much reliance on government subsidies.
+          He’s spent a career scaling software companies — CloudTrade exit at £25.8m, Advanced,
+          now Cloud Connect at £600k ARR and growing fast — but the goal is bigger than another exit.
+        </p>
+        <p>
+          Build something that creates real jobs and real capability in Tyneside —
+          not just for one family, but for the next generation.
+        </p>
+        <p>
+          Lewis starts part-time coding at 13. The daughters get the same opportunity.
+          In seven years: seven years of professional experience. Generational wealth,
+          generational capability, and a jobs engine for the region.
+          Trickle-down economics done right — by building capability locally.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white" id="founder">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue mb-8">Founder</h2>
+      <p class="text-lg text-zinc-600 max-w-3xl mx-auto">
+        <strong class="text-tyne">Michael Thomson</strong> — Ex-Head of Engineering at Advanced •
+        CloudTrade £25.8m acquisition • CTO &amp; Co-Founder, Cloud Connect • Born Seaham 1992
+      </p>
+      <blockquote class="mt-10 bg-zinc-50 rounded-3xl p-8 sm:p-10 italic text-xl leading-relaxed border border-zinc-200 text-zinc-700">
+        “You have a real story… you want to share and give back. I see your speed and the directions your brain moves in.”
+        <footer class="mt-6 not-italic text-base text-zinc-500">
+          — Julie Marriott, CEO Family Gateway
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="py-20 bg-zinc-50" id="company">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold tyne-blue mb-6">Company</h2>
+      <p class="text-zinc-600 text-lg">
+        <strong class="text-tyne">Tyneside Software Ltd</strong><br>
+        Company #17326934 · Incorporated 8 July 2026<br>
+        10 Abbey Terrace, Newcastle upon Tyne, NE27 0QP<br>
+        SIC 58290
+      </p>
+      <p class="mt-6">
+        <a href="https://github.com/Tyneside-Software/docs"
+           class="font-semibold tyne-blue underline-offset-2 hover:underline">
+          Read the full vision on GitHub →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section id="contact" class="py-24 bg-tyne text-white text-center">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-6">Ready to talk?</h2>
+      <p class="text-xl sm:text-2xl mb-10 text-zinc-200">
+        Partnerships, press, cleaners, charity referrals — one inbox for the group.
+      </p>
+      <a href="{{ site.mailto }}"
+         class="inline-block bg-white text-tyne px-10 sm:px-12 py-5 sm:py-6 rounded-3xl text-xl sm:text-2xl font-semibold hover:bg-amber-400 transition no-underline">
+        {{ site.email }}
+      </a>
+      <p class="mt-12 text-sm opacity-75">
+        Proudly made on the banks of the Tyne
+      </p>
+    </div>
+  </section>
+{% endblock %}

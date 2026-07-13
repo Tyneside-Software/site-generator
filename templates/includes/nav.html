@@ -1,0 +1,22 @@
+<nav class="bg-white border-b border-zinc-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 sm:py-5 flex justify-between items-center gap-4">
+    <a href="/" class="flex items-center gap-3 min-w-0 no-underline">
+      <img src="/logo.svg" alt="{{ site.title }}" class="h-10 sm:h-12 w-auto shrink-0">
+      <span class="text-2xl sm:text-3xl font-bold tracking-tighter tyne-blue">TYNESIDE</span>
+      <span class="text-lg sm:text-2xl font-medium text-zinc-400 hidden sm:inline tracking-tight">{{ site.brand_word }}</span>
+    </a>
+    <div class="flex items-center gap-3 sm:gap-6">
+      <div class="hidden md:flex items-center gap-5 text-sm font-medium text-zinc-500">
+        {% for s in sites %}
+          {% if s.id != site.id %}
+            <a href="https://{{ s.domain }}/" class="hover:text-tyne transition no-underline">{{ s.brand_word | title }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <a href="{{ site.mailto }}"
+         class="shrink-0 bg-tyne text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl text-sm sm:text-base font-semibold hover:bg-amber-600 transition no-underline">
+        {{ site.cta_label }}
+      </a>
+    </div>
+  </div>
+</nav>

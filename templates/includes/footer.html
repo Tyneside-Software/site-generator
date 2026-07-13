@@ -1,0 +1,20 @@
+<footer class="bg-zinc-900 text-zinc-400 py-10 text-center text-sm px-6">
+  <div class="max-w-4xl mx-auto">
+    <p class="flex flex-wrap justify-center gap-x-3 gap-y-2 text-zinc-300 font-medium mb-6">
+      {% for s in sites %}
+        <a href="https://{{ s.domain }}/"
+           class="{% if s.id == site.id %}text-white{% else %}text-zinc-400 hover:text-white{% endif %} transition no-underline">
+          {{ s.title }}
+        </a>
+        {% if not loop.last %}<span class="text-zinc-600" aria-hidden="true">·</span>{% endif %}
+      {% endfor %}
+    </p>
+    <p>
+      Tyneside Software Ltd • 10 Abbey Terrace, Newcastle upon Tyne, NE27 0QP<br>
+      Company #17326934 • SIC 58290 • Proudly made on the banks of the Tyne
+    </p>
+    <p class="mt-4 opacity-70">
+      &copy; {{ site.title }} · Part of the Tyneside family
+    </p>
+  </div>
+</footer>
