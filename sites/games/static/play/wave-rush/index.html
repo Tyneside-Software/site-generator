@@ -357,9 +357,17 @@
         let corridorGap = 132;
         let flash = 0;
         let deadTimer = 0;
+        // 3s spawn protection: open runway + no lethal collisions
+        const SPAWN_GRACE = 3;
+        let spawnGrace = 0;
 
         // Hitbox: small diamond (accurate, slightly forgiving like GD wave hitbox ~70%)
         const HIT_HALF = 7; // half-size of collision square (rotated diamond visual)
+
+        function safeUntilX() {
+            // How far (world X) the no-hazard runway should cover for SPAWN_GRACE seconds
+            return cfg.speed * SPAWN_GRACE + PLAYER_X + 120;
+        }
 
         function resetRun() {
             playerY = H * 0.5;
@@ -373,9 +381,10 @@
             corridorGap = cfg.gap;
             flash = 0;
             deadTimer = 0;
+            spawnGrace = SPAWN_GRACE;
             distEl.textContent = '0';
-            // seed open runway
-            for (let i = 0; i < 8; i++) generateChunk();
+            // seed open runway (first chunks are safe / hazard-free)
+            for (let i = 0; i < 10; i++) generateChunk();
         }
 
         function startRun() {
@@ -422,6 +431,19 @@
             const chunkW = 90 + Math.random() * 70;
             const start = genX;
             const end = genX + chunkW;
+            const inSafeZone = start < safeUntilX();
+
+            if (inSafeZone) {
+                // Wide open runway: thin edge rails only, no spikes / interior blocks
+                corridorCenter = H * 0.5;
+                corridorGap = H - 36;
+                const topH = 12;
+                const botY = H - 12;
+                obstacles.push({ type: 'block', x: start, y: 0, w: chunkW + 2, h: topH });
+                obstacles.push({ type: 'block', x: start, y: botY, w: chunkW + 2, h: H - botY });
+                genX = end;
+                return;
+            }
 
             // drift corridor center (tighter on harder)
             const drift = (1.2 - Math.min(1, cfg.dens * 0.5)) * 40;
@@ -443,7 +465,7 @@
 
             // interior hazards
             const dens = cfg.dens * (0.7 + distFactor * 0.5);
-            if (Math.random() < dens * 0.55 && start > 400) {
+            if (Math.random() < dens * 0.55) {
                 // saw / block in corridor
                 const kind = Math.random() < cfg.spikeRate ? 'spike' : 'block';
                 const mid = corridorCenter + rand(-corridorGap * 0.22, corridorGap * 0.22);
@@ -476,7 +498,7 @@
             }
 
             // occasional double saw squeeze
-            if (Math.random() < dens * 0.2 && start > 800) {
+            if (Math.random() < dens * 0.2) {
                 const s = 16;
                 obstacles.push({ type: 'spike', x: start + chunkW * 0.6, y: topH + 4, w: s, h: s });
                 obstacles.push({ type: 'spike', x: start + chunkW * 0.6, y: botY - s - 4, w: s, h: s });
@@ -519,11 +541,19 @@
 
             ensureWorld();
 
-            // bounds (outer walls)
-            if (playerY - HIT_HALF < 0 || playerY + HIT_HALF > H) {
-                die();
-                return;
+            const invuln = spawnGrace > 0;
+
+            // bounds (outer walls) — clamp during grace, lethal after
+            if (playerY - HIT_HALF < 0) {
+                if (invuln) playerY = HIT_HALF;
+                else { die(); return; }
+            } else if (playerY + HIT_HALF > H) {
+                if (invuln) playerY = H - HIT_HALF;
+                else { die(); return; }
             }
+
+            // collisions skipped during 3s spawn grace
+            if (invuln) return;
 
             // collisions — axis-aligned box vs obstacles in world space
             const px = worldX + PLAYER_X;
@@ -572,6 +602,10 @@
             }
             // dump rest if spiked
             if (steps === MAX_STEPS) acc = 0;
+
+            if (state === 'playing' && spawnGrace > 0) {
+                spawnGrace = Math.max(0, spawnGrace - dt);
+            }
 
             if (flash > 0) flash -= dt;
             if (state === 'dead') deadTimer += dt;
@@ -672,15 +706,16 @@
             const s = 12;
             // rotate diamond to point along flight direction
             const ang = goingUp ? -Math.PI / 4 : Math.PI / 4;
+            const safe = state === 'playing' && spawnGrace > 0;
 
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(ang);
 
             // glow
-            ctx.shadowColor = '#00f0ff';
+            ctx.shadowColor = safe ? '#22c55e' : '#00f0ff';
             ctx.shadowBlur = 16;
-            ctx.fillStyle = '#00f0ff';
+            ctx.fillStyle = safe ? '#4ade80' : '#00f0ff';
             ctx.beginPath();
             ctx.moveTo(s, 0);
             ctx.lineTo(0, s * 0.7);
@@ -712,6 +747,18 @@
             ctx.font = 'bold 12px Courier New';
             ctx.textAlign = 'left';
             ctx.fillText(goingUp ? '▲ HOLD' : '▼ RELEASE', 12, 20);
+
+            // spawn grace countdown
+            if (state === 'playing' && spawnGrace > 0) {
+                ctx.fillStyle = 'rgba(34, 197, 94, 0.95)';
+                ctx.font = 'bold 16px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('SAFE ' + spawnGrace.toFixed(1) + 's', W / 2, 28);
+                // soft green flash on player edge
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.55)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(PLAYER_X - 16, playerY - 16, 32, 32);
+            }
 
             // difficulty pip
             ctx.fillStyle = cfg.color;
