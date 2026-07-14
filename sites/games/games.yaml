@@ -3,9 +3,17 @@
   title: Paddle Rally
   slug: pong
   path: play/pong/index.html
-  description: Classic paddles. 1P vs CPU or local 2P. First to 11. Keyboard, mouse, or touch.
+  description: Classic paddles. 1P vs CPU or local 2P (P1 W/S, P2 arrows). First to 11.
   status: playable
   emoji: "🏓"
+
+- id: tank-duel
+  title: Tank Duel
+  slug: tank-duel
+  path: play/tank-duel/index.html
+  description: Local arena combat. P1 WASD + F, P2 arrows + Enter. First to 5. Or vs CPU.
+  status: playable
+  emoji: "🛡️"
 
 - id: space-invaders
   title: Space Raiders

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tank Duel · Tyneside Games</title>
+    <meta name="description" content="Local tank combat — Tank Duel, a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0c120c;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d4e8c8;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid #6ab04c;
+            font-size: 13px;
+        }
+        .back-bar a { color: #6ab04c; text-decoration: none; }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #7a9a6a; }
+        .game-wrap {
+            padding-top: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+            width: min(760px, calc(100vw - 1.25rem));
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: clamp(16px, 3.2vw, 22px);
+            letter-spacing: 0.04em;
+        }
+        .hud .p1 { color: #5dade2; text-shadow: 0 0 10px rgba(93, 173, 226, 0.6); }
+        .hud .p2 { color: #e74c3c; text-shadow: 0 0 10px rgba(231, 76, 60, 0.6); text-align: right; }
+        .hud .label {
+            font-size: 0.55em;
+            opacity: 0.7;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 3px solid #6ab04c;
+            background: #1a2618;
+            box-shadow: 0 0 28px rgba(106, 176, 76, 0.28);
+            border-radius: 4px;
+            image-rendering: pixelated;
+        }
+        .instructions {
+            margin-top: 12px;
+            font-size: 12px;
+            opacity: 0.75;
+            line-height: 1.55;
+            color: #7a9a6a;
+        }
+        .mode-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .mode-row button { margin: 0; padding: 8px 14px; font-size: 13px; }
+        .mode-row button.active {
+            background: #6ab04c;
+            color: #000;
+            border-color: #6ab04c;
+        }
+        .overlay {
+            position: absolute;
+            left: 0; right: 0;
+            top: 42px; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 14, 8, 0.88);
+            border-radius: 4px;
+            padding: 1.25rem;
+            gap: 0.35rem;
+            z-index: 5;
+        }
+        .overlay.hidden { display: none; }
+        .overlay h2 {
+            margin: 0 0 0.4rem;
+            font-size: clamp(24px, 5vw, 36px);
+            letter-spacing: 0.1em;
+            color: #6ab04c;
+            text-shadow: 0 0 18px rgba(106, 176, 76, 0.8);
+        }
+        .overlay p { margin: 0.2rem 0; color: #c5d9b8; font-size: 14px; }
+        .overlay .scoreline {
+            font-size: clamp(18px, 4vw, 26px);
+            margin: 0.55rem 0 0.85rem;
+            color: #fff;
+        }
+        button {
+            margin-top: 8px;
+            padding: 10px 18px;
+            background: transparent;
+            color: #6ab04c;
+            border: 2px solid #6ab04c;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            letter-spacing: 0.06em;
+        }
+        button:hover { background: #6ab04c; color: #000; }
+        a.shelf-link {
+            margin-top: 12px;
+            color: #7a9a6a;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        a.shelf-link:hover { color: #6ab04c; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="../../index.html">← Tyneside Games</a>
+        <span class="brand">Tank Duel · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+        <div class="game-container">
+            <div class="hud">
+                <div class="p1">
+                    <div class="label">P1 · blue</div>
+                    <span id="score1">0</span>
+                </div>
+                <div style="opacity:0.4;font-size:0.7em">TANK DUEL</div>
+                <div class="p2">
+                    <div class="label" id="rightLabel">P2 · red</div>
+                    <span id="score2">0</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="720" height="480"></canvas>
+            <div class="instructions" id="controlsHint">
+                <strong>P1:</strong> W A S D move · F / Space fire &nbsp;·&nbsp;
+                <strong>P2:</strong> ↑ ← ↓ → move · / or Enter fire<br>
+                First to 5 · P pause · Esc menu · bullets bounce once
+            </div>
+            <div class="mode-row">
+                <button type="button" id="mode2p" class="active" onclick="setMode('2p')">2 Players</button>
+                <button type="button" id="modeCpu" onclick="setMode('cpu')">1P vs CPU</button>
+            </div>
+
+            <div id="startScreen" class="overlay">
+                <h2>TANK DUEL</h2>
+                <p>Arena combat. Local multiplayer.</p>
+                <p id="startHint">P1 WASD + F · P2 arrows + Enter</p>
+                <button type="button" onclick="startMatch()">DEPLOY</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+            <div id="pauseScreen" class="overlay hidden">
+                <h2>PAUSED</h2>
+                <button type="button" onclick="togglePause()">RESUME</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+            </div>
+            <div id="endScreen" class="overlay hidden">
+                <h2 id="endTitle">P1 WINS</h2>
+                <p class="scoreline"><span id="final1">0</span> — <span id="final2">0</span></p>
+                <button type="button" onclick="startMatch()">REMATCH</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const score1El = document.getElementById('score1');
+        const score2El = document.getElementById('score2');
+        const startScreen = document.getElementById('startScreen');
+        const pauseScreen = document.getElementById('pauseScreen');
+        const endScreen = document.getElementById('endScreen');
+        const endTitle = document.getElementById('endTitle');
+        const rightLabel = document.getElementById('rightLabel');
+        const controlsHint = document.getElementById('controlsHint');
+        const startHint = document.getElementById('startHint');
+        const mode2pBtn = document.getElementById('mode2p');
+        const modeCpuBtn = document.getElementById('modeCpu');
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const TILE = 40;
+        const COLS = W / TILE; // 18
+        const ROWS = H / TILE; // 12
+        const WIN = 5;
+        const TANK_R = 14;
+        const BULLET_R = 4;
+        const MOVE_SPEED = 115;
+        const TURN_SPEED = 3.2;
+        const BULLET_SPEED = 280;
+        const FIRE_COOLDOWN = 0.45;
+        const MAX_BOUNCE = 1;
+
+        // 0 empty, 1 solid wall, 2 breakable brick
+        let map = [];
+        let mode = '2p'; // 2p | cpu
+        let state = 'menu';
+        let lastTime = 0;
+        let animId = 0;
+        let bullets = [];
+        let particles = [];
+        let respawnT = 0;
+
+        const keys = {};
+
+        const p1 = makeTank(0, '#5dade2', '#2874a6');
+        const p2 = makeTank(1, '#e74c3c', '#922b21');
+
+        function makeTank(id, color, dark) {
+            return {
+                id, color, dark,
+                x: 0, y: 0, a: 0,
+                score: 0,
+                alive: true,
+                cd: 0,
+                invuln: 0
+            };
+        }
+
+        function buildMap() {
+            map = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+            // border
+            for (let x = 0; x < COLS; x++) {
+                map[0][x] = 1;
+                map[ROWS - 1][x] = 1;
+            }
+            for (let y = 0; y < ROWS; y++) {
+                map[y][0] = 1;
+                map[y][COLS - 1] = 1;
+            }
+            // pillars / corridors
+            const walls = [
+                [3, 2], [3, 3], [3, 4],
+                [14, 2], [14, 3], [14, 4],
+                [3, 7], [3, 8], [3, 9],
+                [14, 7], [14, 8], [14, 9],
+                [6, 5], [7, 5], [10, 5], [11, 5],
+                [8, 3], [9, 3], [8, 8], [9, 8],
+                [5, 2], [12, 2], [5, 9], [12, 9],
+                [8, 5], [9, 6]
+            ];
+            for (const [x, y] of walls) {
+                if (y > 0 && y < ROWS - 1 && x > 0 && x < COLS - 1) map[y][x] = 1;
+            }
+            // breakable bricks
+            const bricks = [
+                [4, 5], [5, 5], [12, 5], [13, 5],
+                [8, 2], [9, 2], [8, 9], [9, 9],
+                [6, 3], [11, 3], [6, 8], [11, 8],
+                [7, 6], [10, 6], [7, 7], [10, 7]
+            ];
+            for (const [x, y] of bricks) {
+                if (map[y][x] === 0) map[y][x] = 2;
+            }
+        }
+
+        function cellAt(px, py) {
+            const cx = (px / TILE) | 0;
+            const cy = (py / TILE) | 0;
+            if (cx < 0 || cy < 0 || cx >= COLS || cy >= ROWS) return 1;
+            return map[cy][cx];
+        }
+
+        function circleHitsWall(x, y, r) {
+            // sample corners
+            const pts = [
+                [x - r, y - r], [x + r, y - r],
+                [x - r, y + r], [x + r, y + r],
+                [x, y - r], [x, y + r], [x - r, y], [x + r, y]
+            ];
+            for (const [px, py] of pts) {
+                if (cellAt(px, py) !== 0) return true;
+            }
+            return false;
+        }
+
+        function spawnTanks() {
+            p1.x = TILE * 2.5;
+            p1.y = H / 2;
+            p1.a = 0;
+            p1.alive = true;
+            p1.cd = 0;
+            p1.invuln = 1.2;
+
+            p2.x = W - TILE * 2.5;
+            p2.y = H / 2;
+            p2.a = Math.PI;
+            p2.alive = true;
+            p2.cd = 0;
+            p2.invuln = 1.2;
+
+            bullets = [];
+            respawnT = 0;
+        }
+
+        function setMode(next) {
+            if (state === 'playing' || state === 'paused') return;
+            mode = next;
+            mode2pBtn.classList.toggle('active', mode === '2p');
+            modeCpuBtn.classList.toggle('active', mode === 'cpu');
+            rightLabel.textContent = mode === 'cpu' ? 'CPU · red' : 'P2 · red';
+            if (mode === '2p') {
+                controlsHint.innerHTML =
+                    '<strong>P1:</strong> W A S D move · F / Space fire &nbsp;·&nbsp; ' +
+                    '<strong>P2:</strong> ↑ ← ↓ → move · / or Enter fire<br>' +
+                    'First to 5 · P pause · Esc menu · bullets bounce once';
+                startHint.textContent = 'P1 WASD + F · P2 arrows + Enter. First to 5.';
+            } else {
+                controlsHint.innerHTML =
+                    '<strong>You (blue):</strong> W A S D or arrows · F / Space fire<br>' +
+                    'First to 5 · P pause · Esc menu · bullets bounce once';
+                startHint.textContent = 'Drive with WASD or arrows. Blast the CPU tank.';
+            }
+        }
+
+        function startMatch() {
+            p1.score = 0;
+            p2.score = 0;
+            score1El.textContent = '0';
+            score2El.textContent = '0';
+            buildMap();
+            spawnTanks();
+            particles = [];
+            state = 'playing';
+            startScreen.classList.add('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            lastTime = performance.now();
+            if (!animId) animId = requestAnimationFrame(loop);
+        }
+
+        function returnToMenu() {
+            state = 'menu';
+            startScreen.classList.remove('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            bullets = [];
+        }
+
+        function togglePause() {
+            if (state === 'playing') {
+                state = 'paused';
+                pauseScreen.classList.remove('hidden');
+            } else if (state === 'paused') {
+                state = 'playing';
+                pauseScreen.classList.add('hidden');
+                lastTime = performance.now();
+            }
+        }
+
+        function endMatch(winner) {
+            state = 'over';
+            document.getElementById('final1').textContent = p1.score;
+            document.getElementById('final2').textContent = p2.score;
+            if (mode === 'cpu') {
+                endTitle.textContent = winner === 0 ? 'YOU WIN' : 'CPU WINS';
+            } else {
+                endTitle.textContent = winner === 0 ? 'P1 WINS' : 'P2 WINS';
+            }
+            endScreen.classList.remove('hidden');
+        }
+
+        function burst(x, y, color, n) {
+            for (let i = 0; i < n; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 40 + Math.random() * 160;
+                particles.push({
+                    x, y,
+                    vx: Math.cos(a) * sp,
+                    vy: Math.sin(a) * sp,
+                    life: 0.3 + Math.random() * 0.35,
+                    color
+                });
+            }
+        }
+
+        function fire(tank) {
+            if (!tank.alive || tank.cd > 0) return;
+            tank.cd = FIRE_COOLDOWN;
+            const nose = TANK_R + 8;
+            bullets.push({
+                x: tank.x + Math.cos(tank.a) * nose,
+                y: tank.y + Math.sin(tank.a) * nose,
+                vx: Math.cos(tank.a) * BULLET_SPEED,
+                vy: Math.sin(tank.a) * BULLET_SPEED,
+                owner: tank.id,
+                bounces: 0,
+                life: 4
+            });
+        }
+
+        function killTank(tank, byId) {
+            if (!tank.alive || tank.invuln > 0) return;
+            tank.alive = false;
+            burst(tank.x, tank.y, tank.color, 18);
+            const scorer = byId === 0 ? p1 : p2;
+            // suicide / own bounce doesn't score
+            if (byId !== tank.id) {
+                scorer.score++;
+                if (scorer === p1) score1El.textContent = p1.score;
+                else score2El.textContent = p2.score;
+                if (scorer.score >= WIN) {
+                    endMatch(scorer.id);
+                    return;
+                }
+            }
+            respawnT = 1.4;
+        }
+
+        function tryMove(tank, dx, dy) {
+            const nx = tank.x + dx;
+            const ny = tank.y + dy;
+            if (!circleHitsWall(nx, tank.y, TANK_R - 2)) tank.x = nx;
+            if (!circleHitsWall(tank.x, ny, TANK_R - 2)) tank.y = ny;
+            // keep in bounds soft
+            tank.x = Math.max(TANK_R + 2, Math.min(W - TANK_R - 2, tank.x));
+            tank.y = Math.max(TANK_R + 2, Math.min(H - TANK_R - 2, tank.y));
+        }
+
+        function controlTank(tank, dt, input) {
+            if (!tank.alive) return;
+            if (tank.cd > 0) tank.cd -= dt;
+            if (tank.invuln > 0) tank.invuln -= dt;
+
+            if (input.left) tank.a -= TURN_SPEED * dt;
+            if (input.right) tank.a += TURN_SPEED * dt;
+
+            let forward = 0;
+            if (input.up) forward += 1;
+            if (input.down) forward -= 0.65;
+            if (forward !== 0) {
+                tryMove(
+                    tank,
+                    Math.cos(tank.a) * MOVE_SPEED * forward * dt,
+                    Math.sin(tank.a) * MOVE_SPEED * forward * dt
+                );
+            }
+            if (input.fire) fire(tank);
+        }
+
+        function readP1() {
+            // P1: WASD + F/Space. Arrows only allowed in 1P vs CPU.
+            return {
+                up: !!keys.KeyW || (mode === 'cpu' && !!keys.ArrowUp),
+                down: !!keys.KeyS || (mode === 'cpu' && !!keys.ArrowDown),
+                left: !!keys.KeyA || (mode === 'cpu' && !!keys.ArrowLeft),
+                right: !!keys.KeyD || (mode === 'cpu' && !!keys.ArrowRight),
+                fire: !!keys.KeyF || !!keys.Space
+            };
+        }
+
+        function readP2() {
+            // P2: arrow keys + Enter or /
+            return {
+                up: !!keys.ArrowUp,
+                down: !!keys.ArrowDown,
+                left: !!keys.ArrowLeft,
+                right: !!keys.ArrowRight,
+                fire: !!keys.Enter || !!keys.NumpadEnter || !!keys.Slash
+            };
+        }
+
+        function aiControl(dt) {
+            if (!p2.alive || !p1.alive) return;
+            // simple: turn toward player, drive, shoot when roughly aimed
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const desired = Math.atan2(dy, dx);
+            let diff = desired - p2.a;
+            while (diff > Math.PI) diff -= Math.PI * 2;
+            while (diff < -Math.PI) diff += Math.PI * 2;
+
+            const input = { up: false, down: false, left: false, right: false, fire: false };
+            if (diff > 0.08) input.right = true;
+            else if (diff < -0.08) input.left = true;
+
+            const dist = Math.hypot(dx, dy);
+            if (Math.abs(diff) < 0.5) {
+                if (dist > 90) input.up = true;
+                else if (dist < 55) input.down = true;
+                if (Math.abs(diff) < 0.2 && dist < 280) input.fire = Math.random() < 0.04;
+            } else if (dist > 120) {
+                input.up = true;
+            }
+            // occasional wander if stuck
+            if (circleHitsWall(
+                p2.x + Math.cos(p2.a) * 20,
+                p2.y + Math.sin(p2.a) * 20,
+                TANK_R
+            )) {
+                input.up = false;
+                input.right = Math.random() < 0.5;
+                input.left = !input.right;
+            }
+            controlTank(p2, dt, input);
+        }
+
+        function updateBullets(dt) {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i];
+                b.life -= dt;
+                if (b.life <= 0) { bullets.splice(i, 1); continue; }
+
+                b.x += b.vx * dt;
+                b.y += b.vy * dt;
+
+                // wall bounce / brick destroy
+                const cx = (b.x / TILE) | 0;
+                const cy = (b.y / TILE) | 0;
+                if (cx >= 0 && cy >= 0 && cx < COLS && cy < ROWS) {
+                    const cell = map[cy][cx];
+                    if (cell !== 0) {
+                        if (cell === 2) {
+                            map[cy][cx] = 0;
+                            burst(b.x, b.y, '#c4a484', 8);
+                            bullets.splice(i, 1);
+                            continue;
+                        }
+                        // solid: bounce
+                        if (b.bounces >= MAX_BOUNCE) {
+                            burst(b.x, b.y, '#ddd', 6);
+                            bullets.splice(i, 1);
+                            continue;
+                        }
+                        // reflect based on which side
+                        const lx = b.x - cx * TILE;
+                        const ly = b.y - cy * TILE;
+                        if (lx < 6 || lx > TILE - 6) b.vx *= -1;
+                        if (ly < 6 || ly > TILE - 6) b.vy *= -1;
+                        // nudge out
+                        b.x += b.vx * dt * 2;
+                        b.y += b.vy * dt * 2;
+                        b.bounces++;
+                    }
+                } else {
+                    bullets.splice(i, 1);
+                    continue;
+                }
+
+                // tank hits
+                for (const t of [p1, p2]) {
+                    if (!t.alive) continue;
+                    const dx = t.x - b.x;
+                    const dy = t.y - b.y;
+                    if (dx * dx + dy * dy < (TANK_R + BULLET_R) * (TANK_R + BULLET_R)) {
+                        // brief grace: own bullet near muzzle
+                        if (b.owner === t.id && b.life > 3.7) continue;
+                        bullets.splice(i, 1);
+                        killTank(t, b.owner);
+                        break;
+                    }
+                }
+            }
+        }
+
+        function update(dt) {
+            if (respawnT > 0) {
+                respawnT -= dt;
+                if (respawnT <= 0) {
+                    // only respawn dead tanks, keep scores
+                    if (!p1.alive || !p2.alive) {
+                        const s1 = p1.score, s2 = p2.score;
+                        spawnTanks();
+                        p1.score = s1;
+                        p2.score = s2;
+                    }
+                }
+            }
+
+            controlTank(p1, dt, readP1());
+            if (mode === '2p') controlTank(p2, dt, readP2());
+            else aiControl(dt);
+
+            // tank-tank soft push
+            if (p1.alive && p2.alive) {
+                const dx = p2.x - p1.x;
+                const dy = p2.y - p1.y;
+                const d = Math.hypot(dx, dy);
+                if (d > 0 && d < TANK_R * 2) {
+                    const push = (TANK_R * 2 - d) / 2;
+                    const nx = dx / d;
+                    const ny = dy / d;
+                    tryMove(p1, -nx * push, -ny * push);
+                    tryMove(p2, nx * push, ny * push);
+                }
+            }
+
+            updateBullets(dt);
+
+            for (const p of particles) {
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.life -= dt;
+            }
+            particles = particles.filter(p => p.life > 0);
+        }
+
+        function drawMap() {
+            ctx.fillStyle = '#1a2618';
+            ctx.fillRect(0, 0, W, H);
+            // grid tint
+            ctx.strokeStyle = 'rgba(106,176,76,0.06)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x <= COLS; x++) {
+                ctx.beginPath();
+                ctx.moveTo(x * TILE, 0);
+                ctx.lineTo(x * TILE, H);
+                ctx.stroke();
+            }
+            for (let y = 0; y <= ROWS; y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, y * TILE);
+                ctx.lineTo(W, y * TILE);
+                ctx.stroke();
+            }
+
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    const c = map[y][x];
+                    if (c === 0) continue;
+                    const px = x * TILE;
+                    const py = y * TILE;
+                    if (c === 1) {
+                        ctx.fillStyle = '#3d4f38';
+                        ctx.fillRect(px, py, TILE, TILE);
+                        ctx.fillStyle = '#4a6344';
+                        ctx.fillRect(px + 3, py + 3, TILE - 6, TILE - 6);
+                    } else if (c === 2) {
+                        ctx.fillStyle = '#a0522d';
+                        ctx.fillRect(px + 1, py + 1, TILE - 2, TILE - 2);
+                        ctx.strokeStyle = '#6b3a1f';
+                        ctx.strokeRect(px + 1, py + 1, TILE - 2, TILE - 2);
+                        ctx.beginPath();
+                        ctx.moveTo(px + 1, py + TILE / 2);
+                        ctx.lineTo(px + TILE - 1, py + TILE / 2);
+                        ctx.moveTo(px + TILE / 2, py + 1);
+                        ctx.lineTo(px + TILE / 2, py + TILE - 1);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function drawTank(t) {
+            if (!t.alive) return;
+            if (t.invuln > 0 && Math.floor(t.invuln * 10) % 2 === 0) return;
+
+            ctx.save();
+            ctx.translate(t.x, t.y);
+            ctx.rotate(t.a);
+
+            // tracks
+            ctx.fillStyle = t.dark;
+            ctx.fillRect(-TANK_R - 2, -TANK_R + 1, TANK_R * 2 + 4, 6);
+            ctx.fillRect(-TANK_R - 2, TANK_R - 7, TANK_R * 2 + 4, 6);
+
+            // body
+            ctx.fillStyle = t.color;
+            ctx.fillRect(-TANK_R + 2, -TANK_R + 4, TANK_R * 2 - 4, TANK_R * 2 - 8);
+
+            // turret
+            ctx.beginPath();
+            ctx.arc(0, 0, 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = t.dark;
+            ctx.fillRect(4, -2.5, 16, 5);
+
+            ctx.restore();
+        }
+
+        function draw() {
+            drawMap();
+
+            for (const b of bullets) {
+                ctx.fillStyle = '#fff8dc';
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, BULLET_R, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            drawTank(p1);
+            drawTank(p2);
+
+            for (const p of particles) {
+                ctx.globalAlpha = Math.max(0, p.life * 2.5);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 3, 3);
+            }
+            ctx.globalAlpha = 1;
+
+            if (state === 'menu') {
+                ctx.fillStyle = 'rgba(106,176,76,0.25)';
+                ctx.font = '16px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('PRESS DEPLOY', W / 2, H - 28);
+            }
+        }
+
+        function loop(now) {
+            let dt = (now - lastTime) / 1000;
+            lastTime = now;
+            if (dt > 0.05) dt = 0.05;
+            if (dt < 0) dt = 0;
+
+            if (state === 'playing') update(dt);
+            draw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+
+            if (e.code === 'KeyP') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'paused') togglePause();
+                return;
+            }
+            if (e.code === 'Escape') {
+                e.preventDefault();
+                if (state !== 'menu') returnToMenu();
+                return;
+            }
+            if (e.code === 'Space') {
+                e.preventDefault();
+                if (state === 'menu' || state === 'over') startMatch();
+                return;
+            }
+            // prevent arrow scroll
+            if (e.code.startsWith('Arrow')) e.preventDefault();
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.code] = false;
+        });
+
+        // init
+        buildMap();
+        spawnTanks();
+        setMode('2p');
+        lastTime = performance.now();
+        animId = requestAnimationFrame(loop);
+    </script>
+</body>
+</html>
