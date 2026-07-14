@@ -23,6 +23,14 @@
   status: playable
   emoji: "🚀"
 
+- id: jump-man
+  title: Jump Man
+  slug: jump-man
+  path: play/jump-man/index.html
+  description: Climb girders, jump barrels, grab the hammer. Reach the top before you get flattened.
+  status: playable
+  emoji: "🪜"
+
 - id: tetris
   title: Tetris
   slug: tetris
