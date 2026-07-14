@@ -255,12 +255,14 @@
             mode2pBtn.classList.toggle('active', mode === '2p');
             leftLabel.textContent = mode === 'cpu' ? 'You' : 'P1';
             rightLabel.textContent = mode === 'cpu' ? 'CPU' : 'P2';
+            // Drop any held keys when switching modes so paddles don't stick
+            left.up = left.down = right.up = right.down = false;
             if (mode === 'cpu') {
-                controlsHint.innerHTML = 'W / S or ↑ / ↓ · mouse / touch on your side';
-                startHint.textContent = 'Move with W/S or the mouse. Beat the CPU.';
+                controlsHint.innerHTML = 'W / S or ↑ / ↓ · mouse / touch to move';
+                startHint.textContent = 'Move with W/S, arrows, or the mouse. Beat the CPU.';
             } else {
-                controlsHint.innerHTML = 'P1: W / S · P2: ↑ / ↓ · mouse / touch each side';
-                startHint.textContent = 'P1 left (W/S), P2 right (arrows). First to 11.';
+                controlsHint.innerHTML = '<strong>P1 (left): W / S</strong> &nbsp;·&nbsp; <strong>P2 (right): ↑ / ↓</strong>';
+                startHint.textContent = 'P1 uses W/S only. P2 uses arrow keys only. First to 11.';
             }
         }
 
@@ -483,31 +485,40 @@
             animId = requestAnimationFrame(loop);
         }
 
-        // Keyboard
+        // Keyboard — 2P is strict: P1 = W/S only, P2 = arrow keys only
         document.addEventListener('keydown', (e) => {
+            const code = e.code;
             const k = e.key.toLowerCase();
 
-            if (k === ' ' || e.code === 'Space') {
+            if (k === ' ' || code === 'Space') {
                 e.preventDefault();
                 if (state === 'menu' || state === 'over') startMatch();
                 else if (state === 'playing' || state === 'paused') togglePause();
                 return;
             }
-            if (k === 'escape') {
+            if (k === 'escape' || code === 'Escape') {
                 if (state === 'playing' || state === 'paused' || state === 'over') returnToMenu();
                 return;
             }
 
             if (state !== 'playing') return;
 
-            if (k === 'w') left.up = true;
-            if (k === 's') left.down = true;
-            if (k === 'arrowup') {
+            // P1 left paddle: W / S (also arrows in 1P vs CPU only)
+            if (code === 'KeyW' || k === 'w') {
+                left.up = true;
+                e.preventDefault();
+            }
+            if (code === 'KeyS' || k === 's') {
+                left.down = true;
+                e.preventDefault();
+            }
+
+            if (code === 'ArrowUp' || k === 'arrowup') {
                 e.preventDefault();
                 if (mode === '2p') right.up = true;
                 else left.up = true;
             }
-            if (k === 'arrowdown') {
+            if (code === 'ArrowDown' || k === 'arrowdown') {
                 e.preventDefault();
                 if (mode === '2p') right.down = true;
                 else left.down = true;
@@ -515,14 +526,17 @@
         });
 
         document.addEventListener('keyup', (e) => {
+            const code = e.code;
             const k = e.key.toLowerCase();
-            if (k === 'w') left.up = false;
-            if (k === 's') left.down = false;
-            if (k === 'arrowup') {
+
+            if (code === 'KeyW' || k === 'w') left.up = false;
+            if (code === 'KeyS' || k === 's') left.down = false;
+
+            if (code === 'ArrowUp' || k === 'arrowup') {
                 if (mode === '2p') right.up = false;
                 else left.up = false;
             }
-            if (k === 'arrowdown') {
+            if (code === 'ArrowDown' || k === 'arrowdown') {
                 if (mode === '2p') right.down = false;
                 else left.down = false;
             }
@@ -539,26 +553,23 @@
         }
 
         function movePaddleFromPointer(clientX, clientY) {
-            if (state !== 'playing') return;
+            // Keyboard-only in 2P so W/S vs arrows stays clean
+            if (state !== 'playing' || mode === '2p') return;
             const p = canvasPos(clientX, clientY);
-            if (mode === '2p' && p.x > W / 2) {
-                right.y = p.y - PADDLE_H / 2;
-                clampPaddle(right);
-            } else {
-                left.y = p.y - PADDLE_H / 2;
-                clampPaddle(left);
-            }
+            left.y = p.y - PADDLE_H / 2;
+            clampPaddle(left);
         }
 
         canvas.addEventListener('pointerdown', (e) => {
+            if (mode === '2p') return;
             pointerActive = true;
             canvas.setPointerCapture(e.pointerId);
             movePaddleFromPointer(e.clientX, e.clientY);
         });
         canvas.addEventListener('pointermove', (e) => {
+            if (mode === '2p' || state !== 'playing') return;
             if (!pointerActive && e.pointerType === 'mouse') {
-                // mouse hover still moves paddle while playing
-                if (state === 'playing') movePaddleFromPointer(e.clientX, e.clientY);
+                movePaddleFromPointer(e.clientX, e.clientY);
                 return;
             }
             if (pointerActive) movePaddleFromPointer(e.clientX, e.clientY);
