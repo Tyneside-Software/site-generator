@@ -1,6 +1,6 @@
 # Playable games on the shelf — relative paths (work with file:// and GitHub Pages)
 - id: pong
-  title: Pong
+  title: Paddle Rally
   slug: pong
   path: play/pong/index.html
   description: Classic paddles. 1P vs CPU or local 2P. First to 11. Keyboard, mouse, or touch.
@@ -8,7 +8,7 @@
   emoji: "🏓"
 
 - id: space-invaders
-  title: Space Invaders
+  title: Space Raiders
   slug: space-invaders
   path: play/space-invaders/index.html
   description: Shoot the formation, duck behind bunkers, grab the mothership. Waves get faster.
@@ -16,12 +16,20 @@
   emoji: "👾"
 
 - id: galaga
-  title: Galaga
+  title: Star Dive
   slug: galaga
   path: play/galaga/index.html
   description: Formation fighters, diving raids, stage clears. Classic arcade shooter vibes.
   status: playable
   emoji: "🚀"
+
+- id: dot-chomp
+  title: Dot Chomp
+  slug: dot-chomp
+  path: play/dot-chomp/index.html
+  description: Clear the maze, dodge the ghosts, power pellets flip the chase. Arcade munching.
+  status: playable
+  emoji: "🟡"
 
 - id: jump-man
   title: Jump Man
@@ -32,7 +40,7 @@
   emoji: "🪜"
 
 - id: tetris
-  title: Tetris
+  title: Block Fall
   slug: tetris
   path: play/tetris/index.html
   description: 7-bag randomiser, hold, ghost piece, soft and hard drop. Clear lines, climb levels.
@@ -40,7 +48,7 @@
   emoji: "🧱"
 
 - id: sand-tetris
-  title: Sand Tetris
+  title: Sand Fall
   slug: sand-tetris
   path: play/sand-tetris/index.html
   description: Pieces crumble into sand. Pour, pile, and clear full rows as gravity does the rest.
