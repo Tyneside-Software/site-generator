@@ -23,6 +23,14 @@
   status: playable
   emoji: "🧱"
 
+- id: sand-tetris
+  title: Sand Tetris
+  slug: sand-tetris
+  path: play/sand-tetris/index.html
+  description: Pieces crumble into sand. Pour, pile, and clear full rows as gravity does the rest.
+  status: playable
+  emoji: "⏳"
+
 - id: snake
   title: Snake
   slug: snake
