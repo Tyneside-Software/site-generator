@@ -86,3 +86,11 @@
   description: Hold jump to clear spikes. Browser runner with Geometry Jump–style physics.
   status: playable
   emoji: "◆"
+
+- id: wave-rush
+  title: Wave Rush
+  slug: wave-rush
+  path: play/wave-rush/index.html
+  description: Endless wave mode. Hold Space/W/↑/mouse to climb, release to dive. Pick a difficulty.
+  status: playable
+  emoji: "〰️"
