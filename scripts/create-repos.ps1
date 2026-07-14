@@ -32,6 +32,10 @@ $repos = @(
     @{
         name = "tyneside.games"
         description = "GitHub Pages site for tyneside.games — hobby games playground"
+    },
+    @{
+        name = "tyneside.store"
+        description = "Tyneside Store — white-label shopfront over RST Wholesale; +2% to charity"
     }
 )
 

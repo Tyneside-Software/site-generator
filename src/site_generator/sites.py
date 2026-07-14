@@ -104,6 +104,20 @@ SITES: tuple[Site, ...] = (
         email="michael@tyneside.software",
         cta_label="Say hello",
     ),
+    Site(
+        id="store",
+        domain="tyneside.store",
+        repo="tyneside.store",
+        title="Tyneside Store",
+        brand_word="STORE",
+        tagline="Craft blanks & wholesale — better storefront, charity built in.",
+        description=(
+            "Tyneside Store white-labels RST Wholesale. Same catalogue fulfilled by RST; "
+            "we add 2% and donate it to Tyneside Charity."
+        ),
+        email="hello@tyneside.store",
+        cta_label="Shop now",
+    ),
 )
 
 

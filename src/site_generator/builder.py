@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 
@@ -85,6 +86,24 @@ def _load_games_catalog(content_dir: Path) -> list[dict]:
     return data
 
 
+def _load_store_catalog(content_dir: Path) -> dict:
+    """Optional RST-synced catalogue for the store site."""
+    path = content_dir / "catalog" / "index.json"
+    if not path.exists():
+        return {
+            "collection_count": 0,
+            "product_count": 0,
+            "markup_pct": 2.0,
+            "top_collections": [],
+            "featured_products": [],
+            "synced_at": None,
+        }
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected object in {path}")
+    return data
+
+
 def _root_prefix(depth: int = 0) -> str:
     """Relative path from a page to the site root (empty string at root)."""
     if depth <= 0:
@@ -110,6 +129,7 @@ def _site_context(
         },
         "sites": SITES,
         "games": _load_games_catalog(content_dir),
+        "store": _load_store_catalog(content_dir),
         # Relative path to site root for local file:// and nested pages
         "root": root,
         "home_href": f"{root}index.html" if root else "index.html",
@@ -158,6 +178,15 @@ def build_site(site: Site) -> Path:
         (dest / f"{stem}.html").write_text(page_html, encoding="utf-8")
 
     _copy_static(site, dest)
+
+    # Store catalogue JSON (if present) for client/debug + future checkout
+    catalog_src = content_dir / "catalog"
+    if catalog_src.exists():
+        catalog_dest = dest / "catalog"
+        if catalog_dest.exists():
+            shutil.rmtree(catalog_dest)
+        shutil.copytree(catalog_src, catalog_dest)
+
     _write_cname(site, dest)
     _write_nojekyll(dest)
 

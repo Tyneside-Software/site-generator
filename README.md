@@ -9,6 +9,7 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.charity](https://tyneside.charity) | `charity` | `Tyneside-Software/tyneside.charity` |
 | [tyneside.group](https://tyneside.group) | `group` | `Tyneside-Software/tyneside.group` |
 | [tyneside.games](https://tyneside.games) | `games` | `Tyneside-Software/tyneside.games` |
+| [tyneside.store](https://tyneside.store) | `store` | `Tyneside-Software/tyneside.store` |
 
 ## Layout
 
@@ -20,6 +21,15 @@ static/              # shared CSS/assets
 src/site_generator/  # build pipeline
 output/<id>/         # local build output (gitignored)
 .github/workflows/   # build + push to Pages repos
+```
+
+### Store catalogue sync (tyneside.store)
+
+White-label over [RST Wholesale](https://rst-wholesale.com/) (Shopify). Customer price = RST + **2%** (donated to charity).
+
+```powershell
+python scripts/sync_rst_catalog.py
+python -m site_generator store
 ```
 
 ### Adding a game (tyneside.games)

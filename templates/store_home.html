@@ -1,0 +1,174 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">White-label · RST Wholesale · +2% to charity</p>
+      <h1>TYNESIDE<br>STORE</h1>
+      <p class="hero-tag">
+        Craft blanks &amp; wholesale.<br>
+        Better storefront.<br>
+        Charity built in.
+      </p>
+      <p class="hero-lead">
+        We white-label <strong>RST Wholesale</strong>
+        (<a href="https://rst-wholesale.com/" rel="noopener">rst-wholesale.com</a>).
+        Same supply chain — cleaner shopping experience. Every order is sent to RST at their price;
+        we add <strong>2%</strong> and <strong>donate that 2% to Tyneside Charity</strong>.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="#shop">Browse catalogue →</a>
+        <a class="btn btn-secondary btn-lg" href="#model">How it works</a>
+      </div>
+      <p class="hero-meta">
+        Fulfilled by RST Wholesale Ltd · Markup donated via
+        <a href="https://tyneside.charity/">tyneside.charity</a>
+      </p>
+    </div>
+  </header>
+
+  <section class="section" id="model">
+    <div class="wrap">
+      <h2>How Tyneside Store works</h2>
+      <div class="stat-row">
+        <div class="stat">
+          <span class="value">RST</span>
+          <span class="label">Wholesale fulfilment</span>
+        </div>
+        <div class="stat">
+          <span class="value">+2%</span>
+          <span class="label">Added on every order</span>
+        </div>
+        <div class="stat">
+          <span class="value">100%</span>
+          <span class="label">Of that 2% → charity</span>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="panel">
+          <h3>1. You shop here</h3>
+          <p>
+            Browse craft blanks, drinkware, stationery, clothing and more —
+            mirrored from RST’s catalogue with clearer pricing and Tyneside branding.
+          </p>
+        </div>
+        <div class="panel panel-m">
+          <h3>2. We order from RST</h3>
+          <p>
+            Your order is placed with <strong>RST Wholesale</strong> at their wholesale price.
+            They ship the goods. We don’t hold stock.
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <h3>3. +2% becomes good</h3>
+          <p>
+            You pay RST price <strong>+ 2%</strong>. That markup is donated to
+            <a href="https://tyneside.charity/">Tyneside Charity</a>
+            (Forest Hall free cleans for new parents).
+          </p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:1.5rem;margin-bottom:0">
+        Example: RST item £10.00 → you pay <strong>£10.20</strong>
+        (£10.00 supply · <strong>£0.20 charity</strong>).
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="shop">
+    <div class="wrap-wide">
+      <h2>Catalogue</h2>
+      {% if store.product_count %}
+        <p class="lede">
+          {{ store.product_count }} products · {{ store.collection_count }} collections
+          {% if store.synced_at %} · synced {{ store.synced_at[:10] }}{% endif %}
+          · prices include <strong>+{{ store.markup_pct | int }}% charity</strong>
+        </p>
+      {% else %}
+        <p class="lede">
+          Catalogue not synced yet. Run
+          <code>python scripts/sync_rst_catalog.py</code>
+          then rebuild.
+        </p>
+      {% endif %}
+
+      {% if store.top_collections %}
+        <h3 class="store-subhead">Collections</h3>
+        <div class="store-collection-grid">
+          {% for c in store.top_collections %}
+            <a class="store-collection-card" href="{{ c.rst_url }}" rel="noopener" target="_blank">
+              {% if c.image %}
+                <img src="{{ c.image }}" alt="" loading="lazy" width="320" height="200">
+              {% endif %}
+              <span class="title">{{ c.title }}</span>
+              <span class="meta">{{ c.products_count }} products · view on RST →</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if store.featured_products %}
+        <h3 class="store-subhead">Featured products</h3>
+        <div class="store-product-grid">
+          {% for p in store.featured_products %}
+            <article class="store-product-card">
+              {% if p.image %}
+                <a href="{{ p.rst_url }}" rel="noopener" target="_blank" class="thumb">
+                  <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy" width="280" height="280">
+                </a>
+              {% endif %}
+              <h4>{{ p.title }}</h4>
+              <p class="price">
+                <span class="customer">£{{ p.pricing.customer_gbp }}</span>
+                <span class="split">RST £{{ p.pricing.rst_gbp }} · charity £{{ p.pricing.charity_gbp }}</span>
+              </p>
+              <p class="actions">
+                <a class="btn btn-fill" href="{{ p.rst_url }}" rel="noopener" target="_blank">View on RST</a>
+              </p>
+              {% if not p.available %}
+                <p class="badge-out">Check availability on RST</p>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section" id="better">
+    <div class="wrap">
+      <h2>Same catalogue. Better storefront.</h2>
+      <ul class="list-features">
+        <li>Clear RST vs charity split on every price</li>
+        <li>Tyneside brand — North East jobs &amp; impact story</li>
+        <li>Mobile-first layout (shared design system)</li>
+        <li>Catalogue sync from RST Shopify public API</li>
+        <li>Path to full checkout white-label (Storefront API / wholesale account)</li>
+        <li>Transparent: we name RST as supplier — no fake warehouse</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="family">
+    <div class="wrap-wide">
+      <h2>Part of the Tyneside family</h2>
+      <p class="lede">Software, cleaning, charity, and now retail that funds welcome-home cleans.</p>
+      {% include "includes/family_cards.html" %}
+    </div>
+  </section>
+
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>Wholesale enquiries</h2>
+      <p class="lede">
+        Trade accounts, bulk craft blanks, or white-label partnerships — talk to us.
+        Product supply remains with <a href="https://rst-wholesale.com/" style="color:inherit;text-decoration:underline">RST Wholesale</a>.
+      </p>
+      <a class="btn btn-fill btn-lg" href="{{ site.mailto }}">{{ site.email }}</a>
+      <p class="hero-meta">
+        Charity impact · <a href="https://tyneside.charity/">tyneside.charity</a>
+        · Group · <a href="https://tyneside.group/">tyneside.group</a>
+      </p>
+    </div>
+  </section>
+{% endblock %}
