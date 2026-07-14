@@ -68,10 +68,10 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.charity",
         title="Tyneside Charity",
         brand_word="CHARITY",
-        tagline="Welcome home packages for new parents.",
+        tagline="Free cleans for new parents in Forest Hall.",
         description=(
-            "Free deep-clean welcome home packages for new parents in the North East. "
-            "Cleaners get paid work. Families get practical help."
+            "Free 2-hour welcome-home deep cleans for new parents in Forest Hall "
+            "(~400 births/year when fully scaled). Cleaners paid £15/hr."
         ),
         email="hello@tyneside.charity",
         cta_label="Get involved",
