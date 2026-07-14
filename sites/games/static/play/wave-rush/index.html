@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wave Rush · Tyneside Games</title>
+    <meta name="description" content="Endless wave mode — hold to rise, release to dive. A Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0a0518;
+            font-family: 'Courier New', Courier, monospace;
+            color: #e8d5ff;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.92);
+            border-bottom: 1px solid #c026ff;
+            font-size: 13px;
+        }
+        .back-bar a { color: #00f0ff; text-decoration: none; }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #a78bfa; }
+        .game-wrap {
+            padding-top: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+            width: min(900px, calc(100vw - 1rem));
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: clamp(14px, 2.8vw, 20px);
+            letter-spacing: 0.06em;
+            text-shadow: 0 0 12px rgba(192, 38, 255, 0.7);
+        }
+        .hud .label {
+            font-size: 0.55em;
+            opacity: 0.65;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 3px solid #c026ff;
+            background: #05010f;
+            box-shadow: 0 0 32px rgba(192, 38, 255, 0.35),
+                        0 0 60px rgba(0, 240, 255, 0.12);
+            border-radius: 4px;
+            cursor: none;
+            image-rendering: auto;
+        }
+        .instructions {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.75;
+            line-height: 1.5;
+            color: #a78bfa;
+        }
+        .diff-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .diff-row button {
+            margin: 0;
+            padding: 8px 14px;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+        }
+        .diff-row button.active {
+            background: #c026ff;
+            color: #fff;
+            border-color: #c026ff;
+            box-shadow: 0 0 14px rgba(192, 38, 255, 0.6);
+        }
+        .diff-row button[data-d="easy"].active { background: #22c55e; border-color: #22c55e; box-shadow: 0 0 14px rgba(34,197,94,0.5); }
+        .diff-row button[data-d="normal"].active { background: #3b82f6; border-color: #3b82f6; box-shadow: 0 0 14px rgba(59,130,246,0.5); }
+        .diff-row button[data-d="hard"].active { background: #f59e0b; border-color: #f59e0b; color: #000; box-shadow: 0 0 14px rgba(245,158,11,0.5); }
+        .diff-row button[data-d="insane"].active { background: #ef4444; border-color: #ef4444; box-shadow: 0 0 14px rgba(239,68,68,0.55); }
+        .overlay {
+            position: absolute;
+            left: 0; right: 0;
+            top: 40px; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 1, 15, 0.9);
+            border-radius: 4px;
+            padding: 1.25rem;
+            gap: 0.35rem;
+            z-index: 5;
+        }
+        .overlay.hidden { display: none; }
+        .overlay h2 {
+            margin: 0 0 0.35rem;
+            font-size: clamp(26px, 5.5vw, 40px);
+            letter-spacing: 0.12em;
+            color: #00f0ff;
+            text-shadow: 0 0 22px rgba(0, 240, 255, 0.85);
+        }
+        .overlay p { margin: 0.2rem 0; color: #d8c4ff; font-size: 14px; }
+        .overlay .scoreline {
+            font-size: clamp(18px, 4vw, 26px);
+            margin: 0.55rem 0 0.85rem;
+            color: #fff;
+        }
+        button {
+            margin-top: 8px;
+            padding: 10px 20px;
+            background: transparent;
+            color: #00f0ff;
+            border: 2px solid #00f0ff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+        }
+        button:hover {
+            background: #00f0ff;
+            color: #000;
+        }
+        a.shelf-link {
+            margin-top: 12px;
+            color: #a78bfa;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        a.shelf-link:hover { color: #00f0ff; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="../../index.html">← Tyneside Games</a>
+        <span class="brand">Wave Rush · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+        <div class="game-container">
+            <div class="hud">
+                <div>
+                    <div class="label">Distance</div>
+                    <span id="dist">0</span>m
+                </div>
+                <div>
+                    <div class="label">Difficulty</div>
+                    <span id="diffLabel">NORMAL</span>
+                </div>
+                <div style="text-align:right">
+                    <div class="label">Best</div>
+                    <span id="best">0</span>m
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="900" height="420"></canvas>
+            <div class="instructions">
+                <strong>HOLD</strong> Space / W / ↑ / mouse / touch to go <strong>UP</strong> ·
+                <strong>RELEASE</strong> to go <strong>DOWN</strong><br>
+                Endless · pick a difficulty · Esc menu
+            </div>
+            <div class="diff-row" id="diffRow">
+                <button type="button" data-d="easy" onclick="setDiff('easy')">EASY</button>
+                <button type="button" data-d="normal" class="active" onclick="setDiff('normal')">NORMAL</button>
+                <button type="button" data-d="hard" onclick="setDiff('hard')">HARD</button>
+                <button type="button" data-d="insane" onclick="setDiff('insane')">INSANE</button>
+            </div>
+
+            <div id="startScreen" class="overlay">
+                <h2>WAVE RUSH</h2>
+                <p>Geometry-style wave. Endless. Pick your poison.</p>
+                <p>Hold = climb · Release = dive · 45° precision flight</p>
+                <button type="button" id="btnStart">START</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+            <div id="endScreen" class="overlay hidden">
+                <h2>CRASHED</h2>
+                <p class="scoreline"><span id="finalDist">0</span>m · <span id="finalDiff">NORMAL</span></p>
+                <p>Best on this difficulty: <span id="finalBest">0</span>m</p>
+                <button type="button" id="btnAgain">RETRY</button>
+                <button type="button" id="btnMenu">MENU</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Wave Rush — GD-style wave (hold up / release down), endless.
+         * Input is polled every frame from edge-triggered flags for minimal delay.
+         */
+        const canvas = document.getElementById('gameCanvas');
+        // desynchronized for lower latency; alpha false for speed
+        const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+        const distEl = document.getElementById('dist');
+        const bestEl = document.getElementById('best');
+        const diffLabel = document.getElementById('diffLabel');
+        const startScreen = document.getElementById('startScreen');
+        const endScreen = document.getElementById('endScreen');
+        const finalDist = document.getElementById('finalDist');
+        const finalDiff = document.getElementById('finalDiff');
+        const finalBest = document.getElementById('finalBest');
+
+        const W = canvas.width;
+        const H = canvas.height;
+
+        // ---- Input: raw instantaneous state (set by events, read every frame) ----
+        const input = {
+            space: false,
+            w: false,
+            up: false,
+            pointer: false
+        };
+
+        function holdActive() {
+            return input.space || input.w || input.up || input.pointer;
+        }
+
+        // Capture phase = earlier than bubble; less chance of delay from other handlers
+        window.addEventListener('keydown', (e) => {
+            const c = e.code;
+            if (c === 'Space' || c === 'KeyW' || c === 'ArrowUp') {
+                e.preventDefault();
+                if (c === 'Space') input.space = true;
+                if (c === 'KeyW') input.w = true;
+                if (c === 'ArrowUp') input.up = true;
+                // Start on first press from menu/dead
+                if (state === 'menu' || state === 'dead') startRun();
+            }
+            if (c === 'Escape') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'dead') returnToMenu();
+            }
+            if (c === 'KeyP' && state === 'playing') {
+                // no pause lag concerns — skip pause for pure wave feel
+            }
+        }, { passive: false, capture: true });
+
+        window.addEventListener('keyup', (e) => {
+            const c = e.code;
+            if (c === 'Space') input.space = false;
+            if (c === 'KeyW') input.w = false;
+            if (c === 'ArrowUp') input.up = false;
+        }, { capture: true });
+
+        // Pointer: any button down on canvas/window for play area
+        function onPointerDown(e) {
+            if (e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'A')) return;
+            if (e.button !== undefined && e.button !== 0) return;
+            input.pointer = true;
+            if (state === 'menu' || state === 'dead') startRun();
+            e.preventDefault();
+        }
+        function onPointerUp(e) {
+            if (e.button !== undefined && e.button !== 0) return;
+            input.pointer = false;
+        }
+        canvas.addEventListener('pointerdown', onPointerDown, { passive: false });
+        window.addEventListener('pointerup', onPointerUp, { passive: true });
+        window.addEventListener('pointercancel', onPointerUp, { passive: true });
+        // Also mouse leave shouldn't stick? keep hold until up globally
+        window.addEventListener('blur', () => {
+            input.space = input.w = input.up = input.pointer = false;
+        });
+
+        document.getElementById('btnStart').addEventListener('click', (e) => {
+            e.stopPropagation();
+            startRun();
+        });
+        document.getElementById('btnAgain').addEventListener('click', (e) => {
+            e.stopPropagation();
+            startRun();
+        });
+        document.getElementById('btnMenu').addEventListener('click', (e) => {
+            e.stopPropagation();
+            returnToMenu();
+        });
+
+        // ---- Difficulty ----
+        const DIFFS = {
+            easy:   { name: 'EASY',   speed: 280, gap: 168, minGap: 140, dens: 0.55, spikeRate: 0.12, color: '#22c55e' },
+            normal: { name: 'NORMAL', speed: 360, gap: 132, minGap: 108, dens: 0.75, spikeRate: 0.22, color: '#3b82f6' },
+            hard:   { name: 'HARD',   speed: 440, gap: 108, minGap: 88,  dens: 0.92, spikeRate: 0.35, color: '#f59e0b' },
+            insane: { name: 'INSANE', speed: 520, gap: 90,  minGap: 72,  dens: 1.1,  spikeRate: 0.48, color: '#ef4444' }
+        };
+        let difficulty = 'normal';
+        let cfg = DIFFS.normal;
+
+        function hsKey() {
+            return 'tyneside-wave-rush-hs-' + difficulty;
+        }
+
+        function loadBest() {
+            return Number(localStorage.getItem(hsKey()) || 0);
+        }
+
+        function setDiff(d) {
+            if (state === 'playing') return;
+            difficulty = d;
+            cfg = DIFFS[d];
+            diffLabel.textContent = cfg.name;
+            bestEl.textContent = String(loadBest());
+            document.querySelectorAll('.diff-row button').forEach((b) => {
+                b.classList.toggle('active', b.getAttribute('data-d') === d);
+            });
+        }
+        window.setDiff = setDiff;
+
+        // ---- Game state ----
+        let state = 'menu'; // menu | playing | dead
+        let lastTime = 0;
+        let animId = 0;
+        let acc = 0;
+        const FIXED_DT = 1 / 240; // 240Hz physics for accuracy / low perceived delay
+        const MAX_STEPS = 12;
+
+        // Player fixed X (camera scrolls world)
+        const PLAYER_X = 160;
+        let playerY = H * 0.5;
+        let goingUp = false;
+        let worldX = 0; // how far camera has scrolled
+        let distance = 0;
+        let trail = []; // recent positions for wave trail
+        const TRAIL_MAX = 48;
+
+        // Segments: continuous corridor + hazards ahead of camera
+        // Each obstacle: { type: 'block'|'spike', x, y, w, h }
+        // Corridor walls as stacked blocks from top/bottom
+        let obstacles = [];
+        let genX = 0; // next generation world-x
+        let corridorCenter = H * 0.5;
+        let corridorGap = 132;
+        let flash = 0;
+        let deadTimer = 0;
+        // 3s spawn protection: open runway + no lethal collisions
+        const SPAWN_GRACE = 3;
+        let spawnGrace = 0;
+
+        // Hitbox: small diamond (accurate, slightly forgiving like GD wave hitbox ~70%)
+        const HIT_HALF = 7; // half-size of collision square (rotated diamond visual)
+
+        function safeUntilX() {
+            // How far (world X) the no-hazard runway should cover for SPAWN_GRACE seconds
+            return cfg.speed * SPAWN_GRACE + PLAYER_X + 120;
+        }
+
+        function resetRun() {
+            playerY = H * 0.5;
+            goingUp = false;
+            worldX = 0;
+            distance = 0;
+            trail = [];
+            obstacles = [];
+            genX = 0;
+            corridorCenter = H * 0.5;
+            corridorGap = cfg.gap;
+            flash = 0;
+            deadTimer = 0;
+            spawnGrace = SPAWN_GRACE;
+            distEl.textContent = '0';
+            // seed open runway (first chunks are safe / hazard-free)
+            for (let i = 0; i < 10; i++) generateChunk();
+        }
+
+        function startRun() {
+            cfg = DIFFS[difficulty];
+            resetRun();
+            state = 'playing';
+            startScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            // Immediate direction from current hold — no frame of wrong way
+            goingUp = holdActive();
+            lastTime = performance.now();
+            if (!animId) animId = requestAnimationFrame(loop);
+        }
+
+        function returnToMenu() {
+            state = 'menu';
+            startScreen.classList.remove('hidden');
+            endScreen.classList.add('hidden');
+            input.space = input.w = input.up = input.pointer = false;
+        }
+
+        function die() {
+            if (state !== 'playing') return;
+            state = 'dead';
+            flash = 0.2;
+            deadTimer = 0;
+            const best = loadBest();
+            if (distance > best) {
+                localStorage.setItem(hsKey(), String(Math.floor(distance)));
+            }
+            bestEl.textContent = String(loadBest());
+            finalDist.textContent = String(Math.floor(distance));
+            finalDiff.textContent = cfg.name;
+            finalBest.textContent = String(loadBest());
+            endScreen.classList.remove('hidden');
+        }
+
+        function rand(a, b) {
+            return a + Math.random() * (b - a);
+        }
+
+        function generateChunk() {
+            // Generate a stretch of corridor + optional hazards
+            const chunkW = 90 + Math.random() * 70;
+            const start = genX;
+            const end = genX + chunkW;
+            const inSafeZone = start < safeUntilX();
+
+            if (inSafeZone) {
+                // Wide open runway: thin edge rails only, no spikes / interior blocks
+                corridorCenter = H * 0.5;
+                corridorGap = H - 36;
+                const topH = 12;
+                const botY = H - 12;
+                obstacles.push({ type: 'block', x: start, y: 0, w: chunkW + 2, h: topH });
+                obstacles.push({ type: 'block', x: start, y: botY, w: chunkW + 2, h: H - botY });
+                genX = end;
+                return;
+            }
+
+            // drift corridor center (tighter on harder)
+            const drift = (1.2 - Math.min(1, cfg.dens * 0.5)) * 40;
+            corridorCenter += rand(-drift, drift);
+            const pad = corridorGap * 0.5 + 20;
+            corridorCenter = Math.max(pad, Math.min(H - pad, corridorCenter));
+
+            // tighten gap gradually with distance a little
+            const distFactor = Math.min(1, worldX / 12000);
+            corridorGap = cfg.gap - (cfg.gap - cfg.minGap) * distFactor * 0.65;
+            corridorGap = Math.max(cfg.minGap, corridorGap);
+
+            const topH = corridorCenter - corridorGap * 0.5;
+            const botY = corridorCenter + corridorGap * 0.5;
+
+            // solid ceiling / floor for this chunk
+            obstacles.push({ type: 'block', x: start, y: 0, w: chunkW + 2, h: Math.max(8, topH) });
+            obstacles.push({ type: 'block', x: start, y: botY, w: chunkW + 2, h: H - botY });
+
+            // interior hazards
+            const dens = cfg.dens * (0.7 + distFactor * 0.5);
+            if (Math.random() < dens * 0.55) {
+                // saw / block in corridor
+                const kind = Math.random() < cfg.spikeRate ? 'spike' : 'block';
+                const mid = corridorCenter + rand(-corridorGap * 0.22, corridorGap * 0.22);
+                if (kind === 'spike') {
+                    const s = 18 + Math.random() * 10;
+                    obstacles.push({ type: 'spike', x: start + chunkW * 0.4, y: mid - s / 2, w: s, h: s });
+                } else {
+                    const bw = 22 + Math.random() * 18;
+                    const bh = 22 + Math.random() * 28;
+                    // attach to ceiling or floor more often
+                    if (Math.random() < 0.5) {
+                        obstacles.push({
+                            type: 'block',
+                            x: start + chunkW * 0.35,
+                            y: topH,
+                            w: bw,
+                            h: Math.min(bh, corridorGap * 0.45)
+                        });
+                    } else {
+                        const h = Math.min(bh, corridorGap * 0.45);
+                        obstacles.push({
+                            type: 'block',
+                            x: start + chunkW * 0.35,
+                            y: botY - h,
+                            w: bw,
+                            h
+                        });
+                    }
+                }
+            }
+
+            // occasional double saw squeeze
+            if (Math.random() < dens * 0.2) {
+                const s = 16;
+                obstacles.push({ type: 'spike', x: start + chunkW * 0.6, y: topH + 4, w: s, h: s });
+                obstacles.push({ type: 'spike', x: start + chunkW * 0.6, y: botY - s - 4, w: s, h: s });
+            }
+
+            genX = end;
+        }
+
+        function ensureWorld() {
+            // generate until we have content ahead of camera
+            while (genX < worldX + W + 400) generateChunk();
+            // prune far behind
+            const minX = worldX - 200;
+            if (obstacles.length > 80) {
+                obstacles = obstacles.filter((o) => o.x + o.w > minX);
+            }
+        }
+
+        function sampleHold() {
+            // Called at start of every physics substep for snappy response
+            goingUp = holdActive();
+        }
+
+        function physicsStep(dt) {
+            sampleHold();
+
+            // 45° flight: |vx| == |vy| in world space. Camera scrolls at speed.
+            const speed = cfg.speed;
+            // horizontal: world scrolls left relative to player
+            worldX += speed * dt;
+            distance = worldX * 0.05; // meters-ish display
+
+            // vertical: up when holding, down when not
+            const vy = goingUp ? -speed : speed;
+            playerY += vy * dt;
+
+            // trail
+            trail.push({ x: worldX + PLAYER_X, y: playerY });
+            if (trail.length > TRAIL_MAX) trail.shift();
+
+            ensureWorld();
+
+            const invuln = spawnGrace > 0;
+
+            // bounds (outer walls) — clamp during grace, lethal after
+            if (playerY - HIT_HALF < 0) {
+                if (invuln) playerY = HIT_HALF;
+                else { die(); return; }
+            } else if (playerY + HIT_HALF > H) {
+                if (invuln) playerY = H - HIT_HALF;
+                else { die(); return; }
+            }
+
+            // collisions skipped during 3s spawn grace
+            if (invuln) return;
+
+            // collisions — axis-aligned box vs obstacles in world space
+            const px = worldX + PLAYER_X;
+            const half = HIT_HALF;
+            const left = px - half;
+            const right = px + half;
+            const top = playerY - half;
+            const bot = playerY + half;
+
+            for (let i = 0; i < obstacles.length; i++) {
+                const o = obstacles[i];
+                if (o.x + o.w < left - 20 || o.x > right + 20) continue;
+                if (o.type === 'spike') {
+                    // circle hitbox for diamond spikes
+                    const cx = o.x + o.w * 0.5;
+                    const cy = o.y + o.h * 0.5;
+                    const cr = o.w * 0.42;
+                    const ddx = px - cx;
+                    const ddy = playerY - cy;
+                    if (ddx * ddx + ddy * ddy < (half + cr) * (half + cr)) {
+                        die();
+                        return;
+                    }
+                } else {
+                    // AABB
+                    if (left < o.x + o.w && right > o.x && top < o.y + o.h && bot > o.y) {
+                        die();
+                        return;
+                    }
+                }
+            }
+        }
+
+        function update(dt) {
+            // Fixed substeps for consistent collision & responsive input
+            acc += dt;
+            let steps = 0;
+            while (acc >= FIXED_DT && steps < MAX_STEPS) {
+                if (state !== 'playing') {
+                    acc = 0;
+                    break;
+                }
+                physicsStep(FIXED_DT);
+                acc -= FIXED_DT;
+                steps++;
+            }
+            // dump rest if spiked
+            if (steps === MAX_STEPS) acc = 0;
+
+            if (state === 'playing' && spawnGrace > 0) {
+                spawnGrace = Math.max(0, spawnGrace - dt);
+            }
+
+            if (flash > 0) flash -= dt;
+            if (state === 'dead') deadTimer += dt;
+
+            // HUD (throttled lightly by only writing when integer changes)
+            const dInt = distance | 0;
+            if (distEl._v !== dInt) {
+                distEl._v = dInt;
+                distEl.textContent = String(dInt);
+            }
+        }
+
+        function worldToScreenX(wx) {
+            return wx - worldX;
+        }
+
+        function drawBackground() {
+            // gradient + grid
+            const g = ctx.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, '#12062a');
+            g.addColorStop(0.5, '#0a0518');
+            g.addColorStop(1, '#1a0a30');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.strokeStyle = 'rgba(192, 38, 255, 0.08)';
+            ctx.lineWidth = 1;
+            const grid = 40;
+            const ox = -(worldX % grid);
+            for (let x = ox; x < W; x += grid) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, H);
+                ctx.stroke();
+            }
+            for (let y = 0; y < H; y += grid) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(W, y);
+                ctx.stroke();
+            }
+        }
+
+        function drawObstacles() {
+            for (let i = 0; i < obstacles.length; i++) {
+                const o = obstacles[i];
+                const sx = worldToScreenX(o.x);
+                if (sx + o.w < -20 || sx > W + 20) continue;
+
+                if (o.type === 'block') {
+                    ctx.fillStyle = '#2a1050';
+                    ctx.fillRect(sx, o.y, o.w, o.h);
+                    ctx.fillStyle = '#c026ff';
+                    // neon edge
+                    ctx.fillRect(sx, o.y + o.h - 3, o.w, 3);
+                    ctx.fillRect(sx, o.y, o.w, 3);
+                    ctx.fillStyle = 'rgba(0, 240, 255, 0.15)';
+                    ctx.fillRect(sx, o.y, 3, o.h);
+                } else if (o.type === 'spike') {
+                    const cx = sx + o.w * 0.5;
+                    const cy = o.y + o.h * 0.5;
+                    const r = o.w * 0.5;
+                    ctx.fillStyle = '#ff2d95';
+                    ctx.beginPath();
+                    // diamond spike
+                    ctx.moveTo(cx, cy - r);
+                    ctx.lineTo(cx + r, cy);
+                    ctx.lineTo(cx, cy + r);
+                    ctx.lineTo(cx - r, cy);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.strokeStyle = '#00f0ff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        function drawTrail() {
+            if (trail.length < 2) return;
+            ctx.lineWidth = 3;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            for (let i = 0; i < trail.length; i++) {
+                const t = trail[i];
+                const sx = worldToScreenX(t.x);
+                if (i === 0) ctx.moveTo(sx, t.y);
+                else ctx.lineTo(sx, t.y);
+            }
+            ctx.strokeStyle = goingUp ? 'rgba(0, 240, 255, 0.55)' : 'rgba(192, 38, 255, 0.55)';
+            ctx.stroke();
+        }
+
+        function drawPlayer() {
+            const x = PLAYER_X;
+            const y = playerY;
+            const s = 12;
+            // rotate diamond to point along flight direction
+            const ang = goingUp ? -Math.PI / 4 : Math.PI / 4;
+            const safe = state === 'playing' && spawnGrace > 0;
+
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(ang);
+
+            // glow
+            ctx.shadowColor = safe ? '#22c55e' : '#00f0ff';
+            ctx.shadowBlur = 16;
+            ctx.fillStyle = safe ? '#4ade80' : '#00f0ff';
+            ctx.beginPath();
+            ctx.moveTo(s, 0);
+            ctx.lineTo(0, s * 0.7);
+            ctx.lineTo(-s * 0.55, 0);
+            ctx.lineTo(0, -s * 0.7);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.moveTo(s * 0.45, 0);
+            ctx.lineTo(0, s * 0.3);
+            ctx.lineTo(-s * 0.2, 0);
+            ctx.lineTo(0, -s * 0.3);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+
+            // debug hitbox off by default — tight square matches HIT_HALF
+            // ctx.strokeStyle = 'rgba(255,0,0,0.4)';
+            // ctx.strokeRect(x - HIT_HALF, y - HIT_HALF, HIT_HALF * 2, HIT_HALF * 2);
+        }
+
+        function drawHudOverlay() {
+            // hold indicator
+            ctx.fillStyle = goingUp ? 'rgba(0, 240, 255, 0.9)' : 'rgba(192, 38, 255, 0.9)';
+            ctx.font = 'bold 12px Courier New';
+            ctx.textAlign = 'left';
+            ctx.fillText(goingUp ? '▲ HOLD' : '▼ RELEASE', 12, 20);
+
+            // spawn grace countdown
+            if (state === 'playing' && spawnGrace > 0) {
+                ctx.fillStyle = 'rgba(34, 197, 94, 0.95)';
+                ctx.font = 'bold 16px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('SAFE ' + spawnGrace.toFixed(1) + 's', W / 2, 28);
+                // soft green flash on player edge
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.55)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(PLAYER_X - 16, playerY - 16, 32, 32);
+            }
+
+            // difficulty pip
+            ctx.fillStyle = cfg.color;
+            ctx.fillRect(W - 12, 8, 4, 14);
+        }
+
+        function draw() {
+            drawBackground();
+            drawObstacles();
+            drawTrail();
+
+            if (state === 'menu') {
+                // idle demo wave
+                playerY = H * 0.5 + Math.sin(performance.now() / 220) * 50;
+                goingUp = Math.sin(performance.now() / 220) < 0;
+                worldX += 0.8;
+                if (obstacles.length < 5) {
+                    genX = worldX;
+                    for (let i = 0; i < 6; i++) generateChunk();
+                }
+                ensureWorld();
+            }
+
+            if (state !== 'dead' || deadTimer < 0.05) drawPlayer();
+            else {
+                // crash shards
+                ctx.fillStyle = '#00f0ff';
+                for (let i = 0; i < 8; i++) {
+                    const a = (i / 8) * Math.PI * 2 + deadTimer * 4;
+                    const r = deadTimer * 120;
+                    ctx.fillRect(PLAYER_X + Math.cos(a) * r, playerY + Math.sin(a) * r, 4, 4);
+                }
+            }
+
+            drawHudOverlay();
+
+            if (flash > 0) {
+                ctx.fillStyle = `rgba(255, 80, 200, ${flash * 2})`;
+                ctx.fillRect(0, 0, W, H);
+            }
+        }
+
+        function loop(now) {
+            let dt = (now - lastTime) / 1000;
+            lastTime = now;
+            // Cap only huge stalls; allow small frames for snappy feel
+            if (dt > 0.05) dt = 0.05;
+            if (dt < 0) dt = 0;
+
+            if (state === 'playing') update(dt);
+            else if (state === 'menu') {
+                // light scroll for ambience
+                worldX += 60 * dt;
+                ensureWorld();
+            }
+
+            draw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        // init
+        setDiff('normal');
+        resetRun();
+        lastTime = performance.now();
+        animId = requestAnimationFrame(loop);
+    </script>
+</body>
+</html>
