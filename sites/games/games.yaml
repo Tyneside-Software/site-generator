@@ -15,6 +15,14 @@
   status: playable
   emoji: "👾"
 
+- id: tetris
+  title: Tetris
+  slug: tetris
+  path: play/tetris/index.html
+  description: 7-bag randomiser, hold, ghost piece, soft and hard drop. Clear lines, climb levels.
+  status: playable
+  emoji: "🧱"
+
 - id: snake
   title: Snake
   slug: snake
