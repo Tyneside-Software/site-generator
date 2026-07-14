@@ -40,9 +40,9 @@
   emoji: "🐍"
 
 - id: geometry-dash
-  title: Geometry Dash Lite
+  title: Geometry Jump Beta
   slug: geometry-dash
   path: play/geometry-dash/index.html
-  description: Hold jump to clear spikes. Browser runner with Geometry Dash–style physics.
+  description: Hold jump to clear spikes. Browser runner with Geometry Jump–style physics.
   status: playable
   emoji: "◆"
