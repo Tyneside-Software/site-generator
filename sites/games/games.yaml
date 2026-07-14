@@ -1,4 +1,20 @@
 # Playable games on the shelf — relative paths (work with file:// and GitHub Pages)
+- id: pong
+  title: Pong
+  slug: pong
+  path: play/pong/index.html
+  description: Classic paddles. 1P vs CPU or local 2P. First to 11. Keyboard, mouse, or touch.
+  status: playable
+  emoji: "🏓"
+
+- id: space-invaders
+  title: Space Invaders
+  slug: space-invaders
+  path: play/space-invaders/index.html
+  description: Shoot the formation, duck behind bunkers, grab the mothership. Waves get faster.
+  status: playable
+  emoji: "👾"
+
 - id: snake
   title: Snake
   slug: snake
