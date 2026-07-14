@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dot Chomp · Tyneside Games</title>
+    <meta name="description" content="Maze munching classic — Dot Chomp, a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #050510;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffe066;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.92);
+            border-bottom: 1px solid #ffcc00;
+            font-size: 13px;
+        }
+        .back-bar a { color: #ffcc00; text-decoration: none; }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #a89050; }
+        .game-wrap {
+            padding-top: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+            width: min(560px, calc(100vw - 1.25rem));
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: clamp(14px, 3.2vw, 20px);
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+            letter-spacing: 0.06em;
+        }
+        .hud .label {
+            font-size: 0.55em;
+            opacity: 0.65;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 3px solid #2121de;
+            background: #000;
+            box-shadow: 0 0 28px rgba(33, 33, 222, 0.35);
+            border-radius: 4px;
+            image-rendering: pixelated;
+        }
+        .instructions {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.72;
+            line-height: 1.5;
+            color: #a89050;
+        }
+        .overlay {
+            position: absolute;
+            left: 0; right: 0;
+            top: 38px; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.88);
+            border-radius: 4px;
+            padding: 1.25rem;
+            gap: 0.35rem;
+        }
+        .overlay.hidden { display: none; }
+        .overlay h2 {
+            margin: 0 0 0.4rem;
+            font-size: clamp(24px, 5vw, 36px);
+            letter-spacing: 0.1em;
+            color: #ffcc00;
+            text-shadow: 0 0 22px rgba(255, 204, 0, 0.85);
+        }
+        .overlay p { margin: 0.2rem 0; color: #ffe066; font-size: 14px; }
+        .overlay .scoreline {
+            font-size: clamp(18px, 4vw, 24px);
+            margin: 0.6rem 0 0.9rem;
+            color: #fff;
+        }
+        button {
+            margin-top: 8px;
+            padding: 10px 22px;
+            background: transparent;
+            color: #ffcc00;
+            border: 2px solid #ffcc00;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+        }
+        button:hover { background: #ffcc00; color: #000; }
+        a.shelf-link {
+            margin-top: 12px;
+            color: #a89050;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        a.shelf-link:hover { color: #ffcc00; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="../../index.html">← Tyneside Games</a>
+        <span class="brand">Dot Chomp · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+        <div class="game-container">
+            <div class="hud">
+                <div>
+                    <div class="label">Score</div>
+                    <span id="score">0</span>
+                </div>
+                <div>
+                    <div class="label">Level</div>
+                    <span id="level">1</span>
+                </div>
+                <div style="text-align:right">
+                    <div class="label">Lives</div>
+                    <span id="lives">3</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="448" height="496"></canvas>
+            <div class="instructions">
+                Arrow keys / WASD · swipe on the maze<br>
+                Eat all dots · power pellets flip the chase · P pause · Esc menu
+            </div>
+
+            <div id="startScreen" class="overlay">
+                <h2>DOT CHOMP</h2>
+                <p>Clear the maze. Dodge the ghosts.</p>
+                <p>Power pellets turn the tables.</p>
+                <button type="button" onclick="startGame()">START</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+            <div id="pauseScreen" class="overlay hidden">
+                <h2>PAUSED</h2>
+                <p>P to resume · Esc for menu</p>
+                <button type="button" onclick="togglePause()">RESUME</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+            </div>
+            <div id="endScreen" class="overlay hidden">
+                <h2 id="endTitle">GAME OVER</h2>
+                <p class="scoreline">Score <span id="finalScore">0</span></p>
+                <p>High score: <span id="highScore">0</span></p>
+                <button type="button" onclick="startGame()">PLAY AGAIN</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---- Optimized Dot Chomp ----
+        // Lag fixes: cached wall layer, pixel coords, no DOM thrash per pellet,
+        // cheap pellet draw, ghost AI only at intersections.
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const scoreEl = document.getElementById('score');
+        const levelEl = document.getElementById('level');
+        const livesEl = document.getElementById('lives');
+        const startScreen = document.getElementById('startScreen');
+        const pauseScreen = document.getElementById('pauseScreen');
+        const endScreen = document.getElementById('endScreen');
+        const endTitle = document.getElementById('endTitle');
+        const finalScoreEl = document.getElementById('finalScore');
+        const highScoreEl = document.getElementById('highScore');
+
+        const HS_KEY = 'tyneside-dot-chomp-hs';
+        const T = 16; // tile size
+
+        // # wall  . pellet  o power  - gate  space path
+        const MAP = [
+            '############################',
+            '#............##............#',
+            '#.####.#####.##.#####.####.#',
+            '#o####.#####.##.#####.####o#',
+            '#.####.#####.##.#####.####.#',
+            '#..........................#',
+            '#.####.##.########.##.####.#',
+            '#.####.##.########.##.####.#',
+            '#......##....##....##......#',
+            '######.##### ## #####.######',
+            '     #.##### ## #####.#     ',
+            '     #.##          ##.#     ',
+            '     #.## ###--### ##.#     ',
+            '######.## #      # ##.######',
+            '      .   #      #   .      ',
+            '######.## #      # ##.######',
+            '     #.## ######## ##.#     ',
+            '     #.##          ##.#     ',
+            '     #.## ######## ##.#     ',
+            '######.## ######## ##.######',
+            '#............##............#',
+            '#.####.#####.##.#####.####.#',
+            '#.####.#####.##.#####.####.#',
+            '#o..##................##..o#',
+            '###.##.##.########.##.##.###',
+            '###.##.##.########.##.##.###',
+            '#......##....##....##......#',
+            '#.##########.##.##########.#',
+            '#.##########.##.##########.#',
+            '#..........................#',
+            '############################'
+        ];
+        const ROWS = MAP.length;
+        const COLS = MAP[0].length;
+        canvas.width = COLS * T;
+        canvas.height = ROWS * T;
+
+        // 0 wall, 1 pellet, 2 empty, 3 power, 4 gate
+        let cells = new Uint8Array(COLS * ROWS);
+        let pelletsLeft = 0;
+        let totalPellets = 0;
+
+        // Cached wall layer (static)
+        const wallLayer = document.createElement('canvas');
+        wallLayer.width = canvas.width;
+        wallLayer.height = canvas.height;
+        const wctx = wallLayer.getContext('2d', { alpha: false });
+
+        // dirs as [dx, dy] indices: 0 none 1 L 2 R 3 U 4 D
+        const DX = [0, -1, 1, 0, 0];
+        const DY = [0, 0, 0, -1, 1];
+        const OPP = [0, 2, 1, 4, 3];
+        const DIR_LEFT = 1, DIR_RIGHT = 2, DIR_UP = 3, DIR_DOWN = 4;
+
+        function idx(x, y) { return y * COLS + x; }
+
+        function buildMap() {
+            pelletsLeft = 0;
+            totalPellets = 0;
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    const c = MAP[y][x];
+                    let v = 2;
+                    if (c === '#') v = 0;
+                    else if (c === '.') { v = 1; totalPellets++; }
+                    else if (c === 'o') { v = 3; totalPellets++; }
+                    else if (c === '-') v = 4;
+                    cells[idx(x, y)] = v;
+                }
+            }
+            pelletsLeft = totalPellets;
+            bakeWalls();
+        }
+
+        function bakeWalls() {
+            wctx.fillStyle = '#000';
+            wctx.fillRect(0, 0, wallLayer.width, wallLayer.height);
+            wctx.fillStyle = '#2121de';
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    const v = cells[idx(x, y)];
+                    if (v === 0) {
+                        wctx.fillRect(x * T, y * T, T, T);
+                    } else if (v === 4) {
+                        wctx.fillStyle = '#ffb8ff';
+                        wctx.fillRect(x * T, y * T + T / 2 - 1, T, 2);
+                        wctx.fillStyle = '#2121de';
+                    }
+                }
+            }
+            // punch inner black for corridor look on walls
+            wctx.fillStyle = '#000';
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    if (cells[idx(x, y)] === 0) {
+                        wctx.fillRect(x * T + 2, y * T + 2, T - 4, T - 4);
+                    }
+                }
+            }
+        }
+
+        function solid(tx, ty, ghost) {
+            if (ty < 0 || ty >= ROWS) return true;
+            if (tx < 0 || tx >= COLS) return false; // tunnel
+            const v = cells[idx(tx, ty)];
+            if (v === 0) return true;
+            if (v === 4 && !ghost) return true;
+            return false;
+        }
+
+        let state = 'menu';
+        let score = 0;
+        let scoreDirty = false;
+        let level = 1;
+        let lives = 3;
+        let highScore = Number(localStorage.getItem(HS_KEY) || 0);
+        highScoreEl.textContent = highScore;
+        let lastTime = 0;
+        let animId = 0;
+        let frightT = 0;
+        let frightCombo = 0;
+        let readyT = 0;
+        let mouth = 0;
+        let uiAcc = 0;
+
+        // Pixel-space actors (center of entity)
+        const player = {
+            x: 0, y: 0,
+            dir: DIR_LEFT,
+            want: DIR_LEFT,
+            speed: 110 // px/s
+        };
+
+        const GHOST_COL = ['#ff0000', '#ffb8ff', '#00ffff', '#ffb852'];
+        let ghosts = [];
+
+        function tileOf(px, py) {
+            return { tx: (px / T) | 0, ty: (py / T) | 0 };
+        }
+
+        function centerOfTile(tx, ty) {
+            return { x: tx * T + T / 2, y: ty * T + T / 2 };
+        }
+
+        function resetActors() {
+            const p = centerOfTile(13, 23);
+            player.x = p.x;
+            player.y = p.y;
+            player.dir = DIR_LEFT;
+            player.want = DIR_LEFT;
+            player.speed = 110 + Math.min(40, (level - 1) * 6);
+
+            ghosts = [
+                mkGhost(13.5, 11.5, DIR_LEFT, GHOST_COL[0], 0, 0, true),
+                mkGhost(13.5, 14.5, DIR_UP, GHOST_COL[1], 2, 1.0, false),
+                mkGhost(11.5, 14.5, DIR_UP, GHOST_COL[2], 27, 4.0, false),
+                mkGhost(15.5, 14.5, DIR_UP, GHOST_COL[3], 0, 7.0, false)
+            ];
+            // homes in tile coords for scatter
+            ghosts[0].hx = 25; ghosts[0].hy = 0;
+            ghosts[1].hx = 2; ghosts[1].hy = 0;
+            ghosts[2].hx = 27; ghosts[2].hy = 30;
+            ghosts[3].hx = 0; ghosts[3].hy = 30;
+
+            frightT = 0;
+            frightCombo = 0;
+            readyT = 1.2;
+        }
+
+        function mkGhost(tx, ty, dir, color, homeX, release, free) {
+            return {
+                x: tx * T, y: ty * T,
+                dir, color,
+                mode: free ? 'scatter' : 'house',
+                speed: 95 + Math.min(35, (level - 1) * 5),
+                release,
+                hx: homeX, hy: 0,
+                decided: false
+            };
+        }
+
+        function startLevel(n) {
+            level = n;
+            buildMap();
+            resetActors();
+            levelEl.textContent = String(level);
+        }
+
+        function startGame() {
+            score = 0;
+            scoreDirty = true;
+            level = 1;
+            lives = 3;
+            livesEl.textContent = '3';
+            startLevel(1);
+            state = 'playing';
+            startScreen.classList.add('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            lastTime = performance.now();
+            if (!animId) animId = requestAnimationFrame(loop);
+        }
+
+        function returnToMenu() {
+            state = 'menu';
+            startScreen.classList.remove('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+        }
+
+        function togglePause() {
+            if (state === 'playing') {
+                state = 'paused';
+                pauseScreen.classList.remove('hidden');
+            } else if (state === 'paused') {
+                state = 'playing';
+                pauseScreen.classList.add('hidden');
+                lastTime = performance.now();
+            }
+        }
+
+        function gameOver(won) {
+            state = 'over';
+            flushScore();
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem(HS_KEY, String(highScore));
+            }
+            highScoreEl.textContent = highScore;
+            finalScoreEl.textContent = score;
+            endTitle.textContent = won ? 'MAZE CLEAR!' : 'GAME OVER';
+            endScreen.classList.remove('hidden');
+        }
+
+        function addScore(n) {
+            score += n;
+            scoreDirty = true;
+        }
+
+        function flushScore() {
+            if (scoreDirty) {
+                scoreEl.textContent = String(score);
+                scoreDirty = false;
+            }
+        }
+
+        function nearCenter(x, y, slop) {
+            const cx = ((x / T) | 0) * T + T / 2;
+            const cy = ((y / T) | 0) * T + T / 2;
+            return Math.abs(x - cx) <= slop && Math.abs(y - cy) <= slop;
+        }
+
+        function snapToCenter(ent) {
+            ent.x = ((ent.x / T) | 0) * T + T / 2;
+            ent.y = ((ent.y / T) | 0) * T + T / 2;
+        }
+
+        function canGo(ent, dir, ghost) {
+            if (!dir) return false;
+            const tx = (ent.x / T) | 0;
+            const ty = (ent.y / T) | 0;
+            const nx = tx + DX[dir];
+            const ny = ty + DY[dir];
+            return !solid(nx, ny, ghost);
+        }
+
+        function moveActor(ent, speed, dt, ghost) {
+            // Tunnel wrap
+            if (ent.x < -T) ent.x = COLS * T + T / 2;
+            if (ent.x > COLS * T + T) ent.x = -T / 2;
+
+            const slop = Math.max(2, speed * dt + 0.5);
+            const atC = nearCenter(ent.x, ent.y, slop);
+
+            if (atC) {
+                snapToCenter(ent);
+                // queued turn for player
+                if (ent.want && ent.want !== ent.dir && canGo(ent, ent.want, ghost)) {
+                    ent.dir = ent.want;
+                }
+                // stop if blocked
+                if (!canGo(ent, ent.dir, ghost)) {
+                    // try want already failed; stay put
+                    if (!canGo(ent, ent.dir, ghost)) return true; // at intersection / stopped
+                    return true;
+                }
+            }
+
+            const step = speed * dt;
+            const tx0 = (ent.x / T) | 0;
+            const ty0 = (ent.y / T) | 0;
+
+            ent.x += DX[ent.dir] * step;
+            ent.y += DY[ent.dir] * step;
+
+            // Don't walk into walls: if next tile blocked and we crossed boundary, snap back
+            const tx1 = (ent.x / T) | 0;
+            const ty1 = (ent.y / T) | 0;
+            if (tx1 !== tx0 || ty1 !== ty0) {
+                if (solid(tx1, ty1, ghost)) {
+                    // hit wall — snap to edge of previous tile center along axis
+                    snapToCenter(ent);
+                    // restore to previous tile center
+                    ent.x = tx0 * T + T / 2;
+                    ent.y = ty0 * T + T / 2;
+                    return true;
+                }
+                // arrived at new tile — mark for AI decision
+                return true;
+            }
+            return atC;
+        }
+
+        function eatDots() {
+            const tx = (player.x / T) | 0;
+            const ty = (player.y / T) | 0;
+            if (tx < 0 || tx >= COLS || ty < 0 || ty >= ROWS) return;
+            const i = idx(tx, ty);
+            const v = cells[i];
+            if (v === 1) {
+                cells[i] = 2;
+                pelletsLeft--;
+                addScore(10);
+            } else if (v === 3) {
+                cells[i] = 2;
+                pelletsLeft--;
+                addScore(50);
+                frightT = Math.max(3.5, 7.5 - level * 0.35);
+                frightCombo = 0;
+                for (const g of ghosts) {
+                    if (g.mode !== 'house' && g.mode !== 'eaten') {
+                        g.mode = 'fright';
+                        g.dir = OPP[g.dir] || DIR_LEFT;
+                        g.decided = false;
+                    }
+                }
+            }
+            if (pelletsLeft <= 0) {
+                addScore(500 * level);
+                startLevel(level + 1);
+            }
+        }
+
+        function ghostTarget(g, scatter) {
+            if (g.mode === 'eaten') return { x: 13, y: 14 };
+            if (g.mode === 'fright') {
+                // fixed pseudo-random corner from ghost id + time bucket (no Math.random per frame)
+                const t = (performance.now() / 400) | 0;
+                return { x: (t * 7 + g.hx) % COLS, y: (t * 3 + g.hy) % ROWS };
+            }
+            if (g.mode === 'scatter' || scatter) return { x: g.hx, y: g.hy };
+
+            const ptx = (player.x / T) | 0;
+            const pty = (player.y / T) | 0;
+            const i = ghosts.indexOf(g);
+            if (i === 0) return { x: ptx, y: pty };
+            if (i === 1) return { x: ptx + DX[player.dir] * 4, y: pty + DY[player.dir] * 4 };
+            if (i === 2) {
+                const b = ghosts[0];
+                return { x: ptx * 2 - ((b.x / T) | 0), y: pty * 2 - ((b.y / T) | 0) };
+            }
+            const dx = ((g.x / T) | 0) - ptx;
+            const dy = ((g.y / T) | 0) - pty;
+            if (dx * dx + dy * dy > 64) return { x: ptx, y: pty };
+            return { x: g.hx, y: g.hy };
+        }
+
+        function pickGhostDir(g, scatter) {
+            const target = ghostTarget(g, scatter);
+            const options = [DIR_UP, DIR_LEFT, DIR_DOWN, DIR_RIGHT];
+            let best = 0;
+            let bestD = 1e9;
+            const fright = g.mode === 'fright';
+
+            for (let k = 0; k < 4; k++) {
+                const d = options[k];
+                if (!fright && d === OPP[g.dir]) continue;
+                if (!canGo(g, d, true)) continue;
+                const nx = ((g.x / T) | 0) + DX[d];
+                const ny = ((g.y / T) | 0) + DY[d];
+                const dist = (nx - target.x) * (nx - target.x) + (ny - target.y) * (ny - target.y);
+                if (fright) {
+                    // pick farthest-ish with cheap hash
+                    if (dist > bestD || best === 0) {
+                        bestD = dist;
+                        best = d;
+                    }
+                } else if (dist < bestD) {
+                    bestD = dist;
+                    best = d;
+                }
+            }
+            if (best) g.dir = best;
+        }
+
+        function updateGhosts(dt) {
+            const wave = ((performance.now() / 1000) | 0) % 24;
+            const scatterPhase = wave < 7;
+
+            for (let i = 0; i < ghosts.length; i++) {
+                const g = ghosts[i];
+
+                if (g.mode === 'house') {
+                    g.release -= dt;
+                    g.y = 14.5 * T + Math.sin(performance.now() * 0.006 + i) * 3;
+                    if (g.release <= 0) {
+                        g.mode = scatterPhase ? 'scatter' : 'chase';
+                        const c = centerOfTile(13, 11);
+                        g.x = c.x; g.y = c.y;
+                        g.dir = DIR_LEFT;
+                        g.decided = false;
+                    }
+                    continue;
+                }
+
+                if (g.mode === 'eaten') {
+                    const tx = (g.x / T) | 0;
+                    const ty = (g.y / T) | 0;
+                    if (Math.abs(tx - 13) + Math.abs(ty - 14) <= 1) {
+                        g.mode = scatterPhase ? 'scatter' : 'chase';
+                        const c = centerOfTile(13, 11);
+                        g.x = c.x; g.y = c.y;
+                    }
+                } else if (g.mode === 'fright') {
+                    if (frightT <= 0) g.mode = scatterPhase ? 'scatter' : 'chase';
+                } else {
+                    g.mode = scatterPhase ? 'scatter' : 'chase';
+                }
+
+                let spd = g.speed;
+                if (g.mode === 'fright') spd *= 0.55;
+                if (g.mode === 'eaten') spd *= 1.7;
+                const ty = (g.y / T) | 0;
+                const tx = (g.x / T) | 0;
+                if (ty === 14 && (tx < 5 || tx > 22)) spd *= 0.55;
+
+                const decide = moveActor(g, spd, dt, true);
+                if (decide) {
+                    pickGhostDir(g, scatterPhase);
+                    // ensure we can move
+                    if (!canGo(g, g.dir, true)) pickGhostDir(g, scatterPhase);
+                }
+            }
+        }
+
+        function collide() {
+            if (readyT > 0) return;
+            for (let i = 0; i < ghosts.length; i++) {
+                const g = ghosts[i];
+                if (g.mode === 'house' || g.mode === 'eaten') continue;
+                const dx = player.x - g.x;
+                const dy = player.y - g.y;
+                if (dx * dx + dy * dy < (T * 0.65) * (T * 0.65)) {
+                    if (g.mode === 'fright') {
+                        g.mode = 'eaten';
+                        frightCombo++;
+                        addScore(200 * (1 << Math.min(3, frightCombo - 1)));
+                    } else {
+                        lives--;
+                        livesEl.textContent = String(lives);
+                        if (lives <= 0) {
+                            gameOver(false);
+                            return;
+                        }
+                        resetActors();
+                        return;
+                    }
+                }
+            }
+        }
+
+        function update(dt) {
+            if (readyT > 0) {
+                readyT -= dt;
+                mouth += dt * 12;
+                return;
+            }
+            if (frightT > 0) frightT -= dt;
+            mouth += dt * 14;
+
+            // reverse anytime
+            if (player.want === OPP[player.dir]) player.dir = player.want;
+
+            moveActor(player, player.speed, dt, false);
+            eatDots();
+            updateGhosts(dt);
+            collide();
+        }
+
+        function drawPellets() {
+            // cheap rects, not arcs
+            ctx.fillStyle = '#ffb897';
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    const v = cells[idx(x, y)];
+                    if (v === 1) {
+                        ctx.fillRect(x * T + 7, y * T + 7, 2, 2);
+                    } else if (v === 3) {
+                        // power pellet slightly bigger rect
+                        const pulse = ((performance.now() / 120) | 0) % 2;
+                        const s = 5 + pulse;
+                        ctx.fillRect(x * T + 8 - s / 2, y * T + 8 - s / 2, s, s);
+                    }
+                }
+            }
+        }
+
+        function drawPlayer() {
+            const open = 0.2 + Math.abs(Math.sin(mouth)) * 0.4;
+            let rot = 0;
+            if (player.dir === DIR_DOWN) rot = Math.PI / 2;
+            else if (player.dir === DIR_LEFT) rot = Math.PI;
+            else if (player.dir === DIR_UP) rot = -Math.PI / 2;
+
+            ctx.save();
+            ctx.translate(player.x, player.y);
+            ctx.rotate(rot);
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, T * 0.42, open, Math.PI * 2 - open);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawGhost(g) {
+            const fright = g.mode === 'fright';
+            const eaten = g.mode === 'eaten';
+            const blink = fright && frightT < 2 && (((frightT * 6) | 0) % 2 === 0);
+
+            if (!eaten) {
+                ctx.fillStyle = fright ? (blink ? '#fff' : '#2121de') : g.color;
+                // simple body: circle + rect (much cheaper than scalloped path)
+                ctx.beginPath();
+                ctx.arc(g.x, g.y - 1, T * 0.38, Math.PI, 0);
+                ctx.fill();
+                ctx.fillRect(g.x - T * 0.38, g.y - 1, T * 0.76, T * 0.38);
+            }
+
+            // eyes
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(g.x - 5, g.y - 5, 3, 4);
+            ctx.fillRect(g.x + 2, g.y - 5, 3, 4);
+            if (!fright || eaten) {
+                ctx.fillStyle = '#00f';
+                const ox = DX[g.dir] * 1.2;
+                const oy = DY[g.dir] * 1.2;
+                ctx.fillRect(g.x - 4 + ox, g.y - 4 + oy, 2, 2);
+                ctx.fillRect(g.x + 3 + ox, g.y - 4 + oy, 2, 2);
+            }
+        }
+
+        function draw() {
+            // walls from cache
+            ctx.drawImage(wallLayer, 0, 0);
+            drawPellets();
+
+            if (state === 'menu') {
+                player.x = 13.5 * T;
+                player.y = 23.5 * T;
+                player.dir = DIR_LEFT;
+                mouth = performance.now() * 0.012;
+                drawPlayer();
+                ctx.fillStyle = 'rgba(255,204,0,0.4)';
+                ctx.font = '14px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('PRESS START', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            for (let i = 0; i < ghosts.length; i++) drawGhost(ghosts[i]);
+            drawPlayer();
+
+            if (readyT > 0 && state === 'playing') {
+                ctx.fillStyle = '#ffcc00';
+                ctx.font = 'bold 18px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('READY!', canvas.width / 2, 18 * T);
+            }
+            if (frightT > 0 && state === 'playing') {
+                ctx.fillStyle = '#88f';
+                ctx.font = '11px Courier New';
+                ctx.textAlign = 'left';
+                ctx.fillText('POWER ' + frightT.toFixed(1), 6, 12);
+            }
+        }
+
+        function loop(now) {
+            let dt = (now - lastTime) / 1000;
+            lastTime = now;
+            if (dt > 0.05) dt = 0.05; // avoid spiral after tab switch
+            if (dt < 0) dt = 0;
+
+            if (state === 'playing') update(dt);
+
+            // throttle DOM score writes ~10/s max feel smooth, once per frame is fine if dirty only
+            uiAcc += dt;
+            if (uiAcc > 0.05) {
+                uiAcc = 0;
+                flushScore();
+            }
+
+            draw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        function setDir(d) {
+            player.want = d;
+            if (d === OPP[player.dir]) player.dir = d;
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'p') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'paused') togglePause();
+                return;
+            }
+            if (k === 'escape') {
+                e.preventDefault();
+                if (state !== 'menu') returnToMenu();
+                return;
+            }
+            if (k === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                if (state === 'menu' || state === 'over') startGame();
+                else if (state === 'paused') togglePause();
+                return;
+            }
+            if (state !== 'playing') return;
+            if (k === 'arrowleft' || k === 'a') { setDir(DIR_LEFT); e.preventDefault(); }
+            if (k === 'arrowright' || k === 'd') { setDir(DIR_RIGHT); e.preventDefault(); }
+            if (k === 'arrowup' || k === 'w') { setDir(DIR_UP); e.preventDefault(); }
+            if (k === 'arrowdown' || k === 's') { setDir(DIR_DOWN); e.preventDefault(); }
+        });
+
+        let touch0 = null;
+        canvas.addEventListener('pointerdown', (e) => {
+            touch0 = { x: e.clientX, y: e.clientY };
+            canvas.setPointerCapture(e.pointerId);
+        });
+        canvas.addEventListener('pointerup', (e) => {
+            if (!touch0 || state !== 'playing') { touch0 = null; return; }
+            const dx = e.clientX - touch0.x;
+            const dy = e.clientY - touch0.y;
+            touch0 = null;
+            if (Math.abs(dx) < 12 && Math.abs(dy) < 12) return;
+            if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? DIR_RIGHT : DIR_LEFT);
+            else setDir(dy > 0 ? DIR_DOWN : DIR_UP);
+        });
+
+        buildMap();
+        lastTime = performance.now();
+        animId = requestAnimationFrame(loop);
+    </script>
+</body>
+</html>

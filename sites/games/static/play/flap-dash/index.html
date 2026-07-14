@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flap Dash · Tyneside Games</title>
+    <meta name="description" content="Tap to flap through the pipes — Flap Dash, a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0a1628;
+            font-family: 'Courier New', Courier, monospace;
+            color: #e8f4ff;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.88);
+            border-bottom: 1px solid #5ec8ff;
+            font-size: 13px;
+        }
+        .back-bar a { color: #5ec8ff; text-decoration: none; }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #8aabbf; }
+        .game-wrap {
+            padding-top: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+            width: min(420px, calc(100vw - 1.25rem));
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: clamp(18px, 4vw, 26px);
+            text-shadow: 0 0 12px rgba(94, 200, 255, 0.7);
+            letter-spacing: 0.06em;
+        }
+        .hud .label {
+            font-size: 0.5em;
+            opacity: 0.65;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 3px solid #5ec8ff;
+            background: #70c5ce;
+            box-shadow: 0 0 28px rgba(94, 200, 255, 0.3);
+            border-radius: 4px;
+            image-rendering: pixelated;
+            cursor: pointer;
+        }
+        .instructions {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.75;
+            line-height: 1.5;
+            color: #8aabbf;
+        }
+        .overlay {
+            position: absolute;
+            left: 0; right: 0;
+            top: 42px; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 16, 28, 0.82);
+            border-radius: 4px;
+            padding: 1.25rem;
+            gap: 0.35rem;
+        }
+        .overlay.hidden { display: none; }
+        .overlay h2 {
+            margin: 0 0 0.4rem;
+            font-size: clamp(26px, 6vw, 38px);
+            letter-spacing: 0.1em;
+            color: #5ec8ff;
+            text-shadow: 0 0 20px rgba(94, 200, 255, 0.85);
+        }
+        .overlay p { margin: 0.2rem 0; color: #cfe8f5; font-size: 14px; }
+        .overlay .scoreline {
+            font-size: clamp(20px, 4.5vw, 28px);
+            margin: 0.6rem 0 0.9rem;
+            color: #fff;
+        }
+        button {
+            margin-top: 8px;
+            padding: 10px 22px;
+            background: transparent;
+            color: #5ec8ff;
+            border: 2px solid #5ec8ff;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+        }
+        button:hover { background: #5ec8ff; color: #000; }
+        a.shelf-link {
+            margin-top: 12px;
+            color: #8aabbf;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        a.shelf-link:hover { color: #5ec8ff; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="../../index.html">← Tyneside Games</a>
+        <span class="brand">Flap Dash · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+        <div class="game-container">
+            <div class="hud">
+                <div>
+                    <div class="label">Score</div>
+                    <span id="score">0</span>
+                </div>
+                <div style="opacity:0.45;font-size:0.65em;letter-spacing:0.2em">FLAP</div>
+                <div style="text-align:right">
+                    <div class="label">Best</div>
+                    <span id="best">0</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="400" height="560"></canvas>
+            <div class="instructions">
+                Space / click / tap to flap · dodge the pipes<br>
+                Esc menu
+            </div>
+
+            <div id="startScreen" class="overlay">
+                <h2>FLAP DASH</h2>
+                <p>Tap to rise. Gravity does the rest.</p>
+                <p>Thread the pipes. Don’t touch green.</p>
+                <button type="button" id="btnStart">FLAP</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+            <div id="endScreen" class="overlay hidden">
+                <h2>BONK</h2>
+                <p class="scoreline">Score <span id="finalScore">0</span></p>
+                <p>Best: <span id="finalBest">0</span></p>
+                <button type="button" id="btnAgain">TRY AGAIN</button>
+                <button type="button" id="btnMenu">MENU</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        const scoreEl = document.getElementById('score');
+        const bestEl = document.getElementById('best');
+        const startScreen = document.getElementById('startScreen');
+        const endScreen = document.getElementById('endScreen');
+        const finalScoreEl = document.getElementById('finalScore');
+        const finalBestEl = document.getElementById('finalBest');
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const HS_KEY = 'tyneside-flap-dash-hs';
+        const GROUND_H = 72;
+        const GRAVITY = 2100;
+        const FLAP_V = -420;
+        const PIPE_W = 64;
+        const PIPE_GAP = 148;
+        const PIPE_SPEED = 160;
+        const PIPE_SPACING = 220;
+        const BIRD_R = 14;
+
+        let state = 'menu'; // menu | playing | dead
+        let score = 0;
+        let best = Number(localStorage.getItem(HS_KEY) || 0);
+        bestEl.textContent = best;
+
+        let birdY = H * 0.45;
+        let birdV = 0;
+        let birdX = W * 0.28;
+        let pipes = [];
+        let groundX = 0;
+        let lastTime = 0;
+        let animId = 0;
+        let flash = 0;
+        let wing = 0;
+        let ready = true; // first flap starts
+
+        function resetRun() {
+            birdY = H * 0.42;
+            birdV = 0;
+            pipes = [];
+            score = 0;
+            scoreEl.textContent = '0';
+            groundX = 0;
+            flash = 0;
+            // pre-seed a couple pipes off-screen right
+            let x = W + 40;
+            for (let i = 0; i < 3; i++) {
+                pipes.push(makePipe(x));
+                x += PIPE_SPACING;
+            }
+        }
+
+        function makePipe(x) {
+            const margin = 50;
+            const gapY = margin + Math.random() * (H - GROUND_H - PIPE_GAP - margin * 2);
+            return { x, gapY, scored: false };
+        }
+
+        function startGame() {
+            resetRun();
+            state = 'playing';
+            ready = true;
+            startScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            lastTime = performance.now();
+            if (!animId) animId = requestAnimationFrame(loop);
+        }
+
+        function returnToMenu() {
+            state = 'menu';
+            startScreen.classList.remove('hidden');
+            endScreen.classList.add('hidden');
+            resetRun();
+        }
+
+        function die() {
+            if (state !== 'playing') return;
+            state = 'dead';
+            flash = 0.15;
+            if (score > best) {
+                best = score;
+                localStorage.setItem(HS_KEY, String(best));
+                bestEl.textContent = best;
+            }
+            finalScoreEl.textContent = score;
+            finalBestEl.textContent = best;
+            endScreen.classList.remove('hidden');
+        }
+
+        function flap() {
+            if (state === 'menu' || state === 'dead') {
+                startGame();
+                birdV = FLAP_V;
+                ready = false;
+                return;
+            }
+            if (state === 'playing') {
+                birdV = FLAP_V;
+                ready = false;
+            }
+        }
+
+        function update(dt) {
+            wing += dt * 12;
+            groundX = (groundX - PIPE_SPEED * dt) % 48;
+
+            if (state !== 'playing') {
+                // idle bob on menu
+                if (state === 'menu') {
+                    birdY = H * 0.42 + Math.sin(performance.now() / 280) * 10;
+                    birdV = 0;
+                }
+                if (state === 'dead') {
+                    // short fall after death
+                    birdV += GRAVITY * dt * 0.6;
+                    birdY += birdV * dt;
+                    const floor = H - GROUND_H - BIRD_R;
+                    if (birdY > floor) { birdY = floor; birdV = 0; }
+                }
+                if (flash > 0) flash -= dt;
+                return;
+            }
+
+            birdV += GRAVITY * dt;
+            // terminal velocity
+            if (birdV > 700) birdV = 700;
+            birdY += birdV * dt;
+
+            // pipes
+            for (const p of pipes) {
+                p.x -= PIPE_SPEED * dt;
+            }
+            // recycle
+            while (pipes.length && pipes[0].x + PIPE_W < -10) pipes.shift();
+            const last = pipes[pipes.length - 1];
+            if (last && last.x < W - PIPE_SPACING) {
+                pipes.push(makePipe(last.x + PIPE_SPACING));
+            }
+
+            // score + collision
+            const bx = birdX;
+            const by = birdY;
+            for (const p of pipes) {
+                // score when fully past pipe center
+                if (!p.scored && p.x + PIPE_W < bx - BIRD_R) {
+                    p.scored = true;
+                    score++;
+                    scoreEl.textContent = score;
+                }
+                // collision AABB vs circle-ish
+                if (bx + BIRD_R * 0.7 > p.x && bx - BIRD_R * 0.7 < p.x + PIPE_W) {
+                    const topBot = p.gapY;
+                    const botTop = p.gapY + PIPE_GAP;
+                    if (by - BIRD_R * 0.65 < topBot || by + BIRD_R * 0.65 > botTop) {
+                        die();
+                        return;
+                    }
+                }
+            }
+
+            // ceiling / ground
+            if (by - BIRD_R < 0) {
+                birdY = BIRD_R;
+                birdV = 0;
+            }
+            if (by + BIRD_R > H - GROUND_H) {
+                die();
+            }
+            if (flash > 0) flash -= dt;
+        }
+
+        function drawSky() {
+            const g = ctx.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, '#4ec0ca');
+            g.addColorStop(0.7, '#70c5ce');
+            g.addColorStop(1, '#7ec8a3');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+
+            // soft clouds
+            ctx.fillStyle = 'rgba(255,255,255,0.55)';
+            const t = performance.now() * 0.02;
+            for (let i = 0; i < 4; i++) {
+                const cx = ((i * 130 - t * (0.3 + i * 0.05)) % (W + 80)) - 40;
+                const cy = 60 + i * 55;
+                cloud(cx, cy, 28 + i * 4);
+            }
+        }
+
+        function cloud(x, y, r) {
+            ctx.beginPath();
+            ctx.arc(x, y, r * 0.6, 0, Math.PI * 2);
+            ctx.arc(x + r * 0.55, y - r * 0.15, r * 0.5, 0, Math.PI * 2);
+            ctx.arc(x + r * 1.0, y, r * 0.65, 0, Math.PI * 2);
+            ctx.arc(x + r * 0.5, y + r * 0.15, r * 0.45, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawPipe(p) {
+            const x = p.x | 0;
+            const gapTop = p.gapY | 0;
+            const gapBot = (p.gapY + PIPE_GAP) | 0;
+
+            // top pipe
+            ctx.fillStyle = '#5ea312';
+            ctx.fillRect(x, 0, PIPE_W, gapTop);
+            ctx.fillStyle = '#73bf2e';
+            ctx.fillRect(x + 6, 0, PIPE_W - 18, gapTop);
+            // lip
+            ctx.fillStyle = '#5ea312';
+            ctx.fillRect(x - 4, gapTop - 28, PIPE_W + 8, 28);
+            ctx.fillStyle = '#73bf2e';
+            ctx.fillRect(x, gapTop - 24, PIPE_W, 20);
+
+            // bottom pipe
+            const botH = H - GROUND_H - gapBot;
+            ctx.fillStyle = '#5ea312';
+            ctx.fillRect(x, gapBot, PIPE_W, botH);
+            ctx.fillStyle = '#73bf2e';
+            ctx.fillRect(x + 6, gapBot, PIPE_W - 18, botH);
+            ctx.fillStyle = '#5ea312';
+            ctx.fillRect(x - 4, gapBot, PIPE_W + 8, 28);
+            ctx.fillStyle = '#73bf2e';
+            ctx.fillRect(x, gapBot + 4, PIPE_W, 20);
+
+            // edge highlight
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillRect(x + 8, 0, 4, gapTop - 28);
+            ctx.fillRect(x + 8, gapBot + 28, 4, botH - 28);
+        }
+
+        function drawGround() {
+            const y = H - GROUND_H;
+            ctx.fillStyle = '#ded895';
+            ctx.fillRect(0, y, W, GROUND_H);
+            // grass strip
+            ctx.fillStyle = '#5ea312';
+            ctx.fillRect(0, y, W, 14);
+            ctx.fillStyle = '#73bf2e';
+            ctx.fillRect(0, y, W, 8);
+            // tiles
+            ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+            ctx.lineWidth = 1;
+            for (let x = groundX; x < W + 48; x += 24) {
+                ctx.strokeRect(x, y + 14, 24, GROUND_H - 14);
+            }
+        }
+
+        function drawBird() {
+            const x = birdX;
+            const y = birdY;
+            const angle = Math.max(-0.6, Math.min(1.1, birdV / 500));
+
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+
+            // body
+            ctx.fillStyle = '#ffd93d';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, BIRD_R + 2, BIRD_R, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // wing
+            const flap = Math.sin(wing) * 6;
+            ctx.fillStyle = '#f4a261';
+            ctx.beginPath();
+            ctx.ellipse(-2, 2 + flap * 0.3, 8, 5, -0.3 + flap * 0.05, 0, Math.PI * 2);
+            ctx.fill();
+
+            // eye
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(6, -4, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#111';
+            ctx.beginPath();
+            ctx.arc(7.5, -4, 2.2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // beak
+            ctx.fillStyle = '#ff6b35';
+            ctx.beginPath();
+            ctx.moveTo(10, 0);
+            ctx.lineTo(20, 2);
+            ctx.lineTo(10, 5);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function draw() {
+            drawSky();
+            for (const p of pipes) drawPipe(p);
+            drawGround();
+            drawBird();
+
+            if (state === 'playing' && score > 0) {
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.font = 'bold 42px Courier New, monospace';
+                ctx.textAlign = 'center';
+                ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+                ctx.lineWidth = 4;
+                ctx.strokeText(String(score), W / 2, 72);
+                ctx.fillText(String(score), W / 2, 72);
+            }
+
+            if (flash > 0) {
+                ctx.fillStyle = `rgba(255,255,255,${flash * 3})`;
+                ctx.fillRect(0, 0, W, H);
+            }
+
+            if (state === 'menu') {
+                // pipes for ambience
+                if (!pipes.length) resetRun();
+            }
+        }
+
+        function loop(now) {
+            let dt = (now - lastTime) / 1000;
+            lastTime = now;
+            if (dt > 0.05) dt = 0.05;
+            if (dt < 0) dt = 0;
+
+            // scroll pipes slowly on menu for life
+            if (state === 'menu') {
+                for (const p of pipes) p.x -= 40 * dt;
+                while (pipes.length && pipes[0].x + PIPE_W < -10) pipes.shift();
+                if (!pipes.length || pipes[pipes.length - 1].x < W - PIPE_SPACING) {
+                    const lx = pipes.length ? pipes[pipes.length - 1].x : W;
+                    pipes.push(makePipe(lx + PIPE_SPACING));
+                }
+                groundX = (groundX - 40 * dt) % 48;
+                wing += dt * 8;
+                birdY = H * 0.42 + Math.sin(now / 280) * 10;
+            } else {
+                update(dt);
+            }
+
+            draw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        function onFlapInput(e) {
+            if (e && e.target && (e.target.tagName === 'BUTTON' || e.target.tagName === 'A')) return;
+            if (e) e.preventDefault();
+            flap();
+        }
+
+        document.getElementById('btnStart').addEventListener('click', (e) => { e.stopPropagation(); startGame(); });
+        document.getElementById('btnAgain').addEventListener('click', (e) => { e.stopPropagation(); startGame(); });
+        document.getElementById('btnMenu').addEventListener('click', (e) => { e.stopPropagation(); returnToMenu(); });
+
+        canvas.addEventListener('pointerdown', onFlapInput);
+        document.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'escape') {
+                e.preventDefault();
+                if (state !== 'menu') returnToMenu();
+                return;
+            }
+            if (k === ' ' || e.code === 'Space' || k === 'arrowup' || k === 'w') {
+                e.preventDefault();
+                flap();
+            }
+        });
+
+        resetRun();
+        lastTime = performance.now();
+        animId = requestAnimationFrame(loop);
+    </script>
+</body>
+</html>

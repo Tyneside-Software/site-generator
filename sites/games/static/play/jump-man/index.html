@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jump Man · Tyneside Games</title>
+    <meta name="description" content="Climb, jump, dodge barrels — Jump Man, a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #0a0610;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffcc66;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.92);
+            border-bottom: 1px solid #e85d04;
+            font-size: 13px;
+        }
+        .back-bar a { color: #ff9f1c; text-decoration: none; }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #a87850; }
+        .game-wrap {
+            padding-top: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+            width: min(720px, calc(100vw - 1.25rem));
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: clamp(14px, 3.2vw, 20px);
+            text-shadow: 0 0 10px rgba(232, 93, 4, 0.7);
+            letter-spacing: 0.06em;
+        }
+        .hud .label {
+            font-size: 0.55em;
+            opacity: 0.65;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 3px solid #e85d04;
+            background: #0c0814;
+            box-shadow: 0 0 28px rgba(232, 93, 4, 0.3);
+            border-radius: 4px;
+            image-rendering: pixelated;
+        }
+        .instructions {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.72;
+            line-height: 1.5;
+            color: #a87850;
+        }
+        .touch-bar {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 12px;
+        }
+        @media (pointer: coarse) { .touch-bar { display: grid; } }
+        .touch-bar button { margin: 0; padding: 12px 4px; font-size: 14px; }
+        .overlay {
+            position: absolute;
+            left: 0; right: 0;
+            top: 38px; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 4, 12, 0.9);
+            border-radius: 4px;
+            padding: 1.25rem;
+            gap: 0.35rem;
+        }
+        .overlay.hidden { display: none; }
+        .overlay h2 {
+            margin: 0 0 0.4rem;
+            font-size: clamp(26px, 5.5vw, 40px);
+            letter-spacing: 0.1em;
+            color: #ff9f1c;
+            text-shadow: 0 0 22px rgba(255, 159, 28, 0.85);
+        }
+        .overlay p { margin: 0.2rem 0; color: #ffcc66; font-size: 14px; }
+        .overlay .scoreline {
+            font-size: clamp(18px, 4vw, 26px);
+            margin: 0.6rem 0 0.9rem;
+            color: #fff;
+        }
+        button {
+            margin-top: 8px;
+            padding: 10px 22px;
+            background: transparent;
+            color: #ff9f1c;
+            border: 2px solid #e85d04;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+        }
+        button:hover {
+            background: #e85d04;
+            color: #000;
+        }
+        a.shelf-link {
+            margin-top: 12px;
+            color: #a87850;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        a.shelf-link:hover { color: #ff9f1c; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="../../index.html">← Tyneside Games</a>
+        <span class="brand">Jump Man · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+        <div class="game-container">
+            <div class="hud">
+                <div>
+                    <div class="label">Score</div>
+                    <span id="score">0</span>
+                </div>
+                <div>
+                    <div class="label">Level</div>
+                    <span id="level">1</span>
+                </div>
+                <div style="text-align:right">
+                    <div class="label">Lives</div>
+                    <span id="lives">3</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="720" height="540"></canvas>
+            <div class="instructions">
+                ← → move · ↑ ↓ ladders · Space / ↑ jump · dodge barrels · reach the top<br>
+                P pause · Esc menu
+            </div>
+            <div class="touch-bar">
+                <button type="button" id="btnLeft">←</button>
+                <button type="button" id="btnUp">↑</button>
+                <button type="button" id="btnJump">JUMP</button>
+                <button type="button" id="btnRight">→</button>
+            </div>
+
+            <div id="startScreen" class="overlay">
+                <h2>JUMP MAN</h2>
+                <p>Climb the girders. Jump the barrels.</p>
+                <p>Rescue at the top. Don’t get flattened.</p>
+                <button type="button" onclick="startGame()">START</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+
+            <div id="pauseScreen" class="overlay hidden">
+                <h2>PAUSED</h2>
+                <p>P to resume · Esc for menu</p>
+                <button type="button" onclick="togglePause()">RESUME</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+            </div>
+
+            <div id="endScreen" class="overlay hidden">
+                <h2 id="endTitle">GAME OVER</h2>
+                <p class="scoreline">Score <span id="finalScore">0</span> · Level <span id="finalLevel">1</span></p>
+                <p>High score: <span id="highScore">0</span></p>
+                <button type="button" onclick="startGame()">PLAY AGAIN</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const levelEl = document.getElementById('level');
+        const livesEl = document.getElementById('lives');
+        const startScreen = document.getElementById('startScreen');
+        const pauseScreen = document.getElementById('pauseScreen');
+        const endScreen = document.getElementById('endScreen');
+        const endTitle = document.getElementById('endTitle');
+        const finalScoreEl = document.getElementById('finalScore');
+        const finalLevelEl = document.getElementById('finalLevel');
+        const highScoreEl = document.getElementById('highScore');
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const HS_KEY = 'tyneside-jump-man-hs';
+        const GRAVITY = 1600;
+        const JUMP_V = -520;
+        const MOVE_SPEED = 160;
+        const CLIMB_SPEED = 110;
+
+        let state = 'menu';
+        let lastTime = 0;
+        let animId = null;
+        let score = 0;
+        let level = 1;
+        let lives = 3;
+        let highScore = Number(localStorage.getItem(HS_KEY) || 0);
+        highScoreEl.textContent = highScore;
+
+        const keys = { left: false, right: false, up: false, down: false, jump: false };
+        let jumpPressed = false;
+        let invuln = 0;
+        let winTimer = 0;
+        let hammerTimer = 0;
+
+        // Level geometry
+        let platforms = []; // {x,y,w,h, slope} y is top of platform
+        let ladders = [];    // {x,y,w,h}
+        let barrels = [];
+        let hammers = [];
+        let particles = [];
+        let ape = { x: 80, y: 70, face: 1, throwT: 0, bob: 0 };
+        let goal = { x: 360, y: 48, w: 28, h: 36 };
+        let spawn = { x: 60, y: 480 };
+
+        const player = {
+            x: 60, y: 480,
+            w: 18, h: 26,
+            vx: 0, vy: 0,
+            onGround: false,
+            onLadder: false,
+            facing: 1,
+            walkFrame: 0
+        };
+
+        function buildLevel(n) {
+            platforms = [];
+            ladders = [];
+            barrels = [];
+            hammers = [];
+            particles = [];
+
+            // Bottom floor
+            platforms.push({ x: 0, y: 510, w: W, h: 14 });
+
+            // Inclined-ish girders (stepped flat segments for playability)
+            // Level 1 classic zig-zag style
+            const floors = [
+                { y: 420, segments: [[40, 680]] },
+                { y: 330, segments: [[40, 680]] },
+                { y: 240, segments: [[40, 680]] },
+                { y: 150, segments: [[40, 680]] },
+                { y: 90, segments: [[40, 320]] } // top girder under ape / goal
+            ];
+
+            // Add slight tilt via multiple short platforms
+            floors.forEach((f, fi) => {
+                const dir = fi % 2 === 0 ? 1 : -1; // tilt direction
+                const segs = 14;
+                const totalW = 640;
+                const startX = 40;
+                const segW = totalW / segs;
+                for (let i = 0; i < segs; i++) {
+                    const drop = dir * (i - segs / 2) * 1.6;
+                    platforms.push({
+                        x: startX + i * segW,
+                        y: f.y + drop,
+                        w: segW + 2,
+                        h: 10
+                    });
+                }
+            });
+
+            // Ladders connecting floors (broken + full like DK)
+            const ladderDefs = [
+                { x: 120, y: 420, h: 90 },
+                { x: 560, y: 420, h: 90 },
+                { x: 200, y: 330, h: 90 },
+                { x: 480, y: 330, h: 90 },
+                { x: 100, y: 240, h: 90 },
+                { x: 600, y: 240, h: 90 },
+                { x: 300, y: 150, h: 90 },
+                { x: 520, y: 150, h: 90 },
+                { x: 180, y: 90, h: 60 },
+                { x: 280, y: 90, h: 60 }
+            ];
+            // remove a few rungs on some ladders for broken feel — still climbable for fun
+            for (const L of ladderDefs) {
+                ladders.push({ x: L.x, y: L.y, w: 18, h: L.h });
+            }
+
+            // Hammer pickup on mid floors
+            hammers = [
+                { x: 400, y: 300, w: 16, h: 16, taken: false },
+                { x: 140, y: 210, w: 16, h: 16, taken: false }
+            ];
+
+            ape = { x: 90, y: 48, face: 1, throwT: 1.2 / Math.min(1.4, 0.7 + n * 0.15), bob: 0 };
+            goal = { x: 340, y: 48, w: 30, h: 40 };
+            spawn = { x: 70, y: 470 };
+            player.x = spawn.x;
+            player.y = spawn.y;
+            player.vx = 0;
+            player.vy = 0;
+            player.onGround = false;
+            player.onLadder = false;
+            hammerTimer = 0;
+            invuln = 1.2;
+            winTimer = 0;
+        }
+
+        function startGame() {
+            score = 0;
+            level = 1;
+            lives = 3;
+            scoreEl.textContent = '0';
+            levelEl.textContent = '1';
+            livesEl.textContent = '3';
+            buildLevel(level);
+            state = 'playing';
+            startScreen.classList.add('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            lastTime = performance.now();
+            if (!animId) animId = requestAnimationFrame(loop);
+        }
+
+        function returnToMenu() {
+            state = 'menu';
+            barrels = [];
+            startScreen.classList.remove('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            draw();
+        }
+
+        function togglePause() {
+            if (state === 'playing') {
+                state = 'paused';
+                pauseScreen.classList.remove('hidden');
+            } else if (state === 'paused') {
+                state = 'playing';
+                pauseScreen.classList.add('hidden');
+                lastTime = performance.now();
+            }
+        }
+
+        function gameOver(won) {
+            state = 'over';
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem(HS_KEY, String(highScore));
+            }
+            highScoreEl.textContent = highScore;
+            finalScoreEl.textContent = score;
+            finalLevelEl.textContent = level;
+            endTitle.textContent = won ? 'RESCUED!' : 'GAME OVER';
+            endScreen.classList.remove('hidden');
+        }
+
+        function addScore(n) {
+            score += n;
+            scoreEl.textContent = score;
+        }
+
+        function rectsOverlap(a, b) {
+            return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+        }
+
+        function playerRect() {
+            return { x: player.x, y: player.y, w: player.w, h: player.h };
+        }
+
+        function standingOnPlatform() {
+            const feetY = player.y + player.h;
+            const midX = player.x + player.w / 2;
+            for (const p of platforms) {
+                if (midX >= p.x && midX <= p.x + p.w) {
+                    if (feetY >= p.y - 3 && feetY <= p.y + 10 && player.vy >= 0) {
+                        return p;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function ladderAt(px, py, prefer) {
+            const pr = {
+                x: px + 2,
+                y: py + 2,
+                w: player.w - 4,
+                h: player.h - 4
+            };
+            for (const L of ladders) {
+                if (rectsOverlap(pr, L)) return L;
+                // allow grabbing when slightly above platform near ladder
+                if (prefer && Math.abs((px + player.w / 2) - (L.x + L.w / 2)) < 14) {
+                    if (py + player.h > L.y && py < L.y + L.h) return L;
+                }
+            }
+            return null;
+        }
+
+        function spawnBarrel() {
+            const speed = 90 + level * 18 + Math.random() * 30;
+            barrels.push({
+                x: ape.x + 30,
+                y: ape.y + 40,
+                w: 16,
+                h: 16,
+                vx: speed * (Math.random() < 0.15 ? -0.3 : 1),
+                vy: 0,
+                onLadder: false,
+                rot: 0,
+                life: 20
+            });
+        }
+
+        function updateBarrels(dt) {
+            for (const b of barrels) {
+                b.life -= dt;
+                b.rot += b.vx * dt * 0.15;
+
+                // chance to take ladder down
+                if (!b.onLadder && Math.random() < 0.35 * dt) {
+                    for (const L of ladders) {
+                        if (b.x + b.w / 2 > L.x && b.x + b.w / 2 < L.x + L.w &&
+                            b.y + b.h >= L.y - 2 && b.y + b.h <= L.y + 12) {
+                            if (Math.random() < 0.45) {
+                                b.onLadder = true;
+                                b.vx = 0;
+                                b.x = L.x + L.w / 2 - b.w / 2;
+                            }
+                        }
+                    }
+                }
+
+                if (b.onLadder) {
+                    b.vy = 80 + level * 10;
+                    b.y += b.vy * dt;
+                    // leave ladder at bottom or random
+                    let still = false;
+                    for (const L of ladders) {
+                        if (b.x + b.w / 2 > L.x && b.x + b.w / 2 < L.x + L.w &&
+                            b.y + b.h < L.y + L.h && b.y > L.y - 10) {
+                            still = true;
+                            if (b.y + b.h >= L.y + L.h - 4) {
+                                b.onLadder = false;
+                                b.vy = 0;
+                                b.y = L.y + L.h - b.h;
+                                b.vx = (Math.random() < 0.5 ? -1 : 1) * (90 + level * 15);
+                            }
+                        }
+                    }
+                    if (!still) b.onLadder = false;
+                } else {
+                    b.vy += GRAVITY * dt;
+                    b.x += b.vx * dt;
+                    b.y += b.vy * dt;
+
+                    // platform collision
+                    const mid = b.x + b.w / 2;
+                    for (const p of platforms) {
+                        if (mid >= p.x && mid <= p.x + p.w) {
+                            if (b.y + b.h >= p.y && b.y + b.h <= p.y + 14 && b.vy > 0) {
+                                b.y = p.y - b.h;
+                                b.vy = 0;
+                                // roll along slight slope influence
+                                if (Math.abs(b.vx) < 40) b.vx = 100 * Math.sign(b.vx || 1);
+                            }
+                        }
+                    }
+
+                    // bounce walls
+                    if (b.x < 20) { b.x = 20; b.vx = Math.abs(b.vx); }
+                    if (b.x + b.w > W - 20) { b.x = W - 20 - b.w; b.vx = -Math.abs(b.vx); }
+                }
+            }
+            barrels = barrels.filter(b => b.life > 0 && b.y < H + 40);
+        }
+
+        function killPlayer() {
+            lives -= 1;
+            livesEl.textContent = lives;
+            spawnBurst(player.x + player.w / 2, player.y + player.h / 2, '#ff9f1c', 14);
+            if (lives <= 0) {
+                gameOver(false);
+                return;
+            }
+            player.x = spawn.x;
+            player.y = spawn.y;
+            player.vx = 0;
+            player.vy = 0;
+            hammerTimer = 0;
+            invuln = 2;
+            barrels = barrels.filter(b => b.y < 200); // clear nearby chaos a bit
+        }
+
+        function spawnBurst(x, y, color, n) {
+            for (let i = 0; i < n; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 40 + Math.random() * 140;
+                particles.push({
+                    x, y,
+                    vx: Math.cos(a) * sp,
+                    vy: Math.sin(a) * sp,
+                    life: 0.35 + Math.random() * 0.3,
+                    color
+                });
+            }
+        }
+
+        function nextLevel() {
+            addScore(1000 * level);
+            level += 1;
+            levelEl.textContent = level;
+            buildLevel(level);
+        }
+
+        function update(dt) {
+            if (winTimer > 0) {
+                winTimer -= dt;
+                if (winTimer <= 0) nextLevel();
+                return;
+            }
+
+            if (invuln > 0) invuln -= dt;
+            if (hammerTimer > 0) hammerTimer -= dt;
+
+            // Ape
+            ape.bob += dt * 4;
+            ape.throwT -= dt;
+            if (ape.throwT <= 0) {
+                spawnBarrel();
+                ape.face *= -1;
+                ape.throwT = Math.max(0.55, 1.8 - level * 0.12 + Math.random() * 0.4);
+            }
+
+            // Player movement
+            const wantClimb = keys.up || keys.down;
+            const lad = ladderAt(player.x, player.y, wantClimb);
+
+            if (lad && wantClimb) {
+                player.onLadder = true;
+                player.vx = 0;
+                player.vy = 0;
+                player.x = lad.x + lad.w / 2 - player.w / 2;
+                if (keys.up) player.y -= CLIMB_SPEED * dt;
+                if (keys.down) player.y += CLIMB_SPEED * dt;
+                // clamp to ladder
+                if (player.y + player.h < lad.y) {
+                    player.y = lad.y - player.h;
+                    player.onLadder = false;
+                }
+                if (player.y > lad.y + lad.h - 4) {
+                    player.y = lad.y + lad.h - player.h;
+                    player.onLadder = false;
+                }
+            } else {
+                player.onLadder = false;
+            }
+
+            if (!player.onLadder) {
+                player.vx = 0;
+                if (keys.left) { player.vx = -MOVE_SPEED; player.facing = -1; }
+                if (keys.right) { player.vx = MOVE_SPEED; player.facing = 1; }
+
+                // jump
+                if ((keys.jump || jumpPressed) && player.onGround) {
+                    player.vy = JUMP_V;
+                    player.onGround = false;
+                    jumpPressed = false;
+                }
+
+                player.vy += GRAVITY * dt;
+                player.x += player.vx * dt;
+                player.y += player.vy * dt;
+
+                // walls
+                if (player.x < 16) player.x = 16;
+                if (player.x + player.w > W - 16) player.x = W - 16 - player.w;
+
+                // platform land
+                player.onGround = false;
+                const plat = standingOnPlatform();
+                if (plat) {
+                    player.y = plat.y - player.h;
+                    player.vy = 0;
+                    player.onGround = true;
+                }
+
+                // floor clamp
+                if (player.y + player.h > H - 16) {
+                    player.y = H - 16 - player.h;
+                    player.vy = 0;
+                    player.onGround = true;
+                }
+            } else {
+                // horizontal nudge off ladder
+                if (keys.left || keys.right) {
+                    // only leave if near top/bottom or press away
+                    if (!keys.up && !keys.down) player.onLadder = false;
+                }
+            }
+
+            if (player.vx !== 0 && player.onGround) player.walkFrame += dt * 10;
+
+            // Hammers
+            for (const h of hammers) {
+                if (!h.taken && rectsOverlap(playerRect(), h)) {
+                    h.taken = true;
+                    hammerTimer = 5;
+                    addScore(300);
+                }
+            }
+
+            updateBarrels(dt);
+
+            // Barrel collisions
+            for (let i = barrels.length - 1; i >= 0; i--) {
+                const b = barrels[i];
+                if (!rectsOverlap(playerRect(), b)) continue;
+                if (hammerTimer > 0) {
+                    barrels.splice(i, 1);
+                    addScore(500);
+                    spawnBurst(b.x + 8, b.y + 8, '#c4a484', 10);
+                } else if (invuln <= 0) {
+                    // jump over bonus: if player feet above barrel center and rising/falling over
+                    if (player.y + player.h < b.y + 6 && player.vy > 0) {
+                        // landing on barrel — still hurt unless clear jump over
+                    }
+                    killPlayer();
+                    if (state !== 'playing') return;
+                }
+            }
+
+            // Jump-over score: barrel under player while airborne nearby
+            if (!player.onGround && !player.onLadder && invuln <= 0) {
+                for (const b of barrels) {
+                    if (!b._scored && Math.abs((player.x + player.w / 2) - (b.x + b.w / 2)) < 22 &&
+                        player.y + player.h < b.y + 4 && player.y + player.h > b.y - 30) {
+                        b._scored = true;
+                        addScore(100);
+                    }
+                }
+            }
+
+            // Goal reach
+            if (rectsOverlap(playerRect(), goal)) {
+                winTimer = 1.2;
+                spawnBurst(goal.x + 15, goal.y + 20, '#ff66aa', 20);
+                addScore(500);
+            }
+
+            // fall death
+            if (player.y > H + 40) killPlayer();
+
+            // particles
+            for (const p of particles) {
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.life -= dt;
+            }
+            particles = particles.filter(p => p.life > 0);
+        }
+
+        function drawGirder(p) {
+            ctx.fillStyle = '#c1121f';
+            ctx.fillRect(p.x, p.y, p.w, p.h);
+            ctx.fillStyle = '#ff4d6d';
+            ctx.fillRect(p.x, p.y, p.w, 3);
+            // rivets
+            ctx.fillStyle = '#ffcc00';
+            for (let x = p.x + 6; x < p.x + p.w; x += 18) {
+                ctx.fillRect(x, p.y + 3, 3, 3);
+            }
+        }
+
+        function drawLadder(L) {
+            ctx.strokeStyle = '#4cc9f0';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(L.x + 2, L.y);
+            ctx.lineTo(L.x + 2, L.y + L.h);
+            ctx.moveTo(L.x + L.w - 2, L.y);
+            ctx.lineTo(L.x + L.w - 2, L.y + L.h);
+            ctx.stroke();
+            ctx.lineWidth = 2;
+            for (let y = L.y + 8; y < L.y + L.h; y += 12) {
+                ctx.beginPath();
+                ctx.moveTo(L.x + 2, y);
+                ctx.lineTo(L.x + L.w - 2, y);
+                ctx.stroke();
+            }
+        }
+
+        function drawApe() {
+            const x = ape.x;
+            const y = ape.y + Math.sin(ape.bob) * 3;
+            ctx.fillStyle = '#6b3f1d';
+            ctx.fillRect(x, y + 10, 50, 36); // body
+            ctx.fillRect(x + 8, y - 6, 34, 24); // head
+            ctx.fillStyle = '#c4a484';
+            ctx.fillRect(x + 14, y + 2, 22, 12); // face
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x + 18, y + 6, 4, 4);
+            ctx.fillRect(x + 28, y + 6, 4, 4);
+            // arms
+            ctx.fillStyle = '#6b3f1d';
+            ctx.fillRect(x - 10, y + 16, 14, 10);
+            ctx.fillRect(x + 46, y + 16, 14, 10);
+            // barrel in hand when about to throw
+            if (ape.throwT < 0.35) {
+                ctx.fillStyle = '#c4a484';
+                ctx.beginPath();
+                ctx.arc(x + 60, y + 28, 8, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawGoal() {
+            // damsel / flag stand-in
+            ctx.fillStyle = '#ff66aa';
+            ctx.fillRect(goal.x + 8, goal.y + 12, 14, 22);
+            ctx.beginPath();
+            ctx.arc(goal.x + 15, goal.y + 8, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffe066';
+            ctx.fillRect(goal.x + 4, goal.y + 18, 8, 4); // arm wave
+            ctx.fillStyle = 'rgba(255,102,170,0.35)';
+            ctx.font = '10px Courier New';
+            ctx.fillText('HELP!', goal.x - 4, goal.y - 4);
+        }
+
+        function drawPlayer() {
+            const flash = invuln > 0 && Math.floor(invuln * 12) % 2 === 0;
+            if (invuln > 0 && !flash && state === 'playing') return;
+
+            const x = player.x;
+            const y = player.y;
+            ctx.save();
+            if (player.facing < 0) {
+                ctx.translate(x + player.w, y);
+                ctx.scale(-1, 1);
+                ctx.translate(-x, -y);
+            }
+
+            // overalls red hat — Jump Man
+            ctx.fillStyle = flash ? '#fff' : '#e63946';
+            ctx.fillRect(x + 4, y, 10, 8); // hat
+            ctx.fillStyle = flash ? '#fff' : '#ffcc99';
+            ctx.fillRect(x + 4, y + 8, 10, 8); // head
+            ctx.fillStyle = flash ? '#fff' : '#1d3557';
+            ctx.fillRect(x + 2, y + 16, 14, 10); // body
+            ctx.fillStyle = flash ? '#fff' : '#e63946';
+            ctx.fillRect(x + 2, y + 16, 14, 4); // straps
+            // legs walk
+            const leg = player.onGround && Math.abs(player.vx) > 0
+                ? Math.sin(player.walkFrame) * 3 : 0;
+            ctx.fillStyle = flash ? '#fff' : '#1d3557';
+            ctx.fillRect(x + 3, y + 26, 5, 4 + leg);
+            ctx.fillRect(x + 10, y + 26, 5, 4 - leg);
+
+            if (hammerTimer > 0) {
+                ctx.fillStyle = '#ffcc00';
+                ctx.fillRect(x + 16, y + 10, 14, 5);
+                ctx.fillRect(x + 26, y + 4, 6, 16);
+            }
+            ctx.restore();
+        }
+
+        function drawBarrel(b) {
+            ctx.save();
+            ctx.translate(b.x + b.w / 2, b.y + b.h / 2);
+            ctx.rotate(b.rot);
+            ctx.fillStyle = '#8b5a2b';
+            ctx.fillRect(-8, -7, 16, 14);
+            ctx.strokeStyle = '#c4a484';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(-8, -7, 16, 14);
+            ctx.beginPath();
+            ctx.moveTo(-8, 0);
+            ctx.lineTo(8, 0);
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        function draw() {
+            // bg
+            const g = ctx.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, '#1a0a24');
+            g.addColorStop(1, '#0c0814');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+
+            // oil drum decorative bottom-left
+            ctx.fillStyle = '#333';
+            ctx.fillRect(24, 470, 28, 40);
+            ctx.fillStyle = '#e85d04';
+            ctx.beginPath();
+            ctx.arc(38, 468, 10, Math.PI, 0);
+            ctx.fill();
+
+            for (const p of platforms) drawGirder(p);
+            for (const L of ladders) drawLadder(L);
+
+            drawApe();
+            drawGoal();
+
+            for (const h of hammers) {
+                if (h.taken) continue;
+                ctx.fillStyle = '#ffcc00';
+                ctx.fillRect(h.x, h.y + 4, 14, 4);
+                ctx.fillRect(h.x + 10, h.y - 2, 5, 14);
+            }
+
+            for (const b of barrels) drawBarrel(b);
+            if (state !== 'menu') drawPlayer();
+
+            for (const p of particles) {
+                ctx.globalAlpha = Math.max(0, p.life * 2.5);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 3, 3);
+            }
+            ctx.globalAlpha = 1;
+
+            if (hammerTimer > 0 && state === 'playing') {
+                ctx.fillStyle = 'rgba(255,204,0,0.8)';
+                ctx.font = '12px Courier New';
+                ctx.textAlign = 'left';
+                ctx.fillText('HAMMER ' + hammerTimer.toFixed(1), 12, 20);
+            }
+
+            if (winTimer > 0) {
+                ctx.fillStyle = 'rgba(255,159,28,0.9)';
+                ctx.font = 'bold 28px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('LEVEL CLEAR!', W / 2, H / 2);
+            }
+
+            if (state === 'menu') {
+                ctx.fillStyle = 'rgba(255,159,28,0.25)';
+                ctx.font = '16px Courier New';
+                ctx.textAlign = 'center';
+                ctx.fillText('PRESS START', W / 2, H - 30);
+                // preview level art
+                if (!platforms.length) {
+                    buildLevel(1);
+                    player.x = spawn.x;
+                    player.y = spawn.y;
+                }
+            }
+        }
+
+        function loop(now) {
+            const dt = Math.min(0.033, (now - lastTime) / 1000) || 0;
+            lastTime = now;
+            if (state === 'playing') update(dt);
+            else if (state === 'menu') {
+                ape.bob += dt * 3;
+                ape.throwT -= dt;
+                if (ape.throwT <= 0) {
+                    // idle barrel for show
+                    if (platforms.length && barrels.length < 3) spawnBarrel();
+                    ape.throwT = 2;
+                }
+                if (platforms.length) updateBarrels(dt);
+            }
+            draw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        function onKeyDown(e) {
+            const k = e.key.toLowerCase();
+            if (k === 'p') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'paused') togglePause();
+                return;
+            }
+            if (k === 'escape') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'paused' || state === 'over') returnToMenu();
+                return;
+            }
+            if (k === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                if (state === 'menu' || state === 'over') startGame();
+                else if (state === 'playing') { keys.jump = true; jumpPressed = true; }
+                else if (state === 'paused') togglePause();
+                return;
+            }
+            if (state !== 'playing') return;
+            if (k === 'arrowleft' || k === 'a') { keys.left = true; e.preventDefault(); }
+            if (k === 'arrowright' || k === 'd') { keys.right = true; e.preventDefault(); }
+            if (k === 'arrowup' || k === 'w') {
+                e.preventDefault();
+                keys.up = true;
+                // also jump if on ground and not on ladder
+                if (player.onGround && !ladderAt(player.x, player.y, true)) {
+                    jumpPressed = true;
+                    keys.jump = true;
+                }
+            }
+            if (k === 'arrowdown' || k === 's') { keys.down = true; e.preventDefault(); }
+        }
+
+        function onKeyUp(e) {
+            const k = e.key.toLowerCase();
+            if (k === ' ' || e.code === 'Space') keys.jump = false;
+            if (k === 'arrowleft' || k === 'a') keys.left = false;
+            if (k === 'arrowright' || k === 'd') keys.right = false;
+            if (k === 'arrowup' || k === 'w') { keys.up = false; keys.jump = false; }
+            if (k === 'arrowdown' || k === 's') keys.down = false;
+        }
+
+        document.addEventListener('keydown', onKeyDown);
+        document.addEventListener('keyup', onKeyUp);
+
+        function bindHold(id, down, up) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('pointerdown', (e) => { e.preventDefault(); down(); });
+            const end = (e) => { e.preventDefault(); if (up) up(); };
+            el.addEventListener('pointerup', end);
+            el.addEventListener('pointerleave', end);
+            el.addEventListener('pointercancel', end);
+        }
+        bindHold('btnLeft', () => { keys.left = true; }, () => { keys.left = false; });
+        bindHold('btnRight', () => { keys.right = true; }, () => { keys.right = false; });
+        bindHold('btnUp', () => { keys.up = true; }, () => { keys.up = false; });
+        bindHold('btnJump', () => { keys.jump = true; jumpPressed = true; }, () => { keys.jump = false; });
+
+        // init menu preview
+        buildLevel(1);
+        lastTime = performance.now();
+        animId = requestAnimationFrame(loop);
+    </script>
+</body>
+</html>

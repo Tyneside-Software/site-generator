@@ -1,4 +1,68 @@
 # Playable games on the shelf — relative paths (work with file:// and GitHub Pages)
+- id: pong
+  title: Paddle Rally
+  slug: pong
+  path: play/pong/index.html
+  description: Classic paddles. 1P vs CPU or local 2P. First to 11. Keyboard, mouse, or touch.
+  status: playable
+  emoji: "🏓"
+
+- id: space-invaders
+  title: Space Raiders
+  slug: space-invaders
+  path: play/space-invaders/index.html
+  description: Shoot the formation, duck behind bunkers, grab the mothership. Waves get faster.
+  status: playable
+  emoji: "👾"
+
+- id: galaga
+  title: Star Dive
+  slug: galaga
+  path: play/galaga/index.html
+  description: Formation fighters, diving raids, stage clears. Classic arcade shooter vibes.
+  status: playable
+  emoji: "🚀"
+
+- id: dot-chomp
+  title: Dot Chomp
+  slug: dot-chomp
+  path: play/dot-chomp/index.html
+  description: Clear the maze, dodge the ghosts, power pellets flip the chase. Arcade munching.
+  status: playable
+  emoji: "🟡"
+
+- id: flap-dash
+  title: Flap Dash
+  slug: flap-dash
+  path: play/flap-dash/index.html
+  description: Tap to flap through the pipes. Simple, brutal, one more try.
+  status: playable
+  emoji: "🐦"
+
+- id: jump-man
+  title: Jump Man
+  slug: jump-man
+  path: play/jump-man/index.html
+  description: Climb girders, jump barrels, grab the hammer. Reach the top before you get flattened.
+  status: playable
+  emoji: "🪜"
+
+- id: tetris
+  title: Block Fall
+  slug: tetris
+  path: play/tetris/index.html
+  description: 7-bag randomiser, hold, ghost piece, soft and hard drop. Clear lines, climb levels.
+  status: playable
+  emoji: "🧱"
+
+- id: sand-tetris
+  title: Sand Fall
+  slug: sand-tetris
+  path: play/sand-tetris/index.html
+  description: Pieces crumble into sand. Pour, pile, and clear full rows as gravity does the rest.
+  status: playable
+  emoji: "⏳"
+
 - id: snake
   title: Snake
   slug: snake
@@ -8,9 +72,9 @@
   emoji: "🐍"
 
 - id: geometry-dash
-  title: Geometry Dash Lite
+  title: Geometry Jump Beta
   slug: geometry-dash
   path: play/geometry-dash/index.html
-  description: Hold jump to clear spikes. Browser runner with Geometry Dash–style physics.
+  description: Hold jump to clear spikes. Browser runner with Geometry Jump–style physics.
   status: playable
   emoji: "◆"
