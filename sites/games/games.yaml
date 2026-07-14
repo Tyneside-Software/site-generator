@@ -31,6 +31,14 @@
   status: playable
   emoji: "🟡"
 
+- id: flap-dash
+  title: Flap Dash
+  slug: flap-dash
+  path: play/flap-dash/index.html
+  description: Tap to flap through the pipes. Simple, brutal, one more try.
+  status: playable
+  emoji: "🐦"
+
 - id: jump-man
   title: Jump Man
   slug: jump-man
