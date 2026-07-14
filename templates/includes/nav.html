@@ -1,15 +1,16 @@
 <nav class="site-nav" aria-label="Primary">
   <div class="inner">
     <a href="{{ home_href }}" class="brand-link">
-      <img src="{{ root }}logo.svg" alt="{{ site.title }}">
+      <img src="{{ root }}logo.svg" width="38" height="38" alt="{{ site.title }}">
       <span class="brand-word">TYNESIDE</span>
       <span class="brand-sub">{{ site.brand_word }}</span>
     </a>
+    {# Always list every brand in fixed order so the nav chrome matches site-to-site #}
     <div class="nav-links">
       {% for s in sites %}
-        {% if s.id != site.id %}
-          <a href="https://{{ s.domain }}/">{{ s.brand_word }}</a>
-        {% endif %}
+        <a href="https://{{ s.domain }}/"
+           class="{% if s.id == site.id %}is-current{% endif %}"
+           {% if s.id == site.id %}aria-current="page"{% endif %}>{{ s.brand_word }}</a>
       {% endfor %}
     </div>
     <div class="nav-cta">
@@ -17,4 +18,3 @@
     </div>
   </div>
 </nav>
-
