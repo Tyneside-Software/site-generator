@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaga · Tyneside Games</title>
+    <meta name="description" content="Galaga-style formation shooter in the browser — a Tyneside Games hobby project.">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #050510;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffe066;
+            overflow: hidden;
+            touch-action: none;
+            user-select: none;
+        }
+        .back-bar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0, 0, 0, 0.92);
+            border-bottom: 1px solid #ffcc00;
+            font-size: 13px;
+        }
+        .back-bar a { color: #ffcc00; text-decoration: none; }
+        .back-bar a:hover { text-decoration: underline; }
+        .back-bar .brand { opacity: 0.75; color: #a89050; }
+        .game-wrap {
+            padding-top: 3rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .game-container {
+            text-align: center;
+            position: relative;
+            width: min(720px, calc(100vw - 1.25rem));
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: clamp(14px, 3.2vw, 20px);
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
+            letter-spacing: 0.06em;
+        }
+        .hud .label {
+            font-size: 0.55em;
+            opacity: 0.65;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 3px solid #ffcc00;
+            background: #000;
+            box-shadow: 0 0 28px rgba(255, 204, 0, 0.28);
+            border-radius: 4px;
+            image-rendering: pixelated;
+        }
+        .instructions {
+            margin-top: 12px;
+            font-size: 13px;
+            opacity: 0.72;
+            line-height: 1.5;
+            color: #a89050;
+        }
+        .overlay {
+            position: absolute;
+            left: 0; right: 0;
+            top: 38px; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.88);
+            border-radius: 4px;
+            padding: 1.25rem;
+            gap: 0.35rem;
+        }
+        .overlay.hidden { display: none; }
+        .overlay h2 {
+            margin: 0 0 0.4rem;
+            font-size: clamp(26px, 5.5vw, 40px);
+            letter-spacing: 0.12em;
+            color: #ffcc00;
+            text-shadow: 0 0 22px rgba(255, 204, 0, 0.85);
+        }
+        .overlay p { margin: 0.2rem 0; color: #ffe066; font-size: 14px; }
+        .overlay .scoreline {
+            font-size: clamp(18px, 4vw, 26px);
+            margin: 0.6rem 0 0.9rem;
+            color: #fff;
+        }
+        button {
+            margin-top: 8px;
+            padding: 10px 22px;
+            background: transparent;
+            color: #ffcc00;
+            border: 2px solid #ffcc00;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            letter-spacing: 0.08em;
+        }
+        button:hover {
+            background: #ffcc00;
+            color: #000;
+        }
+        a.shelf-link {
+            margin-top: 12px;
+            color: #a89050;
+            font-size: 13px;
+            text-decoration: none;
+        }
+        a.shelf-link:hover { color: #ffcc00; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="back-bar">
+        <a href="../../index.html">← Tyneside Games</a>
+        <span class="brand">Galaga · hobby shelf</span>
+    </div>
+    <div class="game-wrap">
+        <div class="game-container">
+            <div class="hud">
+                <div>
+                    <div class="label">Score</div>
+                    <span id="score">0</span>
+                </div>
+                <div>
+                    <div class="label">Stage</div>
+                    <span id="stage">1</span>
+                </div>
+                <div style="text-align:right">
+                    <div class="label">Lives</div>
+                    <span id="lives">3</span>
+                </div>
+            </div>
+            <canvas id="gameCanvas" width="720" height="540"></canvas>
+            <div class="instructions">
+                ← → or A / D · Space / click / tap to fire<br>
+                Watch for diving attackers · P pause · Esc menu
+            </div>
+
+            <div id="startScreen" class="overlay">
+                <h2>GALAGA</h2>
+                <p>Formation fighters. Diving raids.</p>
+                <p>Clear the stage. Survive the swarm.</p>
+                <button type="button" onclick="startGame()">INSERT COIN</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+
+            <div id="pauseScreen" class="overlay hidden">
+                <h2>PAUSED</h2>
+                <p>P to resume · Esc for menu</p>
+                <button type="button" onclick="togglePause()">RESUME</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+            </div>
+
+            <div id="endScreen" class="overlay hidden">
+                <h2 id="endTitle">GAME OVER</h2>
+                <p class="scoreline">Score <span id="finalScore">0</span> · Stage <span id="finalStage">1</span></p>
+                <p>High score: <span id="highScore">0</span></p>
+                <button type="button" onclick="startGame()">PLAY AGAIN</button>
+                <button type="button" onclick="returnToMenu()">MENU</button>
+                <a class="shelf-link" href="../../index.html">Back to shelf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score');
+        const stageEl = document.getElementById('stage');
+        const livesEl = document.getElementById('lives');
+        const startScreen = document.getElementById('startScreen');
+        const pauseScreen = document.getElementById('pauseScreen');
+        const endScreen = document.getElementById('endScreen');
+        const endTitle = document.getElementById('endTitle');
+        const finalScoreEl = document.getElementById('finalScore');
+        const finalStageEl = document.getElementById('finalStage');
+        const highScoreEl = document.getElementById('highScore');
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const HS_KEY = 'tyneside-galaga-hs';
+
+        // Enemy kinds
+        const KIND = { BEE: 0, BUTTERFLY: 1, BOSS: 2 };
+
+        let state = 'menu';
+        let lastTime = 0;
+        let animId = null;
+        let score = 0;
+        let stage = 1;
+        let lives = 3;
+        let highScore = Number(localStorage.getItem(HS_KEY) || 0);
+        highScoreEl.textContent = highScore;
+
+        const keys = { left: false, right: false, fire: false };
+        let fireHeld = false;
+        let fireCooldown = 0;
+        let invuln = 0;
+        let stageIntro = 0;
+
+        const player = {
+            x: W / 2,
+            y: H - 50,
+            w: 28,
+            h: 28,
+            speed: 340
+        };
+
+        let bullets = [];
+        let enemyBullets = [];
+        let enemies = [];
+        let particles = [];
+        let stars = [];
+        let diveTimer = 0;
+        let formPhase = 0;
+        let formationOrigin = { x: W / 2, y: 120 };
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 70; i++) {
+                stars.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    s: Math.random() * 1.6 + 0.3,
+                    a: Math.random() * 0.7 + 0.15,
+                    sp: 10 + Math.random() * 40
+                });
+            }
+        }
+
+        function formationSlot(col, row) {
+            const gapX = 44;
+            const gapY = 36;
+            const cols = 10;
+            const ox = formationOrigin.x - ((cols - 1) * gapX) / 2;
+            const oy = formationOrigin.y;
+            return { x: ox + col * gapX, y: oy + row * gapY };
+        }
+
+        function makeWave(level) {
+            enemies = [];
+            // rows: 0 boss, 1-2 butterfly, 3-4 bee
+            const layout = [
+                { row: 0, cols: [2, 3, 4, 5, 6, 7], kind: KIND.BOSS },
+                { row: 1, cols: [1, 2, 3, 4, 5, 6, 7, 8], kind: KIND.BUTTERFLY },
+                { row: 2, cols: [1, 2, 3, 4, 5, 6, 7, 8], kind: KIND.BUTTERFLY },
+                { row: 3, cols: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], kind: KIND.BEE },
+                { row: 4, cols: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], kind: KIND.BEE }
+            ];
+
+            let delay = 0;
+            for (const band of layout) {
+                for (const col of band.cols) {
+                    const slot = formationSlot(col, band.row);
+                    const fromLeft = col < 5;
+                    enemies.push({
+                        kind: band.kind,
+                        col, row: band.row,
+                        slotX: slot.x,
+                        slotY: slot.y,
+                        x: fromLeft ? -40 : W + 40,
+                        y: 40 + band.row * 10,
+                        w: band.kind === KIND.BOSS ? 30 : 26,
+                        h: band.kind === KIND.BOSS ? 28 : 24,
+                        hp: band.kind === KIND.BOSS ? 2 : 1,
+                        mode: 'enter', // enter | form | dive | return
+                        enterT: delay,
+                        pathT: 0,
+                        angle: 0,
+                        diveSide: fromLeft ? 1 : -1,
+                        points: band.kind === KIND.BOSS ? 150 : band.kind === KIND.BUTTERFLY ? 80 : 50,
+                        divePoints: band.kind === KIND.BOSS ? 400 : band.kind === KIND.BUTTERFLY ? 160 : 100,
+                        alive: true,
+                        flash: 0
+                    });
+                    delay += 0.045;
+                }
+            }
+            diveTimer = 2.2 - Math.min(1.2, level * 0.08);
+            formPhase = 0;
+            stageIntro = 1.4;
+        }
+
+        function resetPlayer() {
+            player.x = W / 2;
+            bullets = [];
+            enemyBullets = [];
+            fireCooldown = 0.35;
+            invuln = 1.6;
+        }
+
+        function startGame() {
+            score = 0;
+            stage = 1;
+            lives = 3;
+            scoreEl.textContent = '0';
+            stageEl.textContent = '1';
+            livesEl.textContent = '3';
+            particles = [];
+            makeWave(stage);
+            resetPlayer();
+            state = 'playing';
+            startScreen.classList.add('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            lastTime = performance.now();
+            if (!animId) animId = requestAnimationFrame(loop);
+        }
+
+        function returnToMenu() {
+            state = 'menu';
+            enemies = [];
+            bullets = [];
+            enemyBullets = [];
+            particles = [];
+            startScreen.classList.remove('hidden');
+            pauseScreen.classList.add('hidden');
+            endScreen.classList.add('hidden');
+            draw();
+        }
+
+        function togglePause() {
+            if (state === 'playing') {
+                state = 'paused';
+                pauseScreen.classList.remove('hidden');
+            } else if (state === 'paused') {
+                state = 'playing';
+                pauseScreen.classList.add('hidden');
+                lastTime = performance.now();
+            }
+        }
+
+        function gameOver(won) {
+            state = 'over';
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem(HS_KEY, String(highScore));
+            }
+            highScoreEl.textContent = highScore;
+            finalScoreEl.textContent = score;
+            finalStageEl.textContent = stage;
+            endTitle.textContent = won ? 'STAGE CLEAR?' : 'GAME OVER';
+            endScreen.classList.remove('hidden');
+        }
+
+        function addScore(n) {
+            score += n;
+            scoreEl.textContent = score;
+        }
+
+        function spawnParticles(x, y, color, n) {
+            for (let i = 0; i < n; i++) {
+                const a = Math.random() * Math.PI * 2;
+                const sp = 50 + Math.random() * 160;
+                particles.push({
+                    x, y,
+                    vx: Math.cos(a) * sp,
+                    vy: Math.sin(a) * sp,
+                    life: 0.3 + Math.random() * 0.35,
+                    color
+                });
+            }
+        }
+
+        function aliveEnemies() {
+            return enemies.filter(e => e.alive);
+        }
+
+        function startDive(e) {
+            e.mode = 'dive';
+            e.pathT = 0;
+            e.diveSide = player.x < e.x ? -1 : 1;
+            e.startX = e.x;
+            e.startY = e.y;
+        }
+
+        function pickDiver() {
+            const formed = aliveEnemies().filter(e => e.mode === 'form');
+            if (!formed.length) return null;
+            // prefer outer / lower ranks slightly
+            const weights = formed.map(e => 1 + e.row * 0.4 + (e.kind === KIND.BOSS ? 0.3 : 0));
+            let total = weights.reduce((a, b) => a + b, 0);
+            let r = Math.random() * total;
+            for (let i = 0; i < formed.length; i++) {
+                r -= weights[i];
+                if (r <= 0) return formed[i];
+            }
+            return formed[formed.length - 1];
+        }
+
+        function updateEnemy(e, dt) {
+            if (!e.alive) return;
+            if (e.flash > 0) e.flash -= dt;
+
+            if (e.mode === 'enter') {
+                e.enterT -= dt;
+                if (e.enterT > 0) return;
+                e.pathT += dt;
+                // bezier-ish swoop into formation
+                const t = Math.min(1, e.pathT / 1.1);
+                const ease = 1 - Math.pow(1 - t, 2);
+                const midX = e.diveSide > 0 ? W * 0.2 : W * 0.8;
+                const midY = 80 + e.row * 20;
+                // quadratic lerp
+                const ax = e.x; // keep updating from current is messy; use path from start
+                // recompute from fixed enter start each frame via stored
+                if (e._sx == null) { e._sx = e.x; e._sy = e.y; }
+                const x0 = e._sx, y0 = e._sy;
+                const x1 = midX, y1 = midY;
+                const x2 = e.slotX, y2 = e.slotY;
+                const u = 1 - ease;
+                e.x = u * u * x0 + 2 * u * ease * x1 + ease * ease * x2;
+                e.y = u * u * y0 + 2 * u * ease * y1 + ease * ease * y2;
+                e.angle = Math.atan2(
+                    2 * (1 - ease) * (y1 - y0) + 2 * ease * (y2 - y1),
+                    2 * (1 - ease) * (x1 - x0) + 2 * ease * (x2 - x1)
+                ) + Math.PI / 2;
+                if (t >= 1) {
+                    e.mode = 'form';
+                    e.x = e.slotX;
+                    e.y = e.slotY;
+                    e.angle = 0;
+                    e._sx = e._sy = null;
+                }
+                return;
+            }
+
+            if (e.mode === 'form') {
+                // bob with formation sway
+                const sway = Math.sin(formPhase + e.col * 0.35) * 10;
+                const bob = Math.sin(formPhase * 1.3 + e.row) * 4;
+                e.x = e.slotX + sway;
+                e.y = e.slotY + bob;
+                e.angle = 0;
+                return;
+            }
+
+            if (e.mode === 'dive') {
+                e.pathT += dt;
+                const t = e.pathT;
+                // looping dive toward player then off-screen or return
+                const speed = 220 + stage * 12 + (e.kind === KIND.BEE ? 40 : 0);
+                // spiral out then home on player-ish
+                if (t < 0.55) {
+                    e.angle += e.diveSide * dt * 8;
+                    e.x += Math.cos(e.angle - Math.PI / 2) * speed * dt;
+                    e.y += Math.sin(e.angle - Math.PI / 2) * speed * dt * 0.6 + 40 * dt;
+                } else {
+                    // chase player x, dive down
+                    const tx = player.x;
+                    const dx = tx - e.x;
+                    e.x += Math.sign(dx) * Math.min(Math.abs(dx), (180 + stage * 10) * dt);
+                    e.y += (200 + stage * 15) * dt;
+                    e.angle = Math.atan2(1, dx * 0.01) + Math.PI; // roughly down
+                    // shoot occasionally while diving
+                    if (Math.random() < 0.012 + stage * 0.0015) {
+                        enemyBullets.push({
+                            x: e.x,
+                            y: e.y + e.h / 2,
+                            vy: 220 + stage * 10,
+                            r: 3
+                        });
+                    }
+                }
+
+                if (e.y > H + 40) {
+                    // wrap back to formation top
+                    e.mode = 'return';
+                    e.pathT = 0;
+                    e.x = e.slotX;
+                    e.y = -30;
+                }
+                return;
+            }
+
+            if (e.mode === 'return') {
+                e.pathT += dt;
+                const t = Math.min(1, e.pathT / 0.8);
+                e.y = -30 + (e.slotY + 30) * t;
+                e.x = e.slotX + Math.sin(formPhase + e.col) * 10 * (1 - t);
+                e.angle = 0;
+                if (t >= 1) {
+                    e.mode = 'form';
+                    e.x = e.slotX;
+                    e.y = e.slotY;
+                }
+            }
+        }
+
+        function update(dt) {
+            if (stageIntro > 0) stageIntro -= dt;
+            formPhase += dt * (0.9 + stage * 0.05);
+            // gently drift formation origin
+            formationOrigin.x = W / 2 + Math.sin(formPhase * 0.35) * 28;
+            // refresh slot positions for form enemies
+            for (const e of enemies) {
+                if (!e.alive) continue;
+                const slot = formationSlot(e.col, e.row);
+                e.slotX = slot.x;
+                e.slotY = slot.y;
+            }
+
+            if (invuln > 0) invuln -= dt;
+            if (fireCooldown > 0) fireCooldown -= dt;
+
+            // player
+            let mx = 0;
+            if (keys.left) mx -= 1;
+            if (keys.right) mx += 1;
+            player.x += mx * player.speed * dt;
+            player.x = Math.max(24, Math.min(W - 24, player.x));
+
+            // fire — dual shot when stage high optional, single for classic
+            if ((keys.fire || fireHeld) && fireCooldown <= 0 && stageIntro <= 0) {
+                bullets.push({ x: player.x, y: player.y - 16, vy: -520, r: 3 });
+                fireCooldown = 0.22;
+            }
+
+            for (const b of bullets) b.y += b.vy * dt;
+            bullets = bullets.filter(b => b.y > -20);
+
+            for (const e of enemies) updateEnemy(e, dt);
+
+            // player bullets vs enemies
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const b = bullets[i];
+                let hit = false;
+                for (const e of enemies) {
+                    if (!e.alive) continue;
+                    if (Math.abs(b.x - e.x) < e.w * 0.45 && Math.abs(b.y - e.y) < e.h * 0.45) {
+                        e.hp -= 1;
+                        e.flash = 0.08;
+                        bullets.splice(i, 1);
+                        hit = true;
+                        if (e.hp <= 0) {
+                            e.alive = false;
+                            const pts = e.mode === 'dive' ? e.divePoints : e.points;
+                            addScore(pts);
+                            const col = e.kind === KIND.BOSS ? '#ff4d6d' : e.kind === KIND.BUTTERFLY ? '#ff66aa' : '#44ddff';
+                            spawnParticles(e.x, e.y, col, 12);
+                        }
+                        break;
+                    }
+                }
+                if (hit) continue;
+            }
+
+            // dive launches
+            const inForm = aliveEnemies().filter(e => e.mode === 'form').length;
+            const diving = aliveEnemies().filter(e => e.mode === 'dive').length;
+            const maxDive = Math.min(3 + Math.floor(stage / 2), 6);
+            diveTimer -= dt;
+            if (diveTimer <= 0 && stageIntro <= 0 && inForm > 0 && diving < maxDive) {
+                const n = 1 + (Math.random() < 0.35 + stage * 0.03 ? 1 : 0);
+                for (let k = 0; k < n; k++) {
+                    const d = pickDiver();
+                    if (d) startDive(d);
+                }
+                diveTimer = Math.max(0.55, 2.0 - stage * 0.1 + Math.random() * 0.5);
+            }
+
+            // formation enemies occasionally shoot
+            if (Math.random() < 0.4 * dt * (1 + stage * 0.1)) {
+                const shooters = aliveEnemies().filter(e => e.mode === 'form');
+                if (shooters.length) {
+                    const s = shooters[(Math.random() * shooters.length) | 0];
+                    enemyBullets.push({ x: s.x, y: s.y + s.h / 2, vy: 200 + stage * 8, r: 3 });
+                }
+            }
+
+            for (const b of enemyBullets) b.y += b.vy * dt;
+            enemyBullets = enemyBullets.filter(b => b.y < H + 20);
+
+            // collisions player
+            if (invuln <= 0 && stageIntro <= 0) {
+                for (let i = enemyBullets.length - 1; i >= 0; i--) {
+                    const b = enemyBullets[i];
+                    if (Math.abs(b.x - player.x) < 12 && Math.abs(b.y - player.y) < 14) {
+                        enemyBullets.splice(i, 1);
+                        playerHit();
+                        break;
+                    }
+                }
+                for (const e of enemies) {
+                    if (!e.alive) continue;
+                    if (Math.abs(e.x - player.x) < (e.w + player.w) * 0.28 &&
+                        Math.abs(e.y - player.y) < (e.h + player.h) * 0.28) {
+                        e.alive = false;
+                        spawnParticles(e.x, e.y, '#ffcc00', 10);
+                        playerHit();
+                        break;
+                    }
+                }
+            }
+
+            // particles
+            for (const p of particles) {
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.life -= dt;
+            }
+            particles = particles.filter(p => p.life > 0);
+
+            // stars
+            for (const s of stars) {
+                s.y += s.sp * dt;
+                if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+            }
+
+            // stage clear
+            if (aliveEnemies().length === 0 && state === 'playing') {
+                stage += 1;
+                stageEl.textContent = stage;
+                addScore(500 * (stage - 1));
+                makeWave(stage);
+                resetPlayer();
+            }
+        }
+
+        function playerHit() {
+            lives -= 1;
+            livesEl.textContent = lives;
+            spawnParticles(player.x, player.y, '#ffcc00', 16);
+            if (lives <= 0) {
+                gameOver(false);
+                return;
+            }
+            resetPlayer();
+            // cancel current divers back toward form roughly
+            for (const e of enemies) {
+                if (e.alive && e.mode === 'dive') {
+                    e.mode = 'return';
+                    e.pathT = 0;
+                    e.x = e.slotX;
+                    e.y = -20;
+                }
+            }
+        }
+
+        function drawShip(x, y, scale, flash) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+            ctx.fillStyle = flash ? '#fff' : '#ffcc00';
+            // fighter silhouette
+            ctx.beginPath();
+            ctx.moveTo(0, -14);
+            ctx.lineTo(10, 10);
+            ctx.lineTo(4, 6);
+            ctx.lineTo(0, 12);
+            ctx.lineTo(-4, 6);
+            ctx.lineTo(-10, 10);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = flash ? '#fff' : '#ff6644';
+            ctx.fillRect(-2, -4, 4, 8);
+            ctx.restore();
+        }
+
+        function drawEnemy(e) {
+            ctx.save();
+            ctx.translate(e.x, e.y);
+            ctx.rotate(e.angle || 0);
+            const flash = e.flash > 0;
+            if (e.kind === KIND.BOSS) {
+                ctx.fillStyle = flash ? '#fff' : (e.hp > 1 ? '#4da6ff' : '#ff4d6d');
+                ctx.beginPath();
+                ctx.moveTo(0, -12);
+                ctx.lineTo(14, -4);
+                ctx.lineTo(10, 10);
+                ctx.lineTo(0, 6);
+                ctx.lineTo(-10, 10);
+                ctx.lineTo(-14, -4);
+                ctx.closePath();
+                ctx.fill();
+                ctx.fillStyle = flash ? '#fff' : '#ffe066';
+                ctx.beginPath();
+                ctx.arc(0, -2, 5, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (e.kind === KIND.BUTTERFLY) {
+                ctx.fillStyle = flash ? '#fff' : '#ff66aa';
+                ctx.beginPath();
+                ctx.ellipse(-8, 0, 8, 5, -0.4, 0, Math.PI * 2);
+                ctx.ellipse(8, 0, 8, 5, 0.4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = flash ? '#fff' : '#ffcc00';
+                ctx.fillRect(-3, -8, 6, 16);
+            } else {
+                // bee
+                ctx.fillStyle = flash ? '#fff' : '#44ddff';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 10, 7, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = flash ? '#fff' : '#ffcc00';
+                ctx.fillRect(-3, -6, 6, 12);
+                ctx.fillStyle = '#0a0a20';
+                ctx.fillRect(-6, -2, 3, 3);
+                ctx.fillRect(3, -2, 3, 3);
+            }
+            ctx.restore();
+        }
+
+        function draw() {
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, W, H);
+
+            for (const s of stars) {
+                ctx.globalAlpha = s.a;
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(s.x, s.y, s.s, s.s);
+            }
+            ctx.globalAlpha = 1;
+
+            for (const e of enemies) {
+                if (e.alive) drawEnemy(e);
+            }
+
+            // bullets
+            ctx.fillStyle = '#fff';
+            for (const b of bullets) {
+                ctx.fillRect(b.x - 1.5, b.y - 8, 3, 12);
+            }
+            ctx.fillStyle = '#ff6688';
+            for (const b of enemyBullets) {
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            if (state !== 'menu') {
+                const flash = invuln > 0 && Math.floor(invuln * 12) % 2 === 0;
+                if (invuln <= 0 || flash || state === 'over') {
+                    drawShip(player.x, player.y, 1, invuln > 0 && flash);
+                }
+            }
+
+            for (const p of particles) {
+                ctx.globalAlpha = Math.max(0, p.life * 2.5);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, 3, 3);
+            }
+            ctx.globalAlpha = 1;
+
+            if (stageIntro > 0 && state === 'playing') {
+                ctx.fillStyle = 'rgba(255, 204, 0, 0.85)';
+                ctx.font = 'bold 28px Courier New, monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('STAGE ' + stage, W / 2, H / 2);
+            }
+
+            if (state === 'menu') {
+                ctx.fillStyle = 'rgba(255, 204, 0, 0.25)';
+                ctx.font = '16px Courier New, monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('PRESS INSERT COIN', W / 2, H - 40);
+                // decorative enemies
+                const demo = [
+                    { kind: KIND.BOSS, x: W / 2 - 80, y: H / 2, angle: 0, hp: 2, flash: 0 },
+                    { kind: KIND.BUTTERFLY, x: W / 2, y: H / 2 + Math.sin(performance.now() / 400) * 10, angle: 0, hp: 1, flash: 0 },
+                    { kind: KIND.BEE, x: W / 2 + 80, y: H / 2, angle: performance.now() / 500, hp: 1, flash: 0 }
+                ];
+                for (const e of demo) drawEnemy(e);
+            }
+        }
+
+        function loop(now) {
+            const dt = Math.min(0.033, (now - lastTime) / 1000) || 0;
+            lastTime = now;
+            if (state === 'playing') update(dt);
+            else if (state === 'menu') {
+                for (const s of stars) {
+                    s.y += s.sp * dt;
+                    if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+                }
+            }
+            draw();
+            animId = requestAnimationFrame(loop);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === 'p') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'paused') togglePause();
+                return;
+            }
+            if (k === 'escape') {
+                e.preventDefault();
+                if (state === 'playing' || state === 'paused' || state === 'over') returnToMenu();
+                return;
+            }
+            if (k === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                if (state === 'menu' || state === 'over') startGame();
+                else if (state === 'playing') keys.fire = true;
+                else if (state === 'paused') togglePause();
+                return;
+            }
+            if (k === 'arrowleft' || k === 'a') { keys.left = true; e.preventDefault(); }
+            if (k === 'arrowright' || k === 'd') { keys.right = true; e.preventDefault(); }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            const k = e.key.toLowerCase();
+            if (k === ' ' || e.code === 'Space') keys.fire = false;
+            if (k === 'arrowleft' || k === 'a') keys.left = false;
+            if (k === 'arrowright' || k === 'd') keys.right = false;
+        });
+
+        function canvasPos(clientX, clientY) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (clientX - rect.left) * (W / rect.width),
+                y: (clientY - rect.top) * (H / rect.height)
+            };
+        }
+
+        canvas.addEventListener('pointerdown', (e) => {
+            fireHeld = true;
+            canvas.setPointerCapture(e.pointerId);
+            if (state === 'playing') {
+                const p = canvasPos(e.clientX, e.clientY);
+                player.x = Math.max(24, Math.min(W - 24, p.x));
+            }
+        });
+        canvas.addEventListener('pointermove', (e) => {
+            if (state !== 'playing') return;
+            if (e.pointerType === 'mouse' || e.buttons) {
+                const p = canvasPos(e.clientX, e.clientY);
+                player.x = Math.max(24, Math.min(W - 24, p.x));
+            }
+        });
+        canvas.addEventListener('pointerup', () => { fireHeld = false; });
+        canvas.addEventListener('pointercancel', () => { fireHeld = false; });
+
+        initStars();
+        lastTime = performance.now();
+        animId = requestAnimationFrame(loop);
+    </script>
+</body>
+</html>

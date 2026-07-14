@@ -15,6 +15,14 @@
   status: playable
   emoji: "👾"
 
+- id: galaga
+  title: Galaga
+  slug: galaga
+  path: play/galaga/index.html
+  description: Formation fighters, diving raids, stage clears. Classic arcade shooter vibes.
+  status: playable
+  emoji: "🚀"
+
 - id: tetris
   title: Tetris
   slug: tetris
