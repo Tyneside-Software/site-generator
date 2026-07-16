@@ -28,3 +28,8 @@ New Text Document.html
 rufus.com
 *.iso
 
+
+image (4).jpg
+*.jpg
+!static/**/*.jpg
+
