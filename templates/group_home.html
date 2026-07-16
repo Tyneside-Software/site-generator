@@ -3,72 +3,159 @@
 {% block body %}
   <header class="hero">
     <div class="wrap">
-      <p class="hero-kicker">Tyneside Group</p>
+      <p class="hero-kicker">Main entrance · Howden Community Hub</p>
       <h1>TYNESIDE<br>GROUP</h1>
       <p class="hero-tag">
-        Software. Cleaning. Charity.<br>
-        Games for fun. Store with purpose.<br>
-        One North East vision.
+        One vision. Four doors.<br>
+        Jobs. Care. Software. Practice.
       </p>
       <p class="hero-lead">
-        Bigger than another software company. Serious tech, local business support,
-        social impact — plus a hobby games corner with no deadlines.
+        This is the front door to everything Michael is building on Tyneside:
+        a <strong>jobs engine</strong> in software, a <strong>volume cleaning</strong> business that pays people,
+        a <strong>charity</strong> that multiplies prosperity for new parents —
+        and a <strong>games lab</strong> where newbies practice real code.
       </p>
-      <div class="hero-actions">
-        <a class="btn btn-fill btn-lg" href="#brands">Our brands →</a>
-        <a class="btn btn-magenta btn-lg" href="#why">Why we exist</a>
+      <div class="portal-strip" aria-label="Jump to a brand">
+        <a class="portal-pill pill-software" href="https://tyneside.software/">Software</a>
+        <a class="portal-pill pill-cleaning" href="https://tyneside.cleaning/">Cleaning</a>
+        <a class="portal-pill pill-charity" href="https://tyneside.charity/">Charity</a>
+        <a class="portal-pill pill-games" href="https://tyneside.games/">Games</a>
+        <a class="portal-pill pill-store" href="https://tyneside.store/">Store</a>
+      </div>
+      <div class="hero-actions" style="margin-top:1.5rem">
+        <a class="btn btn-fill btn-lg" href="#doors">Explore the family →</a>
+        <a class="btn btn-secondary btn-lg" href="#loop">How it fits together</a>
       </div>
     </div>
   </header>
 
-  <section class="section" id="brands">
+  <section class="section" id="doors">
     <div class="wrap-wide">
-      <h2>The three-pronged plan</h2>
-      <p class="lede">Each brand stands alone. Together they create a jobs engine for the region.</p>
-      {% include "includes/family_cards.html" %}
+      <h2>Choose your door</h2>
+      <p class="lede">
+        Three serious pillars — plus games for coding practice.
+        Pick where you want to go; each site has its own look, same mission underneath.
+      </p>
 
-      <div class="panel panel-m" style="margin-top:1.5rem;text-align:center">
-        <p class="pixel-label">Also in the family</p>
-        <h3>Tyneside Games</h3>
-        <p style="margin:0.5rem 0 1rem">Hobby code and small games — no commercial pressure. Maybe one will be finished one day.</p>
-        <a class="btn btn-magenta" href="https://tyneside.games/">tyneside.games →</a>
-        <a class="btn btn-fill" href="https://tyneside.store/" style="margin-left:0.5rem">tyneside.store →</a>
+      <div class="portal-grid">
+        <a class="portal-card portal-software" href="https://tyneside.software/">
+          <p class="portal-kicker">01 · Jobs &amp; products</p>
+          <h3>Tyneside Software</h3>
+          <p>
+            The jobs engine. Data, logistics, and field-services software —
+            plus websites and real client work that fund junior roles.
+            Everyone welcome; space to think differently. CVs are a core priority.
+            Start with passions in data &amp; logistics; take any problem great or small.
+          </p>
+          <span class="portal-go">Enter software →</span>
+        </a>
+
+        <a class="portal-card portal-cleaning" href="https://tyneside.cleaning/">
+          <p class="portal-kicker">02 · Volume &amp; reach</p>
+          <h3>Tyneside Cleaning</h3>
+          <p>
+            Market sweet-spot packs (£30 / 2 hours) for maximum reach.
+            Every pound to cleaner fees — zero founder draw.
+            First area: <strong>Howden Ward</strong>, from Howden Community Hub.
+            Commercial wins can fund charity and grow the cycle.
+          </p>
+          <span class="portal-go">Enter cleaning →</span>
+        </a>
+
+        <a class="portal-card portal-charity" href="https://tyneside.charity/">
+          <p class="portal-kicker">03 · Multiply impact</p>
+          <h3>Tyneside Charity</h3>
+          <p>
+            Free two-hour welcome-home cleans for new parents —
+            born from Michael’s own rough times and the weeks after Harriet.
+            Not a one-off gift: cleaners get paid work, software gets proven,
+            prosperity multiplies. Starting Howden Ward (~150 births/yr est.).
+          </p>
+          <span class="portal-go">Enter charity →</span>
+        </a>
+
+        <a class="portal-card portal-games" href="https://tyneside.games/">
+          <p class="portal-kicker">04 · Practice &amp; play</p>
+          <h3>Tyneside Games</h3>
+          <p>
+            Just-for-fun coding practice for our newbies — and anyone learning by building.
+            Small browser games, no sales pitch, no deadlines.
+            Ship when ready. Get good by making things people can play.
+          </p>
+          <span class="portal-go">Enter games →</span>
+        </a>
       </div>
-      <p class="lede" style="margin-top:1rem">
-        <strong>Store:</strong> white-label craft blanks via RST Wholesale; customer pays +2% donated to charity.
+
+      <p class="lede" style="margin-top:1.75rem;margin-bottom:0.75rem">
+        Also in the family:
+        <a href="https://tyneside.store/">Tyneside Store</a>
+        — white-label craft blanks via RST Wholesale; customer pays +2% donated to charity.
       </p>
     </div>
   </section>
 
-  <section class="section section-alt" id="why">
+  <section class="section section-alt" id="loop">
     <div class="wrap">
-      <h2>Why we’re doing this</h2>
+      <h2>How the three pillars work together</h2>
+      <p class="lede">
+        One ecosystem. Cleaning creates volume and paid hours.
+        Charity multiplies care and demand. Software trains people and runs the ops.
+        Games train hands and brains without commercial pressure.
+      </p>
+      <div class="loop-row">
+        <div class="loop-step ls-clean">
+          <span class="n">1</span>
+          <h3>Cleaning</h3>
+          <p>
+            Volume work at market rates. Pay cleaners. Find commercial contracts.
+            Feed surplus and proof into charity and software.
+          </p>
+        </div>
+        <div class="loop-step ls-charity">
+          <span class="n">2</span>
+          <h3>Charity</h3>
+          <p>
+            Free welcome-home cleans for new parents. Paid cleaner hours.
+            The “why” that makes money multiply instead of disappear.
+          </p>
+        </div>
+        <div class="loop-step ls-soft">
+          <span class="n">3</span>
+          <h3>Software</h3>
+          <p>
+            Field services, data, websites, training on the job.
+            Jobs and strong CVs — expand wherever the work is.
+          </p>
+        </div>
+      </div>
+      <p class="center" style="margin-top:1.5rem">
+        <a class="btn btn-secondary" href="https://tyneside.software/about.html">Meet Michael →</a>
+        <a class="btn btn-fill" href="https://tyneside.software/#vision-jobs" style="margin-left:0.5rem">Software vision →</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="why">
+    <div class="wrap">
+      <h2>Why this exists</h2>
       <div class="panel">
         <p style="margin-bottom:1rem">
-          Michael grew up in Seaham watching old industries disappear and too much reliance on subsidies.
-          Career: CloudTrade £25.8m, Advanced, Cloud Connect £600k ARR — goal bigger than another exit.
+          Michael grew up in Seaham watching old industries go and too much reliance on subsidies.
+          Career path: CloudTrade (£25.8m exit), Head of Engineering at Advanced,
+          CTO &amp; Co-Founder of <a href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">Cloud Connect Software</a>
+          (independent company — main income that fuels this dream).
         </p>
         <p style="margin-bottom:1rem">
-          Build real jobs and capability in Tyneside — for the next generation, not just one family.
-          While the core product is built, <strong>paid websites for local businesses</strong> fund junior
-          engineering roles from the ground up — the <a href="https://tyneside.software/#jobs">jobs engine</a>.
+          The goal is bigger than another exit: <strong>jobs and capability on Tyneside</strong> —
+          for people entering work, for neurodivergent minds that need space to think differently,
+          and for families who just need two hours of peace after a baby arrives.
         </p>
         <p style="margin:0">
-          Lewis starts part-time coding at 13. Daughters get the same shot.
-          Generational wealth, capability, and a pathway from local talent to skilled engineers.
+          Based at <strong>Howden Community Hub</strong>. First service area:
+          <strong>Howden Ward</strong>. Then the next ward — as far as it keeps working.
         </p>
       </div>
-    </div>
-  </section>
-
-  <section class="section" id="founder">
-    <div class="wrap center">
-      <h2>Founder</h2>
-      <p class="lede">
-        <strong style="color:var(--neon-c)">Michael Thomson</strong> — Ex-Head of Engineering, Advanced •
-        CloudTrade exit • CTO &amp; Co-Founder, Cloud Connect • Born Seaham 1992
-      </p>
-      <blockquote class="quote">
+      <blockquote class="quote" style="margin-top:1.25rem">
         “You have a real story… you want to share and give back.”
         <footer>— Julie Marriott, CEO Family Gateway</footer>
       </blockquote>
@@ -78,7 +165,7 @@
   <section class="section section-alt" id="company">
     <div class="wrap center">
       <h2>Company</h2>
-      <div class="panel panel-c" style="display:inline-block;text-align:left;max-width:28rem">
+      <div class="panel panel-c" style="display:inline-block;text-align:left;max-width:32rem">
         <p style="margin:0;color:var(--text)">
           <strong style="color:var(--heading)">Tyneside Software Ltd</strong><br>
           Company #17326934 · Inc. 8 July 2026<br>
@@ -87,7 +174,7 @@
           SIC 58290
         </p>
         <p style="margin:1rem 0 0">
-          <a href="https://github.com/Tyneside-Software/docs">Read full vision on GitHub →</a>
+          <a href="https://github.com/Tyneside-Software/docs">Full vision on GitHub →</a>
         </p>
       </div>
     </div>
@@ -95,12 +182,20 @@
 
   <section class="section-cta" id="contact">
     <div class="wrap">
-      <h2>Ready to talk?</h2>
-      <p class="lede" style="color:var(--text)">
-        Partnerships, press, cleaners, charity referrals — one inbox.
+      <h2>Not sure which door?</h2>
+      <p class="lede">
+        One inbox for the whole group — software, cleaning, charity, games, store, or Cloud Connect introductions.
       </p>
       <a class="btn btn-fill btn-lg" href="{{ site.mailto }}">{{ site.email }}</a>
-      <p class="hero-meta">Proudly made on the banks of the Tyne</p>
+      <p class="hero-meta" style="margin-top:1.25rem">
+        Coffee at Howden Community Hub · Proudly made on the banks of the Tyne
+      </p>
+      <div class="portal-strip" style="margin-top:1.25rem">
+        <a class="portal-pill pill-software" href="https://tyneside.software/">Software</a>
+        <a class="portal-pill pill-cleaning" href="https://tyneside.cleaning/">Cleaning</a>
+        <a class="portal-pill pill-charity" href="https://tyneside.charity/">Charity</a>
+        <a class="portal-pill pill-games" href="https://tyneside.games/">Games</a>
+      </div>
     </div>
   </section>
 {% endblock %}
