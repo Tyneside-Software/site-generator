@@ -3,7 +3,9 @@
 {% block body %}
   <header class="hero">
     <div class="wrap">
-      <p class="hero-kicker">Charity · personal · not a pitch</p>
+      {% set depth = 1 %}
+      {% include "includes/depth_trail.html" %}
+      <p class="hero-kicker">Charity · personal · not a pitch · layer 1</p>
       <h1>WHY I’M<br>WALKING THROUGH</h1>
       <p class="hero-tag">
         A private note, made public with care.<br>
@@ -195,6 +197,18 @@
           It is the human ledger behind the free welcome-home cleans.
         </p>
       </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="deeper">
+    <div class="wrap center">
+      <h2>If you want to go deeper</h2>
+      <p class="lede">
+        One more step in: the belief system I built for myself and the family —
+        not God, but a living map cast in stories that travel.
+        Only if you meant to keep walking.
+      </p>
+      <a class="btn btn-secondary btn-lg" href="beliefs.html">Beliefs &amp; values →</a>
     </div>
   </section>
 
