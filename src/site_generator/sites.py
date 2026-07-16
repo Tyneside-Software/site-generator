@@ -54,10 +54,10 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.cleaning",
         title="Tyneside Cleaning",
         brand_word="CLEANING",
-        tagline="Local cleaners. Real support. Professional results.",
+        tagline="Volume cleaning. Every pound to cleaners. Grow forever.",
         description=(
-            "Supporting North East cleaning entrepreneurs with free software, "
-            "websites, and paid work through community programmes."
+            "Market-rate £30/2-hour packs for reach and volume. All revenue to cleaner fees — "
+            "no founder draw. Jobs, software customers, surplus to charity; postcode by postcode."
         ),
         email="hello@tyneside.cleaning",
         cta_label="Get in touch",
