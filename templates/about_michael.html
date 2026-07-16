@@ -23,7 +23,8 @@
       <p class="hero-meta">
         <a href="{{ home_href }}">← Tyneside Software home</a>
         · Based at <strong>Howden Community Hub</strong>
-        · <a href="mailto:michael@tyneside.software">michael@tyneside.software</a>
+        · <a href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp {{ site.phone_display }}</a>
+        · <a href="{{ site.mailto }}">{{ site.email }}</a>
       </p>
     </div>
   </header>
@@ -133,7 +134,8 @@
         </ul>
         <p style="margin-top:1rem;color:var(--muted)">
           Partner, customer, or someone looking for a path into tech —
-          <a href="mailto:michael@tyneside.software">get in touch</a>.
+          <a href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp me</a>
+          (or <a href="{{ site.mailto }}">email</a> — slower).
         </p>
       </div>
     </div>
@@ -179,9 +181,9 @@
       <h2>Talk to me</h2>
       <p class="lede">
         Jobs, partnerships, field services, document automation, or Cloud Connect introductions —
-        one inbox.
+        WhatsApp first; email if you prefer (slower).
       </p>
-      <a class="btn btn-fill btn-lg" href="mailto:michael@tyneside.software">michael@tyneside.software</a>
+      {% include "includes/contact_block.html" %}
       <p class="hero-meta" style="margin-top:1.25rem">
         <a href="{{ home_href }}">Tyneside Software</a>
         · <a href="https://tyneside.charity/">Charity</a>

@@ -5,6 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+# Shared contact — WhatsApp is primary (where Michael pays attention)
+PHONE_E164 = "447411949215"
+PHONE_DISPLAY = "+44 7411 949215"
+CONTACT_EMAIL = "michael@tyneside.software"
+
 
 @dataclass(frozen=True)
 class Site:
@@ -32,6 +37,14 @@ class Site:
     def mailto(self) -> str:
         return f"mailto:{self.email}"
 
+    @property
+    def phone_display(self) -> str:
+        return PHONE_DISPLAY
+
+    @property
+    def whatsapp(self) -> str:
+        return f"https://wa.me/{PHONE_E164}"
+
 
 SITES: tuple[Site, ...] = (
     Site(
@@ -45,8 +58,8 @@ SITES: tuple[Site, ...] = (
             "Vertical logistics and work-management software for field services. "
             "Starting with cleaning — free for local businesses."
         ),
-        email="michael@tyneside.software",
-        cta_label="Talk to Michael",
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp Michael",
     ),
     Site(
         id="cleaning",
@@ -59,8 +72,8 @@ SITES: tuple[Site, ...] = (
             "Starting Howden Ward. Market-rate £30/2-hour packs for reach and volume. "
             "All revenue to cleaner fees — no founder draw. Based at Howden Community Hub."
         ),
-        email="michael@tyneside.software",
-        cta_label="Get in touch",
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp us",
     ),
     Site(
         id="charity",
@@ -73,8 +86,8 @@ SITES: tuple[Site, ...] = (
             "Free 2-hour welcome-home deep cleans for new parents — starting Howden Ward "
             "(~150 births/year est.). Based at Howden Community Hub. Cleaners paid £15/hr."
         ),
-        email="michael@tyneside.software",
-        cta_label="Get involved",
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp us",
     ),
     Site(
         id="group",
@@ -87,8 +100,8 @@ SITES: tuple[Site, ...] = (
             "Main entrance to Tyneside: software jobs engine, volume cleaning, "
             "welcome-home charity, and games for newbie coding practice."
         ),
-        email="michael@tyneside.software",
-        cta_label="Talk to Michael",
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp Michael",
     ),
     Site(
         id="games",
@@ -101,8 +114,8 @@ SITES: tuple[Site, ...] = (
             "Everything here was built completely and 100% by Lewis in one night "
             "from a standing start, aged 12. That is what we can teach newbies."
         ),
-        email="michael@tyneside.software",
-        cta_label="Say hello",
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp",
     ),
 )
 

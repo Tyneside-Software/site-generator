@@ -21,7 +21,8 @@
       </div>
       <p class="hero-meta">
         Michael Thomson · Father ·
-        <a href="mailto:michael@tyneside.software">michael@tyneside.software</a>
+        <a href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp {{ site.phone_display }}</a>
+        · <a href="{{ site.mailto }}">{{ site.email }}</a>
       </p>
     </div>
   </header>
@@ -153,9 +154,13 @@
         I would welcome a conversation about how to make one day a month work for Lewis
         and for the school. I am flexible on structure; I am firm on cooperation and care.
       </p>
-      <a class="btn btn-fill btn-lg" href="mailto:michael@tyneside.software?subject=Lewis%20%E2%80%94%20one%20day%20a%20month%20(Mr%20Merrit)">
-        Email Michael · michael@tyneside.software
+      <a class="btn btn-fill btn-lg" href="{{ site.whatsapp }}?text=Hello%20Michael%20%E2%80%94%20re%20Lewis%20one%20day%20a%20month%20(Mr%20Merrit)" rel="noopener" target="_blank">
+        WhatsApp Michael · {{ site.phone_display }}
       </a>
+      <p class="hero-meta" style="margin-top:1.15rem">
+        WhatsApp is fastest. Email is fine but slower:
+        <a href="{{ site.mailto }}?subject=Lewis%20%E2%80%94%20one%20day%20a%20month%20(Mr%20Merrit)">{{ site.email }}</a>
+      </p>
       <p class="hero-meta" style="margin-top:1.25rem">
         <a href="{{ home_href }}">← Software home</a>
         · <a href="about.html">About Michael</a>
