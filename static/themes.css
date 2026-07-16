@@ -311,43 +311,6 @@
   font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* Quiet breadcrumb for personal depth pages (charity only) */
-.theme-charity .depth-trail {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35rem 0.5rem;
-  margin: 0 0 1.25rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0.85;
-}
-
-.theme-charity .depth-trail a {
-  color: var(--muted);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-}
-
-.theme-charity .depth-trail a:hover {
-  color: var(--link);
-  border-bottom-color: currentColor;
-  text-decoration: none;
-}
-
-.theme-charity .depth-trail .depth-sep {
-  opacity: 0.45;
-  user-select: none;
-}
-
-.theme-charity .depth-trail .depth-here {
-  color: var(--heading);
-  opacity: 1;
-}
-
 /* ========== GROUP — portal that unites all brands ========== */
 /* Software blue · Cleaning teal · Charity rose · Games neon */
 .theme-group {

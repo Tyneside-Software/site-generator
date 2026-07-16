@@ -1,1 +1,0 @@
-<!-- Body in templates/charity_living_faith.html -->
