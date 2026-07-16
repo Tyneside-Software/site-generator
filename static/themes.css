@@ -614,14 +614,6 @@
   background: var(--btn-fill-bg);
 }
 
-  --footer-bg: #0c0a09;
-  --footer-border: 1px solid #2e2924;
-  --footer-text: #78716c;
-  --footer-link: #a8a29e;
-  --footer-link-active: #fbbf24;
-  --footer-link-bg: rgba(217, 119, 6, 0.12);
-}
-
 /* ========== STORE — retail craft / clean shop ========== */
 .theme-store {
   color-scheme: light;
