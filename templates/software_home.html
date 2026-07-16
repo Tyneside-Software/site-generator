@@ -3,45 +3,111 @@
 {% block body %}
   <header class="hero">
     <div class="wrap">
-      <p class="hero-kicker">Tyneside Software</p>
+      <p class="hero-kicker">Tyneside Software · jobs first</p>
       <h1>TYNESIDE<br>SOFTWARE</h1>
       <p class="hero-tag">
-        Software with purpose.<br>
         Jobs with legacy.<br>
+        Any software problem, great or small.<br>
         Built from the North East.
       </p>
       <p class="hero-lead">
-        <strong>Jobs are the objective</strong> — good ones if we can, and high-quality CVs either way.
-        We start with data and logistics (our passions), train people on the job,
-        and take on any problem great or small. Everyone is welcome; different minds are at home here.
+        <strong>Jobs are the objective</strong> — train people on the job, build strong CVs,
+        take on work that funds the next hire. We partner with
+        <a href="#cloud-connect"><strong>Cloud Connect Software</strong></a>
+        (the main money-earner today — it funds this vision), offer field software in support of our
+        charitable goals, and take on <strong>any software contracting</strong> we can make work.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-fill btn-lg" href="#vision-jobs">Our vision →</a>
-        <a class="btn btn-secondary btn-lg" href="about.html">About Michael</a>
+        <a class="btn btn-fill btn-lg" href="#cloud-connect">Cloud Connect →</a>
+        <a class="btn btn-secondary btn-lg" href="#what-we-do">What we do</a>
       </div>
       <p class="hero-meta">
-        Company #17326934 • Inc. 8 July 2026
-        · Based at <strong>Howden Community Hub</strong>
-        · <a href="about.html">About the founder</a>
+        Company #17326934 · Howden Community Hub
+        · <a href="about.html">About Michael</a>
       </p>
     </div>
   </header>
 
-  <section class="section" id="product">
-    <div class="wrap center">
-      <h2>Field-service software</h2>
+  <section class="section" id="cloud-connect">
+    <div class="wrap">
+      <h2>Cloud Connect Software</h2>
       <p class="lede">
-        Vertical logistics and work-management for any business that sends people out to jobs —
-        scheduling, routing, customer portals, invoicing. Built to save hours every day.
+        <strong>Partner of Tyneside Software — not the same company.</strong>
+        Cloud Connect is the <strong>main money-earner right now</strong>.
+        It funds Michael’s vision: jobs, training, charity, and the wider Tyneside ecosystem.
       </p>
-      <ul class="list-features">
+      <div class="grid-2">
+        <div class="panel panel-c">
+          <h3>What it is</h3>
+          <p>
+            Cloud Connect helps organisations that need to pull data from
+            <strong>50,000+ invoices a year</strong> (and similar document volumes).
+            That volume is where commercial viability sits — messy real-world documents,
+            high accuracy, high flexibility.
+          </p>
+          <p style="margin-top:0.85rem">
+            On flexibility and accuracy, Cloud Connect beats basically everyone in the space that matters.
+          </p>
+        </div>
+        <div class="panel">
+          <h3>How it relates to Tyneside</h3>
+          <p>
+            Separate legal entity. Same founder. A genuine <strong>partner</strong>:
+            Cloud Connect pays the bills and fuels the dream —
+            Tyneside Software turns surplus capacity, skills, and purpose into jobs and impact.
+          </p>
+          <p style="margin-top:0.85rem">
+            <strong>Leads and introductions are welcome</strong> and help both sides:
+            a stronger Cloud Connect means more capacity to fund Tyneside’s work.
+          </p>
+        </div>
+      </div>
+      <p class="center" style="margin-top:1.5rem">
+        <a class="btn btn-fill btn-lg" href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">
+          Visit Cloud Connect Software →
+        </a>
+        <a class="btn btn-secondary btn-lg" href="about.html#cloud-connect" style="margin-left:0.5rem">
+          More on the partnership
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="what-we-do">
+    <div class="wrap">
+      <h2>What Tyneside Software does</h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Field software for charitable goals</h3>
+          <p>
+            We want to offer logistics and work-management software for field teams —
+            scheduling, routing, portals, the works — especially where it
+            <strong>supports our charitable cleaning and welcome-home goals</strong>
+            (free tools for cleaners on the programme, real ops for Howden Ward and beyond).
+          </p>
+          <p style="margin-top:0.85rem;color:var(--muted)">
+            Field software is a passion and a purpose vehicle — not the only thing we will ever do.
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <h3>Software contracting — any kind</h3>
+          <p>
+            We want to <strong>branch wider into any software contracting</strong>
+            we can deliver well: websites, integrations, data, automation, custom products.
+            Our only limit is how much work we can take on while training people properly.
+          </p>
+          <p style="margin-top:0.85rem;color:var(--muted)">
+            If it needs building and we can staff it with people who grow into the job — talk to us.
+          </p>
+        </div>
+      </div>
+      <ul class="list-features" style="margin-top:1.5rem">
         {% for item in [
-          "Job scheduling & dispatch",
-          "Routing for travelling teams",
-          "Customer portals",
-          "Invoicing & admin",
-          "Free tools for charity cleaners",
-          "Howden Ward welcome-home programme",
+          "Field services & logistics (charity-aligned first)",
+          "Data capture & document automation (Cloud Connect synergy)",
+          "Websites for local businesses (fund junior roles)",
+          "Custom software contracting — great or small",
+          "On-the-job training · strong CVs for our people",
         ] %}
           <li>{{ item }}</li>
         {% endfor %}
@@ -49,7 +115,7 @@
     </div>
   </section>
 
-  <section class="section section-alt" id="vision-jobs">
+  <section class="section" id="vision-jobs">
     <div class="wrap">
       <h2>Our vision</h2>
       <p class="lede">
@@ -62,61 +128,59 @@
         <div class="panel">
           <h3>Jobs for people at the start</h3>
           <p>
-            We aim to give work to those <strong>just entering the workforce</strong>,
-            or who may have <strong>no existing skills</strong> yet —
-            training on the job and building practical experience that sticks.
+            Work for those <strong>just entering the workforce</strong>,
+            or with <strong>no existing skills</strong> yet —
+            train on the job, build practical experience that sticks.
           </p>
         </div>
         <div class="panel panel-c">
           <h3>CVs are a core priority</h3>
           <p>
-            <strong>Jobs are the objective</strong> — good ones if we can manage it.
-            Either way, <strong>high-quality CVs for our people</strong> are non-negotiable:
+            <strong>Jobs are the objective</strong> — good ones if we can.
+            <strong>High-quality CVs</strong> for our people are non-negotiable:
             real delivery, real references, real proof of work.
           </p>
         </div>
         <div class="panel">
           <h3>Any problem, great or small</h3>
           <p>
-            Our only limit is how much work we can achieve.
-            We will apply ourselves to <strong>any problem great and small</strong>.
-            Start with passions — <strong>data and logistics</strong> — then expand wherever the work takes us.
+            Only limit: how much work we can achieve.
+            Data and logistics are passions; contracting is wide open.
+            Expand wherever the work takes us.
           </p>
         </div>
         <div class="panel panel-m">
           <h3>Experience + determination</h3>
           <p>
-            With deep experience scaling software teams and delivering high-quality products,
-            and a team with the determination to succeed — the sky is really the limit.
+            Scaling software teams, high-quality products, a team that wants to win —
+            the sky is really the limit.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="jobs">
+  <section class="section section-alt" id="jobs">
     <div class="wrap">
       <h2>How we create jobs in Tyneside</h2>
       <p class="lede">
-        While we’re building core <strong>data and logistics</strong> products,
-        our team also builds <strong>professional websites for local businesses</strong>
-        and takes on field-service and automation work that funds junior roles.
+        Cloud Connect funds the runway. Commercial contracting and websites fund junior roles.
+        Field software serves charity and cleaners. Everything points at employment.
       </p>
       <div class="grid-2" style="margin-bottom:1.25rem">
         <div class="panel">
-          <h3>Website revenue → junior roles</h3>
+          <h3>Paid work → junior roles</h3>
           <p>
-            Every website for a paying customer funds real engineering jobs from the bottom up.
-            People entering or re-entering work get trained on live client delivery.
-            Every pound of that revenue recycles into more junior roles.
+            Websites, field tools, and any contract we can staff —
+            people entering or re-entering work get trained on live delivery.
+            Revenue recycles into more junior roles.
           </p>
         </div>
         <div class="panel panel-c">
           <h3>Our own sites are the proof</h3>
           <p>
-            This site, the charity site, the cleaner portal — built in-house.
-            Living proof of delivery, and a pathway from local talent to skilled engineers —
-            one project and one strong CV at a time.
+            This site, charity, cleaning, group, games (Lewis, 12, one night) —
+            living proof of delivery and of what we can teach from a standing start.
           </p>
         </div>
       </div>
@@ -128,9 +192,12 @@
 
   <section class="section" id="vision">
     <div class="wrap-wide">
-      <h2>The three-pronged plan</h2>
-      <p class="lede">Serious tech, local business support, social impact — one family of brands.</p>
+      <h2>The wider Tyneside plan</h2>
+      <p class="lede">Software · cleaning · charity — one jobs-and-impact ecosystem. Enter via the group portal.</p>
       {% include "includes/family_cards.html" %}
+      <p class="center" style="margin-top:1.25rem">
+        <a class="btn btn-secondary" href="https://tyneside.group/">tyneside.group →</a>
+      </p>
     </div>
   </section>
 
@@ -151,17 +218,17 @@
     <div class="wrap center">
       <h2>Built by Michael Thomson</h2>
       <p class="lede">
-        Ex-Head of Engineering at Advanced • CloudTrade £25.8m acquisition •
-        CTO &amp; Co-Founder of Cloud Connect (£600k ARR, 40% growth).
+        Ex-Head of Engineering at Advanced · CloudTrade £25.8m acquisition ·
+        CTO &amp; Co-Founder, Cloud Connect (partner · main income today).
       </p>
       <p class="lede">
-        Born Seaham 1992. Neurodivergent founder. Main goal:
-        <strong>create as many jobs as possible</strong> — train people in,
-        expand wherever the work is, start with a self-sustaining charity cleaning ecosystem.
+        Born Seaham 1992. Neurodivergent founder.
+        <strong>Create as many jobs as possible</strong> — train people in, contract widely,
+        support charity with field software where it helps.
       </p>
       <p style="margin-top:1.25rem">
         <a class="btn btn-fill" href="about.html">Full about page →</a>
-        <a class="btn btn-secondary" href="about.html#cloud-connect" style="margin-left:0.5rem">Cloud Connect Software</a>
+        <a class="btn btn-secondary" href="#cloud-connect" style="margin-left:0.5rem">Cloud Connect</a>
       </p>
     </div>
   </section>
@@ -170,11 +237,13 @@
     <div class="wrap">
       <h2>Ready to talk?</h2>
       <p class="lede" style="color:var(--text)">
-        Coffee at Howden Community Hub? Or just drop a message.
+        Contracting, field software, training, charity partnership, or
+        <strong>Cloud Connect introductions</strong> — coffee at Howden Community Hub, or just message.
       </p>
       <a class="btn btn-fill btn-lg" href="{{ site.mailto }}">{{ site.email }}</a>
       <p class="hero-meta">
-        10-year vision in motion • Lewis starts coding at 13 • Legacy for family &amp; North East
+        <a href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">Cloud Connect Software</a>
+        · Partner · Funds the vision
       </p>
     </div>
   </section>
