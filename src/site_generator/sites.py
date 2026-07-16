@@ -56,8 +56,8 @@ SITES: tuple[Site, ...] = (
         brand_word="CLEANING",
         tagline="Volume cleaning. Every pound to cleaners. Grow forever.",
         description=(
-            "Market-rate £30/2-hour packs for reach and volume. All revenue to cleaner fees — "
-            "no founder draw. Jobs, software customers, surplus to charity; postcode by postcode."
+            "Starting Howden Ward. Market-rate £30/2-hour packs for reach and volume. "
+            "All revenue to cleaner fees — no founder draw. Based at Howden Community Hub."
         ),
         email="michael@tyneside.software",
         cta_label="Get in touch",
@@ -68,10 +68,10 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.charity",
         title="Tyneside Charity",
         brand_word="CHARITY",
-        tagline="Free cleans for new parents in Forest Hall.",
+        tagline="Free cleans for new parents in Howden Ward.",
         description=(
-            "Free 2-hour welcome-home deep cleans for new parents in Forest Hall "
-            "(~400 births/year when fully scaled). Cleaners paid £15/hr."
+            "Free 2-hour welcome-home deep cleans for new parents — starting Howden Ward "
+            "(~150 births/year est.). Based at Howden Community Hub. Cleaners paid £15/hr."
         ),
         email="michael@tyneside.software",
         cta_label="Get involved",
