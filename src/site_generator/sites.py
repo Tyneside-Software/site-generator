@@ -96,10 +96,10 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.games",
         title="Tyneside Games",
         brand_word="GAMES",
-        tagline="Hobby code. Small games. No rush.",
+        tagline="Built by Lewis, aged 12 — one night, standing start.",
         description=(
-            "A playground for hobby games and experiments from Tyneside. "
-            "Nothing commercial — just code for fun. Maybe one will be finished one day."
+            "Everything here was built completely and 100% by Lewis in one night "
+            "from a standing start, aged 12. That is what we can teach newbies."
         ),
         email="michael@tyneside.software",
         cta_label="Say hello",

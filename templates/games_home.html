@@ -3,20 +3,21 @@
 {% block body %}
   <header class="hero">
     <div class="wrap">
-      <p class="hero-kicker">Arcade · insert coin</p>
+      <p class="hero-kicker">Built by Lewis · aged 12 · one night</p>
       <h1>TYNESIDE<br>GAMES</h1>
       <p class="hero-tag">
-        Hobby code.<br>
-        Small games.<br>
-        No rush.
+        From a standing start.<br>
+        Completely. 100%.<br>
+        In one night.
       </p>
       <p class="hero-lead">
-        Experiments, half-finished ideas, and the occasional playable thing.
-        Not a product company. Just for fun. Maybe one will be finished one day.
+        Everything on this site was built <strong>completely and 100% by my son Lewis</strong>
+        in <strong>one night</strong>, from a standing start, aged <strong>12</strong>.
+        That is what I can teach newbies.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-fill btn-lg" href="#shelf">The shelf →</a>
-        <a class="btn btn-magenta btn-lg" href="#about">Why this exists</a>
+        <a class="btn btn-fill btn-lg" href="#shelf">Play the shelf →</a>
+        <a class="btn btn-secondary btn-lg" href="https://tyneside.software/">How we train people</a>
       </div>
     </div>
   </header>
@@ -26,9 +27,9 @@
       <h2>The shelf</h2>
       <p class="lede">
         {% if games %}
-          {{ games | length }} game{% if games | length != 1 %}s{% endif %} ready to play. INSERT COIN.
+          {{ games | length }} game{% if games | length != 1 %}s{% endif %} ready to play.
         {% else %}
-          Empty shelves are honest shelves.
+          Empty shelf for now.
         {% endif %}
       </p>
 
@@ -46,56 +47,22 @@
         </div>
       {% else %}
         <div class="empty-shelf">
-          <p style="font-size:2rem;margin:0 0 0.5rem" aria-hidden="true">🎲</p>
-          <p>Nothing playable yet. Waiting for the first WIP to graduate.</p>
+          <p>Nothing playable yet.</p>
         </div>
       {% endif %}
     </div>
   </section>
 
-  <section class="section section-alt" id="about">
-    <div class="wrap center">
-      <h2>Why tyneside.games</h2>
-      <p class="lede">
-        Serious work lives on software, cleaning, and charity.
-        This domain is the pressure valve — code with no business case. Pure hobby.
-      </p>
-      <p class="lede">
-        Same Tyneside arcade skin as the rest of the family. Ship when ready.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" id="rules">
-    <div class="wrap-wide">
-      <h2>House rules</h2>
-      <div class="grid-3">
-        <div class="panel">
-          <h3>No deadlines</h3>
-          <p>Finished is optional. Half-fun prototypes allowed.</p>
-        </div>
-        <div class="panel panel-m">
-          <h3>No sales pitch</h3>
-          <p>Not SaaS. Not freemium. Just games.</p>
-        </div>
-        <div class="panel panel-c">
-          <h3>Share when ready</h3>
-          <p>Fun enough for a friend? It goes on the shelf.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="section-cta" id="contact">
     <div class="wrap">
-      <h2>Got a game idea?</h2>
-      <p class="lede" style="color:var(--text)">
-        Or found a bug in something half-built? Replies on hobby time.
+      <p class="lede" style="color:var(--text);font-size:1.15rem;max-width:40rem;margin-inline:auto">
+        Everything here was built completely and 100% by my son Lewis in one night
+        from a standing start, aged 12. So this is what I can teach newbies.
       </p>
-      <a class="btn btn-fill btn-lg" href="{{ site.mailto }}">{{ site.email }}</a>
-      <p class="hero-meta">
-        Part of <a href="https://tyneside.group/">Group</a>
-        · Serious stuff at <a href="https://tyneside.software/">Software</a>
+      <p class="hero-meta" style="margin-top:1.5rem">
+        <a href="https://tyneside.group/">Tyneside Group</a>
+        · <a href="https://tyneside.software/">Software</a>
+        · <a href="{{ site.mailto }}">{{ site.email }}</a>
       </p>
     </div>
   </section>
