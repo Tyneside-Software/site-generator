@@ -9,6 +9,7 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.charity](https://tyneside.charity) | `charity` | `Tyneside-Software/tyneside.charity` |
 | [tyneside.group](https://tyneside.group) | `group` | `Tyneside-Software/tyneside.group` |
 | [tyneside.games](https://tyneside.games) | `games` | `Tyneside-Software/tyneside.games` |
+| [tyneside.technology](https://tyneside.technology) | `technology` | `Tyneside-Software/tyneside.technology` |
 
 ## Layout
 
