@@ -59,7 +59,7 @@ SITES: tuple[Site, ...] = (
             "Market-rate £30/2-hour packs for reach and volume. All revenue to cleaner fees — "
             "no founder draw. Jobs, software customers, surplus to charity; postcode by postcode."
         ),
-        email="hello@tyneside.cleaning",
+        email="michael@tyneside.software",
         cta_label="Get in touch",
     ),
     Site(
@@ -73,7 +73,7 @@ SITES: tuple[Site, ...] = (
             "Free 2-hour welcome-home deep cleans for new parents in Forest Hall "
             "(~400 births/year when fully scaled). Cleaners paid £15/hr."
         ),
-        email="hello@tyneside.charity",
+        email="michael@tyneside.software",
         cta_label="Get involved",
     ),
     Site(
@@ -115,7 +115,7 @@ SITES: tuple[Site, ...] = (
             "Tyneside Store white-labels RST Wholesale. Same catalogue fulfilled by RST; "
             "we add 2% and donate it to Tyneside Charity."
         ),
-        email="hello@tyneside.store",
+        email="michael@tyneside.software",
         cta_label="Shop now",
     ),
 )
