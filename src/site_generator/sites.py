@@ -115,7 +115,7 @@ SITES: tuple[Site, ...] = (
             "Profit funds good stories — appeals system for free gear when it matters."
         ),
         email=CONTACT_EMAIL,
-        cta_label="Shop ThinkPad",
+        cta_label="Shop · £250",
     ),
     Site(
         id="games",
