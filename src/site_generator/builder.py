@@ -126,6 +126,7 @@ def _site_context(
             "title": meta.get("title", site.title),
             "description": meta.get("description", site.description),
             "body_html": body_html,
+            "body_class": meta.get("body_class", ""),
         },
         "sites": SITES,
         "games": _load_games_catalog(content_dir),
@@ -155,12 +156,17 @@ def build_site(site: Site) -> Path:
     html = template.render(**context)
     (dest / "index.html").write_text(html, encoding="utf-8")
 
-    # Extra pages: any other *.md next to index.md
+    # Extra pages: *.md next to index.md that have a matching *.yaml (or not README)
+    skip_md = {"index.md", "readme.md"}
     for md_path in sorted(content_dir.glob("*.md")):
-        if md_path.name == "index.md":
+        if md_path.name.lower() in skip_md:
             continue
         stem = md_path.stem
-        page_meta = _load_page_meta(content_dir / f"{stem}.yaml")
+        # Only build if there is explicit page meta, or stem is a known content page
+        page_meta_path = content_dir / f"{stem}.yaml"
+        if not page_meta_path.exists():
+            continue
+        page_meta = _load_page_meta(page_meta_path)
         page_body = _render_markdown(md_path)
         page_template = page_meta.get("template", "page.html")
         page_context = _site_context(site, {
@@ -168,16 +174,17 @@ def build_site(site: Site) -> Path:
             "description": page_meta.get("description", site.description),
             **page_meta,
         }, page_body)
-        # Prefer explicit page meta title/description over site defaults
         page_context["page"] = {
             "title": page_meta.get("title", stem.replace("-", " ").title()),
             "description": page_meta.get("description", site.description),
             "body_html": page_body,
+            "body_class": page_meta.get("body_class", ""),
         }
         page_html = env.get_template(page_template).render(**page_context)
         (dest / f"{stem}.html").write_text(page_html, encoding="utf-8")
 
     _copy_static(site, dest)
+    _copy_site_app(site, dest)
 
     # Store catalogue JSON (if present) for client/debug + future checkout
     catalog_src = content_dir / "catalog"
@@ -191,6 +198,39 @@ def build_site(site: Site) -> Path:
     _write_nojekyll(dest)
 
     return dest
+
+
+def _copy_site_app(site: Site, dest: Path) -> None:
+    """Copy optional Node app bits (server, package.json) for sites that need them.
+
+    Technology uses Express + Tide; cleaning booking is fully static.
+    Never copies .env secrets.
+    """
+    content_dir = SITES_DIR / site.id
+    for name in (
+        "package.json",
+        "package-lock.json",
+        ".env.example",
+        "README.md",
+        "PROGRESS_SINCE_STRIPE_REMOVAL.txt",
+        ".gitignore",
+    ):
+        src = content_dir / name
+        if src.is_file():
+            shutil.copy2(src, dest / name)
+
+    for folder in ("server", "data"):
+        src = content_dir / folder
+        if not src.is_dir():
+            continue
+        target = dest / folder
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(
+            src,
+            target,
+            ignore=shutil.ignore_patterns(".env", "orders.json", "*.log"),
+        )
 
 
 def build_all(site_ids: list[str] | None = None) -> list[Path]:
