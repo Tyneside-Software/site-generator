@@ -33,3 +33,7 @@ image (4).jpg
 *.jpg
 !static/**/*.jpg
 
+
+zips/
+*.zip
+
