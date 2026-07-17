@@ -201,36 +201,16 @@ def build_site(site: Site) -> Path:
 
 
 def _copy_site_app(site: Site, dest: Path) -> None:
-    """Copy optional Node app bits (server, package.json) for sites that need them.
+    """Copy optional site extras (READMEs only).
 
-    Technology uses Express + Tide; cleaning booking is fully static.
-    Never copies .env secrets.
+    Technology shop is client-side for GitHub Pages (shop-config.js + Tide URL).
+    Node server/ is kept in the monorepo for optional later use but is NOT deployed.
     """
     content_dir = SITES_DIR / site.id
-    for name in (
-        "package.json",
-        "package-lock.json",
-        ".env.example",
-        "README.md",
-        "PROGRESS_SINCE_STRIPE_REMOVAL.txt",
-        ".gitignore",
-    ):
+    for name in ("README.md",):
         src = content_dir / name
         if src.is_file():
             shutil.copy2(src, dest / name)
-
-    for folder in ("server", "data"):
-        src = content_dir / folder
-        if not src.is_dir():
-            continue
-        target = dest / folder
-        if target.exists():
-            shutil.rmtree(target)
-        shutil.copytree(
-            src,
-            target,
-            ignore=shutil.ignore_patterns(".env", "orders.json", "*.log"),
-        )
 
 
 def build_all(site_ids: list[str] | None = None) -> list[Path]:
