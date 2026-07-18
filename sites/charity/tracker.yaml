@@ -1,0 +1,17 @@
+# Public donations & cleans tracker for tyneside.charity
+# Manual update process: add a row under donations when payment is confirmed in Tide
+# (target: within 3 business days), then rebuild & deploy.
+# Cleans delivered: count only — keep recipient families anonymous.
+
+updated: "2026-07-18"
+gbp_per_clean: 30
+
+# How many free 2-hour cleans have been completed (anonymous count).
+cleans_delivered: 0
+
+donations:
+  - date: "2026-07-18"
+    name: "Michael Thomson"
+    location: "Shiremoor"
+    amount_gbp: 300
+    note: "Initial donation"

@@ -104,6 +104,71 @@ def _load_store_catalog(content_dir: Path) -> dict:
     return data
 
 
+def _load_charity_tracker(content_dir: Path) -> dict:
+    """Optional donations/cleans tracker for the charity site."""
+    path = content_dir / "tracker.yaml"
+    empty = {
+        "updated": None,
+        "gbp_per_clean": 30,
+        "cleans_delivered": 0,
+        "donations": [],
+        "total_raised_gbp": 0,
+        "cleans_paid_for": 0,
+        "remainder_gbp": 0,
+    }
+    if not path.exists():
+        return empty
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected mapping in {path}")
+
+    donations = data.get("donations") or []
+    if not isinstance(donations, list):
+        raise ValueError(f"Expected list for donations in {path}")
+
+    gbp_per_clean = int(data.get("gbp_per_clean") or 30)
+    total = 0
+    normalized: list[dict] = []
+    for row in donations:
+        if not isinstance(row, dict):
+            continue
+        try:
+            amount = int(row.get("amount_gbp") or 0)
+        except (TypeError, ValueError):
+            amount = 0
+        total += amount
+        normalized.append(
+            {
+                "date": str(row.get("date") or ""),
+                "name": str(row.get("name") or "Anonymous"),
+                "location": str(row.get("location") or ""),
+                "amount_gbp": amount,
+                "note": str(row.get("note") or ""),
+            }
+        )
+
+    # Newest first for the public board
+    normalized.sort(key=lambda d: d["date"], reverse=True)
+
+    cleans_paid_for = total // gbp_per_clean if gbp_per_clean else 0
+    remainder_gbp = total % gbp_per_clean if gbp_per_clean else 0
+    try:
+        cleans_delivered = int(data.get("cleans_delivered") or 0)
+    except (TypeError, ValueError):
+        cleans_delivered = 0
+
+    return {
+        "updated": data.get("updated"),
+        "gbp_per_clean": gbp_per_clean,
+        "cleans_delivered": cleans_delivered,
+        "donations": normalized,
+        "total_raised_gbp": total,
+        "cleans_paid_for": cleans_paid_for,
+        "remainder_gbp": remainder_gbp,
+        "cleans_outstanding": max(0, cleans_paid_for - cleans_delivered),
+    }
+
+
 def _root_prefix(depth: int = 0) -> str:
     """Relative path from a page to the site root (empty string at root)."""
     if depth <= 0:
@@ -131,6 +196,7 @@ def _site_context(
         "sites": SITES,
         "games": _load_games_catalog(content_dir),
         "store": _load_store_catalog(content_dir),
+        "tracker": _load_charity_tracker(content_dir),
         # Relative path to site root for local file:// and nested pages
         "root": root,
         "home_href": f"{root}index.html" if root else "index.html",

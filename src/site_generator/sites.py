@@ -67,10 +67,10 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.cleaning",
         title="Tyneside Cleaning",
         brand_word="CLEANING",
-        tagline="Book a free slot. Clean homes and workspaces on Tyneside.",
+        tagline="Volume cleaning. Every pound to cleaners. Grow forever.",
         description=(
-            "Domestic and small-business cleaning. Live calendar booking — only free slots. "
-            "Howden first. WhatsApp or book online."
+            "Starting Howden Ward. Market-rate £30/2-hour packs for reach and volume. "
+            "All revenue to cleaner fees — no founder draw. Based at Howden Community Hub."
         ),
         email=CONTACT_EMAIL,
         cta_label="Book a clean",
@@ -83,11 +83,11 @@ SITES: tuple[Site, ...] = (
         brand_word="CHARITY",
         tagline="Free cleans for new parents in Howden Ward.",
         description=(
-            "Free 2-hour welcome-home deep cleans for new parents — starting Howden Ward "
-            "(~150 births/year est.). Based at Howden Community Hub. Cleaners paid £15/hr."
+            "Free welcome-home cleans for new parents in Howden Ward. Not a registered charity yet — "
+            "donations paid into Tyneside Cleaning. Promise: every £30 raised delivers one 2-hour free clean."
         ),
         email=CONTACT_EMAIL,
-        cta_label="WhatsApp us",
+        cta_label="Donate",
     ),
     Site(
         id="group",
