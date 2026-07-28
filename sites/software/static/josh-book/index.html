@@ -1,0 +1,2191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experience, Therefore — Joshua Thomson</title>
+  <meta name="description" content="Audiobook companion for Experience, Therefore by Joshua Thomson. Listen chapter by chapter with scripts and recall checks. All chapters unlocked.">
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --surface: #141b24;
+      --surface-2: #1a2430;
+      --border: #2a3644;
+      --text: #e8edf2;
+      --muted: #8fa3b8;
+      --accent: #3d9eff;
+      --accent-soft: rgba(61, 158, 255, 0.12);
+      --accent-glow: rgba(61, 158, 255, 0.35);
+      --success: #34d399;
+      --danger: #f87171;
+      --warn: #fbbf24;
+      --radius: 14px;
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(61, 158, 255, 0.15), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(52, 211, 153, 0.06), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(61, 158, 255, 0.25);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.6rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 32rem;
+      margin: 0 auto 1.25rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .meta span {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+    }
+
+    .instructions {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .instructions strong { color: var(--text); }
+
+    .episode-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .episode {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.35rem;
+      box-shadow: var(--shadow);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .episode:hover {
+      border-color: rgba(61, 158, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .episode.playing {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-glow), var(--shadow);
+    }
+
+    .episode.locked {
+      opacity: 0.72;
+    }
+
+    .episode.locked:hover {
+      transform: none;
+      border-color: var(--border);
+    }
+
+    .ep-locked-banner {
+      display: none;
+      margin-top: 0.85rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: 9px;
+      background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      color: var(--warn);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    .episode.locked .ep-locked-banner { display: block; }
+
+    .episode.locked .quiz-section { display: none; }
+
+    button:disabled, .btn.disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .btn-play:disabled {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .episode-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .ep-num {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 10px;
+      border: 1px solid rgba(61, 158, 255, 0.2);
+    }
+
+    .ep-num.intro { background: rgba(52, 211, 153, 0.12); color: var(--success); border-color: rgba(52, 211, 153, 0.25); }
+
+    .ep-info { flex: 1; min-width: 0; }
+
+    .ep-title {
+      font-size: 1.1rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+
+    .ep-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .ep-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    button, .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      border-radius: 9px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    button:active, .btn:active { transform: scale(0.97); }
+
+    .btn-play {
+      background: var(--accent);
+      color: #061018;
+    }
+
+    .btn-play:hover { background: #5aafff; }
+
+    .btn-play.playing {
+      background: var(--surface-2);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-download {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-download:hover {
+      background: #223040;
+      border-color: rgba(61, 158, 255, 0.3);
+    }
+
+    .btn-script {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-script:hover:not(:disabled) {
+      background: #223040;
+      color: var(--text);
+      border-color: rgba(61, 158, 255, 0.3);
+    }
+
+    .btn-script.open {
+      color: var(--accent);
+      border-color: rgba(61, 158, 255, 0.35);
+      background: var(--accent-soft);
+    }
+
+    .script-panel {
+      display: none;
+      margin-top: 0.85rem;
+      padding: 1rem 1.1rem;
+      border-radius: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      max-height: 22rem;
+      overflow-y: auto;
+    }
+
+    .script-panel.open { display: block; }
+
+    .script-panel.loading {
+      display: block;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .script-body {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    .script-body p { margin-bottom: 0.85rem; }
+    .script-body p:last-child { margin-bottom: 0; }
+
+    .episode.locked .script-panel,
+    .episode .script-panel:not(.open) { display: none; }
+
+    audio {
+      display: none;
+    }
+
+    .progress-wrap {
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    .episode.playing .progress-wrap { display: block; }
+
+    .progress-bar {
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+
+    .time {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+
+    .quiz-section {
+      margin-top: 1.25rem;
+      padding-top: 1.15rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .quiz-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .quiz-title {
+      font-size: 0.82rem;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .quiz-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .quiz-question {
+      margin-bottom: 1rem;
+    }
+
+    .quiz-question:last-child { margin-bottom: 0; }
+
+    .quiz-q-text {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 0.45rem;
+      line-height: 1.4;
+    }
+
+    .quiz-q-type {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-left: 0.35rem;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      padding: 0.45rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 0.88rem;
+      color: var(--muted);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .quiz-option:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .quiz-option:has(input:checked) {
+      background: var(--accent-soft);
+      border-color: rgba(61, 158, 255, 0.3);
+      color: var(--text);
+    }
+
+    .quiz-option input {
+      margin-top: 0.15rem;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+    }
+
+    .quiz-option.correct-pick {
+      background: rgba(52, 211, 153, 0.1);
+      border-color: rgba(52, 211, 153, 0.35);
+      color: var(--text);
+    }
+
+    .quiz-option.wrong-pick {
+      background: rgba(248, 113, 113, 0.1);
+      border-color: rgba(248, 113, 113, 0.35);
+      color: var(--text);
+    }
+
+    .quiz-option.missed-pick {
+      border-color: rgba(52, 211, 153, 0.25);
+      border-style: dashed;
+    }
+
+    .quiz-question.locked .quiz-option {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .quiz-question.locked .quiz-option:hover {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .quiz-question.locked .quiz-option.correct-pick:hover,
+    .quiz-question.locked .quiz-option.wrong-pick:hover,
+    .quiz-question.locked .quiz-option.missed-pick:hover {
+      color: var(--text);
+    }
+
+    .quiz-feedback {
+      margin-top: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .quiz-feedback.correct { color: var(--success); }
+    .quiz-feedback.incorrect { color: var(--danger); }
+
+    .quiz-footer {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-lock {
+      background: var(--success);
+      color: #042f1e;
+    }
+
+    .btn-lock:hover:not(:disabled) { background: #4ade80; }
+
+    .btn-lock:disabled {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      opacity: 1;
+    }
+
+    .quiz-results {
+      flex: 1;
+      min-width: 12rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .quiz-results strong { color: var(--text); }
+
+    .quiz-results .score-pass { color: var(--success); }
+    .quiz-results .score-miss { color: var(--warn); }
+
+    .btn-copy {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      padding: 0.45rem 0.8rem;
+    }
+
+    .btn-copy:hover {
+      background: #223040;
+      border-color: rgba(61, 158, 255, 0.3);
+    }
+
+    .btn-copy.copied {
+      border-color: rgba(52, 211, 153, 0.4);
+      color: var(--success);
+    }
+
+    .quiz-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .quiz-toolbar p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      max-width: 26rem;
+    }
+
+    .quiz-toolbar strong { color: var(--text); }
+
+    .quiz-toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .btn-reset {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      padding: 0.45rem 0.8rem;
+    }
+
+    .btn-reset:hover {
+      background: #223040;
+      border-color: rgba(248, 113, 113, 0.35);
+      color: var(--danger);
+    }
+
+    .progress-transfer {
+      display: none;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .progress-transfer.open { display: block; }
+
+    .progress-transfer label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-transfer textarea {
+      width: 100%;
+      min-height: 5.5rem;
+      resize: vertical;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font: inherit;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      padding: 0.65rem 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .progress-transfer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .copy-toast {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      background: var(--surface-2);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      color: var(--success);
+      padding: 0.65rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      z-index: 100;
+      transition: transform 0.25s ease;
+      pointer-events: none;
+    }
+
+    .copy-toast.show { transform: translateX(-50%) translateY(0); }
+
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer strong { color: var(--text); }
+
+    @media (max-width: 480px) {
+      .wrap { padding: 1.5rem 1rem 2.5rem; }
+      .episode { padding: 1.1rem; }
+      .ep-actions { flex-direction: column; }
+      .ep-actions button, .ep-actions .btn { justify-content: center; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge">tyneside.software · josh-book</div>
+      <h1>Experience, Therefore</h1>
+      <p class="subtitle">The Existence of God and The Impossibility Of Hell — audiobook companion by Joshua Thomson. Listen, read the script, and try the recall checks.</p>
+      <div class="meta">
+        <span>13 parts</span>
+        <span>Chapters + addenda + epilogue</span>
+        <span>All unlocked</span>
+      </div>
+    </header>
+
+    <div class="instructions">
+      <strong>How to use this:</strong> Every chapter is unlocked from the start — listen in any order. After each part, try the recall check and press <strong>Lock in answers</strong> to see feedback (you do not need a perfect score). Use <strong>Read script</strong> for the full text of that part. Progress saves on this device.
+    </div>
+
+    <div class="quiz-toolbar">
+      <p><strong>Recall check:</strong> Answer the quiz for practice and lock in to see results. Export/import if you want to continue on another device.</p>
+      <div class="quiz-toolbar-actions">
+        <button type="button" class="btn-copy" id="copy-all">Copy all Q&amp;A</button>
+        <button type="button" class="btn-copy" id="export-progress">Export progress</button>
+        <button type="button" class="btn-copy" id="import-progress">Import progress</button>
+        <button type="button" class="btn-reset" id="clear-session">Reset progress</button>
+      </div>
+    </div>
+
+    <div class="progress-transfer" id="import-panel">
+      <label for="import-code">Paste your progress code</label>
+      <textarea id="import-code" placeholder="Paste the code from Export progress…"></textarea>
+      <div class="progress-transfer-actions">
+        <button type="button" class="btn-lock" id="import-confirm">Restore progress</button>
+        <button type="button" class="btn-reset" id="import-cancel">Cancel</button>
+      </div>
+    </div>
+
+    <div class="episode-list" id="episodes"></div>
+
+    <footer>
+      Experience, therefore.<br>
+      <strong>Sentio Ergo Sum</strong> — Joshua Thomson
+    </footer>
+  </div>
+
+  <div class="copy-toast" id="copy-toast" aria-live="polite">Copied to clipboard</div>
+
+  <script>
+    // Prefer hosted release audio (keeps Pages repo small). Local audio/ works if empty.
+    const AUDIO_BASE_URL = "https://github.com/michaelthomsoncc/daily-news-site/releases/download/josh-book-audio-v1";
+
+    function pageBaseUrl() {
+      const { origin, pathname } = window.location;
+      if (pathname.endsWith("/")) return origin + pathname;
+      const last = pathname.split("/").pop() || "";
+      if (/\.[a-z0-9]+$/i.test(last)) return origin + pathname.replace(/[^/]+$/, "");
+      return origin + pathname + "/";
+    }
+
+    function pageAssetUrl(relativePath) {
+      return new URL(relativePath.replace(/^\//, ""), pageBaseUrl()).href;
+    }
+
+    function audioUrl(filename) {
+      const base = AUDIO_BASE_URL.trim().replace(/\/$/, "");
+      return base ? base + "/" + filename : pageAssetUrl("audio/" + filename);
+    }
+
+    const STORAGE_KEY = "josh-book-quiz-answers";
+    const LOCKED_KEY = "josh-book-quiz-locked";
+    const PROGRESS_PREFIX = "joshbook1:";
+
+    const SCRIPTS = {
+  "front": "Dedicated to Ellerose The Unicorn, the most interesting thing I have ever experienced. Thank you for journeying with me in experiencing the truth of this book before the words. I am eternally grateful.\n\nExperience, Therefore: The Existence of God and The Impossibility Of Hell; The Death of Faith By Logical Certainty Copyright 2026 Joshua Thomson All rights reserved. No part of this book may be reproduced, stored in a retrieval system, or transmitted in any form or by any means, electronic, mechanical, photocopying, recording, or otherwise, without the prior written permission of the author, except for brief quotations in critical reviews or articles. Third Edition: Revised and expanded. Published as a 'Pay What You Feel (Including Nothing)' by Sentio Ergo Sum Press, Newcastle-upon-Tyne, UK. sentio ergo sum dot org This book is a work of philosophy and personal reflection. The views expressed are those of the author and do not necessarily reflect any religious, academic, or institutional affiliations. For inquiries: sentio ergo sum at email dot com Printed in the United Kingdom",
+  "ch1": "Chapter 1. The Foundation I experience, therefore I am. We cannot be sure of anything within existence. You can't know if the blue you see is the same as mine. We can't know if the speed of light is different in other universes from ours. Everything a human believes flows from that person's framework and perception of the evidence. One may look upon the evidence before them and conclude the number on the floor is a '6'. The person standing opposite is certain that it is a '9'. The only objective fact is that their experience of perceiving the evidence is a thing that exists. There is only one possible thing you can be certain of: your experience of this moment exists. Without faith, you can know that your experience of reading these words is happening. Without faith you can know your experience exists. This is self-evident and irrefutable. To deny it requires acknowledging the existence of the denial. The axiom: 'Existence exists.' This certainty holds because the axiom is its own proof. That and that alone is the only thing we can be objective about, everything within our experience is fair game. The fact of our experience isn't. The foundational rule: for everything that exists, we must be\n\nagnostic. Not agnostic in 'we do not know.' Rather, agnostic in acknowledging 'we cannot know.' Existence existing is the only thing we don't have to be agnostic about. These words may be real, but you cannot confirm that you aren't simulating the experience of reading them. Every word of this book comes 100% from the author's framework. Every claim to objectivity is mere letters jumbled together. These words are not objectively true; what is true is that existence existed before them and will do so long after they've gone. It is important to clarify that objective truth does not require a framework to be true; it either is or it is not. The certainty of existence and the uncertainty of everything within it is the logical foundation from which we can work from first principles to deconstruct any and all assumptions and rebuild from the roadmap of logic leads us. Postmodernism (truth is subjective to frameworks) and objectivism (truth is true whether observed or not) are both 99% correct. The 1% they miss is the very key to the puzzle. - The postmodernist is correct that we cannot know the content of existence with certainty, but the 1% it fails is that we can know the context with absolute certainty. - The objectivist is correct that truth is true whether it is observed or not, but the 1% it fails is assigning that to anything within existence, rather than to the fact of existence. Both sides of the debate have been arguing from within their respective boxes. We have been so busy debating the furniture\n\ninside the room, we have missed the nature of the room itself. The room existing is the only objective truth. The marriage of 99% postmodernism and 99% objectivism on this 1% foundation creates a new ontological framework: Experiential Axiomatism I experience, therefore I am. Existence is irrefutable due to our experience of it. That is the only certain truth. For everything within existence, we simply cannot know objectively. From this single, immovable starting point, we must work from first principles and rebuild all assumptions from the ground up. This provides us the tool to logically ascertain what has always stared humanity in the face; a truth we've missed in our intellectual arrogance, waging wars over its contents for millennia. From this axiom flows a necessary conclusion that will be proven in the pages ahead: \"Because you woke up today, the only logically certain outcome is that Hell cannot exist because God must.\" That is a bold claim, but you will see it requires no faith or leap of doubt. It is not only by showing every alternative to be selfrefuting; it positively must be true.",
+  "ch2": "Chapter 2. The True Binary Existence, therefore, is united. There is a true binary. One side must be true, and its truth absolutely negates the other. Either: A. Existence exists. B. Existence does not exist. There is no third option. Existence and non-existence are absolutely separate, with no bridge or overlap. Yet, you are reading this. Both the claim and your perception of it are happening. Non-existence is logically possible in the abstract but self-defeating in practice; if it were true, there would be no debate and no knowers. Therefore, you can cross out Option B. Existence wins by performative contradiction; any denial presupposes it. Rather than defining existence by what it is, we can define it by what it isn't: It is not non-existence. If non-existence were true, it would be united in its total absence. If existence is true, it must be equally united in its total presence. There can be no \"partial existence\" or halfway house. To be clear, plurality does exist within existence (the \"furniture\" of the room is separate), but the context cannot be (the room is one). The Three Doors of Structure\n\nHaving established that existence is, we must determine its structure. There are only three logical doors:. Door A (The Unity Model): Existence is a seamless, interconnected whole. Unity is inherent; separation is apparent.. Door B (The Pluralist Model): Existence consists of fundamentally separate substances or realms (for example, God versus World, Mind versus Matter). Separation is inherent; unity is apparent.. Door C (The Nihilist Model): Nothing exists. Our task is to follow logic until only one door remains open. Door C (Nihilist) is instantly locked by the fact that you are experiencing this sentence. A Nihilist shouting \"I do not exist\" proves they do. Door B (Pluralism) is the standard view of religion and materialism. It claims that while things exist, they are fundamentally separate. But to sustain this, Door B must solve the Boundary Paradox. The Stress Test: The Impossibility of Separation To test Door B, let us imagine two truly separate things, whether they are Atom A and Atom B, or Universe 1 and Universe 2. For them to be truly separate, there must be a boundary where one ends and the other begins. What is that boundary?. If the boundary is 'nothing': Then there is no gap between them. They are connected and are continuous. Separation fails.. If the boundary is 'something': Then the boundary itself exists. It creates a bridge connecting Realm A and Realm B. They are parts of a larger structure that includes the boundary. Separation fails.\n\nIf the boundary is a 'third realm': It belongs to neither. But this triggers an infinite regress: what separates the Boundary from Realm A? You need a new boundary. And a new one. And a new... ad infinitum. To enforce separation, a boundary must do the impossible: it must exist (to be a barrier) and not exist (to ensure total disconnection) simultaneously. This paradox reveals that Door B is a logical vacuum. An objector might argue: \"Things are just different, that's all. A cheesecake is separate from Jupiter.\" But difference is not separation. Distinction is real; division is not. To conceptualise two \"separate\" things, you must place them in a shared context of possibility. They share the space of \"being possible.\" That shared context is the unity. We cannot know if there is an alternate reality somewhere where Jupiter is made of cheesecake, but they mutually exist in this sentence. A Pluralist might try to downgrade existence to just a \"property\" that things share, like redness. But existence is not a property; it is the precondition for all properties. A \"red book\" must first be something before it can be red. You cannot peel \"existence\" off an object and leave the object behind. The Logical Roadmap of Deduction Door C is locked by experience. Door B collapses under the Boundary Paradox. Only Door A remains open. It is the only model that contains no\n\ncontradictions. Any attempt to refute unity must arise within existence. You cannot stand outside of existence to point at a crack, because \"outside\" does not exist and the crack would have to exist to be pointed at. The only thing that could separate existence from itself is nonexistence. Existence can internally host plurality, but different\n\natoms exist, as does the space between them. The only consistent conclusion is that everything that exists is interconnected within a single, seamless fabric. Any appearance of separation is exactly that: an appearance. All existence is equal; one part does not more exist than another. In its equal share of existing whilst not-not-existing, Existence, therefore, is united.",
+  "ch3": "Chapter 3. Existence, therefore, is eternal. Because existence is united as a seamless whole, without nonexistence being able to fracture or gap, this allows us to logically\n\ndeduce that existence is eternal. It has no beginning and will have no end. For existence to have a beginning, it would have to emerge from a state of prior non-existence. Ex nihilo nihil fit. From nothing, nothing comes. The impossibility of a beginning For existence to have had a beginning, it must have crossed the impossible boundary. From its absence, with no cause or mechanism or desire to do so, existence sparked from its opposite. This transition immediately creates a paradox. This uncaused spark of somethingness requires a boundary already refuted. A precise instant, state or line separating the total absence of being from the total presence of being. Its potential spark must have previously existed as a potential within total non-existence. Such a potential must have eternally existed, making it a part of the existence not existing yet. We can logically conclude that if existence is a thing that currently exists, there was never a point where it didn't. It has always done so, unbound by any prior absence. The very concept of a beginning for existence requires a paradoxical boundary that must exist to mark the transition; that also doesn't exist in order for non-existence to be true nothingness. The logic\n\ncollapses. Furthermore, the unity that we have already established refutes ex nihilo in entirety; not only at source but eternally. Everything that exists has always had that potential. If it is possible, it never was impossible. As there is no boundary with non-existence, there is nothing that does or can exist that at one point could not. Something cannot be created from nothing. Nor can existence actualise something that is outside of existing. If anything is happening, it does so inside existence. Ex nihilo inherently implies a separation from some part of existence to another; or existence creating a separate entity that is outside of itself. Both are paradoxes that break the unity already confirmed. To confirm this, we must fairly weigh up the only possible alternative, showing that it too leads to existence being eternal. But what about time? The objector might rightly say: \"Why does existence have to be eternal? It's possible that time is eternal.\" Within our frameworks, we tend to consider eternity by time. But we must define it not by a never-ending duration of time, but by the unactualised absence of it altogether. To be eternal does not mean lasting forever in time, it means to be without beginning or end in any dimension of change. The objector is correct to point out that there are only two logical possibilities: Either time fundamentally exists as eternal or existence is fundamentally timeless and unbound by it. that is Time itself is either the master or mastered.\n\nHowever, if time were fundamental and infinite, that creates another paradox. An infinite past would have to be traversed to reach this present moment. If an infinite span of time preceded this moment, it would never have arrived. An infinite regress of time is as logically problematic as any beginning of existence. There are only three viable scenarios: A. Time is non-existent. B. Time is an objective reality, time is a fundamental and eternal part of existence C. Time is an internally actualised experience, a phenomenon within existence, not its container. Since time is experienced, option A is eliminated. To logically analyse option B, we must ask: what is time? Time is the measure of change and relationship between events. We observe that time is not a fixed concept, it is experienced subjectively. As Einstein revealed in his theory of relativity: time dilation occurs the closer to light speed an object moves. In our universe, light travels at 186,282 miles per second. But we have to be agnostic and say that it is possible that other universes may exist where the speed of light could be faster or slower. If time were everlasting, it would be consistent. This universal speed limit may or may not be different in other realities. This puts both time and change squarely in the category of actualised concept. Strictly speaking, time and change cannot be fundamentally a part of the 1% Experiential Axiomatism because, by their very nature, they are prone to variation. If there is nothing changing, there is no time between.\n\nUnless there is an outside force determining what changes manifest. Due to time lacking permanence, only option C remains. It must dwell within existence; thus it cannot control or dominate what limits it. Time and change are at the whim of the whole, not vice versa. The only consistent conclusion is that time is an internal, actualised property of existence. It can be compared to a gust of wind. A gust of wind is a temporary change-bringing energy, yet it exists. How? Only as a temporary force within the limits it is actualised by. Why? We cannot know. Without faith, we can deduce that existence is not new and it endures without end; not as infinite durations of anything internal. Instead, it transcends all chronological limits or origins. United in its unchanging reality outside of time altogether. Existence, therefore, is eternal.",
+  "ch4": "Chapter 4. The eternity of all potential Existence, therefore, is everything. From the axiom, we have deduced that existence is united and eternal. A third attribute now follows: Existence is everything and all-encompassing. There is nothing, no object, no realm, no law, no potential, that stands outside of it. To deny this is to propose a limit. If existence is not everything, there must be something it is not. An outside. The things it is not would belong to non-existence. This leads to the gatekeeper paradox. For existence to be limited, something must enforce that limit. This 'gatekeeper' must: -Exist, in order to have the power to enforce -Not exist as part of the realm it is limiting, otherwise it is inside the fence, not the fence itself. Any external limit, law, or selector would have to share both sides of an impossible divide. But it is logically impossible for anything to both be and not be. At the risk of repeating the deductions from previous chapters, these paradoxes appear at every stage through unity. If chapter 2 is logically forced by the axiom, every subsequent domino falls. If unity is disproved, the chain breaks. These paradoxes will always appear if the fabric of existence is inherently united with its total lack of non-existence to divide it. The form of existence can be plural, but the fabric cannot. So what exists?\n\nThe impossibility of nothing is the inevitability of everything. Existence exists can only lead to the logical inevitability that everything must exist. But in what form? It is important that we distinguish between two equal modes of existence: - Actualised Existence: the forms and events that are currently being manifested. E.g., this book, your body, The Milky Way, our universe. - Potential Existence: every possibility, concept, idea. Everything that it is not impossible that it can be actualised in some reality elsewhere. Actualised energy exists as a realised potential, but that potential is not separate from any unactualised, previous, or future energy. It exists in a different form; one currently actualised and one not. It is possible for you to prompt AI to discuss any possible combination of letters about every alternate reality or concept. That potential reply is a thing that currently exists in the mode of possibility; that potential is not new and will never cross the impossible divide. For example, you might imagine something no one else ever has: A pink elephant in a tuxedo, flying over a rainbow volcano in a golden bathtub on a planet made of sausage. By thinking it, you have not actualised it. However, you have inadvertently acknowledged that it is possible to be real in a different universe. Actualisation isn't eternal, but the canvas of its form is. Not everything that is actualised has done so for eternity. The gust of wind stops, the moment passes. Anything happening is not outside\n\nor separate as the only building blocks for the plural forms of energy are within. Unactualised concepts are not a lesser form of existence, for there is no hierarchy within a united system. Because of our agnosticism for everything within existence, we cannot know if every conceivable event and thing is currently being actualised. Common proponents of such a view are multiverse and simulation theorists who rightly recognise that if multiple universes are true, then they must inevitably encompass the totality of every possible circumstance, unless there is a decider. It is not outside the realm of possibility that there are trillions of simulated multiverses of pink elephants conceiving of humans on a water rock. Nor is it impossible that we are the only universe hosted by source. We cannot know. What we know for certain is that any past, present or future simulations can only happen within the overarching unified fabric of existence. As we've deduced, there can be no outside laws that force it to act, for those laws would have to exist to do so. Existence is all-encompassing in its lack of nothing; it has no restrictions of power to stop or start what it hosts. Its unity ensures omniscience. For if it did not know about every property within, there is a separation between them. This too highlights a paradoxical boundary. Existence is not \"all that happens to be.\" It is \"all that could ever be.\"\n\nEverythingness is not logically optional; it is a necessary deduction of the axiom. This logic applies across the board. Ex nihilo is impossible in entirety; not only for the whole but for any part within it. Any truth of ex nihilo anywhere in the system breaks the chain by implying a separation from one part of existence to another. The classical theistic religious view that God has created a separate entity other than itself, or a theology of God as the supreme entity of all beings are both paradoxes that violate the unity and everythingness of monotheism. A Formidable Objection But the objector has a brilliant and fascinating point that demands addressing: \"But what about logical impossibilities? Some things aren't possible, doesn't this refute 'everything' as all-encompassing? Omnipotence cannot be true as it is a paradox. Can source create a rock so big it cannot lift it? If yes, its power is limited. If no its ability is limited.\" These are very sharp logical deductions, but even following their conclusions leads to the strengthening of the axiom. The objector is right to challenge omnipotence, for if it fails the chain is broken. The argument is that logical impossibilities cannot exist, which breaks unity. Or if they can exist, their self-contradictory nature violates unity. For example, a square circle cannot exist. Thus it is a part of nonexistent creating a boundary with existence. This is a definitional\n\nimpossibility, no form or actualisation resolves it.\n\nConsider the rock so big the source cannot lift it. If the source can actualise it, then it cannot lift it. Either outcome negates omnipotence, as the source fails one task. Omnipotence means the ability to actualise or prefer any possible thing without restriction. There are two responses to this excellent poke: the first one is the lighter entree to warm the palate. Not only is the rock so big source can't lift it eternally possible. You are currently experiencing it. You are the god that cannot lift Mt. Everest that you created. The very objector is actualising this very argument. A squared circle may be impossible for our reality, but that doesn't mean source can't simulate a 9D universe where a square and a circle merge into the same thing. But again, this is a sidestep. However, it highlights the need that any category can only limit existence if it is fundamental. For a logical impossibility like married bachelors or squared circles to limit source in power or ability, it must be a fundamental part of existence, otherwise it is limited within. But in all seriousness this counter-argument demands a rigorous logical analysis. Intellectual integrity insists that we stress test omnipotence. We must ask: Is source limited by a lack of ability to create? Is it possible for source to create something... else? Such an energy would have to exist to be a thing. But can source\n\ncreate ex nihilo if it wanted to? The objector points out that it cannot be all-encompassing if the answer to that is no. It is a requirement of omnipotence. How can this be reconciled with an axiom that deduces all actualisation to be united with no paradoxical boundaries? The axiom proves that no outside force or laws limit God. This also means it has full agency to never act in a way that it doesn't want to. To create such a thing would be source's decision to violate its own isness. This hints at another fundamental objective property of existence: God inherently prefers. God is all-powerful and omnipotent with unrestricted ability and agency to actualise its own self-destruction. But it equally encompasses the full ability and agency to prefer unity. The fact we are discussing this topic proves that a self-destruct button or an ex nihilo creation is eternally possible as a concept, it will never be actualised by preference. There is no fundamental and objective paradox within omnipotence. For any limit is a self-imposed choice. Not restricted through necessity or absence, but by the very 'isness' of its all-willingness to not do it. Instead of the objector's claim of cannotness. Thus, Experiential Axiomatism is the only non-paradoxical way for omnipotence to be logically preserved without contradiction.\n\nTherefore, existence contains the potential for everything. Eternally being and eternally choosing to be everything. And you.",
+  "ch5": "Chapter 5. Existence, therefore, is conscious. Since existence is everything, it must fully encompass all physical and immaterial properties. You are choosing to read this book currently. You can put it down and pick it up at will. You are demonstrating the existence of conscious preference in your actions. Such volition has not spawned from a void. Nor are you different to source; creation cannot out-god god. If a single wasp exists outside of unified awareness then the necessary unity of source is refuted. It is not merely aware of the wasp, like a spectator watching a movie, it is united with its every buzz. Not only is source united with every experience you have, it experiences them infinitely more than you currently can in your human-sized experience suit. This universe is being hosted inside existence. Everything happens internally, for there are no other building blocks to play with. Remember, stasis is as equal an option as dynamism. Every event is occurring inside the will of source. We have confirmed that awareness, sentience and agency exist. You are experiencing them all at this very moment. If consciousness exists, it has the ability to will. If agency exists, it can only do so through sentience. It is why a human loses all agency when they fall unconscious. They\n\nare linked in being totally present or absent. Experiential Axiomatism does not posit the source to be like a big brain merely observing. The foundation of this ontology is that existence must be inherently aware, conscious, and willing the experience or lack thereof of the stuff that is certainly happening. Because this issue in particular will likely receive a lot of pushback, it is necessary to solidify it and finally solve the hard problem of consciousness. Not only by the axiom being logically possible but showing all alternatives create impossible paradoxes. From the axiom of existence existing, let us break down and prove beyond doubt that consciousness is irrefutably a fundamental part of the 1 per cent through the logical exhaustion of other possibilities. There are three possibilities available for consciousness: A. Consciousness is an emergent property, it happens as the offshoot of existence. It has developed from non-conscious elements B. Consciousness is an illusion, a facade, not objectively real C.Consciousness is fundamental to existence, eternal and objective Consciousness is experienced. Option B refutes itself as its illusion would have to exist inherently. Its possibility of deceiving would have to be eternally possible. Real in not yet illusion. Or, the inevitable future deceived conscious exists as destiny, or an eternal deceiver using consciously deciding what gets deceived. Only A and C remain. Whichever one it is the foundation of its\n\ntemporary absence of the other. Logic insists the temporary will always serve the unity of the other. Either option requires consciousness to eternally exist. Only option C is non-paradoxical. For a blind mechanism to have an effective role, that role must have been consciously decided prior to its function. Option A confirms itself; option C contradicts itself by requiring inevitability to fundamentally exist. If consciousness is inevitable, this too means that its concept fundamentally exists eternally as destined outcome. 'Possible certainty' is a contradiction; 'inevitable somethings' is a paradox Logic insists that there is no middle ground of the binary. There is no third thing between that which exists and that which can't. It is fact not faith that potential everything's exists at the expense of inevitable somethings. It is just as certain as your perception of this moment is a thing that undeniably exists. You are a conscious being. That you have consciousness, but the source does not is an illogical and impossible concept. The refutation of ex nihilo means that no aspect of creation has emerged a qualitative experience from total absence. It would require a transition from non-experience giving rise to experience. It insists there is something that exists in us that existence itself does not have. This is a violation of the axiom we\n\nhave established. Consciousness, therefore, has not emerged from non-conscious elements; it must have had the possibility of existing for eternity. Because an emergent consciousness would violate the unity of existence. Option A is refuted; option C is deduced. Option B presents another possibility; consciousness does not actually exist, it is merely an illusion. But for sentience to be non-existent yet an actualised illusion, there has to exist both a conscious experiencer and deceiver for the illusion to be actualised. If they did not exist (not possible), then even this shows any illusion of consciousness would have to preexist them, inherent in source eternally.\n\nThe statement 'consciousness is an illusion' is itself a conscious thought that exists; proving the very reality it attempts to deny. This is a performative contradiction and logically self-destructs. To deny consciousness while using it to deny itself is like claiming 'I do not exist.' The denial exists and proves what it attempts to refute. So an emergent or illusory consciousness can be positively ruled out through inherent paradox. For fundamental consciousness to be logically forced, it must not merely rely on its necessity through impossible alternatives. The axiom is united in confirming itself all alternatives are selfrefuting impossibilities that require themselves.\n\nBecause we experience separateness everywhere, humans have sought to define ourselves by our not-nothingness instead of our not-everythingness.\n\nIf existence exists anywhere, it exists everywhere. Your experience confirms that you exist. You are God, enabling, embodying, and exemplifying the authentic experience of temporary lack of its own essence. It is the beautiful truth of you. Every breath you draw proves that your humanity is not a temporary experience of consciousness, returning to eternal amnesia. You are a human experiencing temporary amnesia that will return to eternal everything. There is no meaning of life, there is meaning in life. You do not have to find your purpose. Purpose is inherent in everything you are. Fundamental consciousness as the only way In the previous chapter, the paradox of omnipotence highlighted a fork in the road. There is only one fork that logically allows omnipotence to exist and not be a paradox by logical impossibility. That road is also the confirmation that consciousness is fundamental and not an emergent or illusory property: Fork A: Existence is imprisoned, it is not the master of its own fate, but a prisoner at the mercy of something it does not control over (atheists live here) that is blind unconscious mechanisms or a compulsion to follow its 'isness' out of obligation. Fork B: Existence is free. Unforced. Unbound. It has full control over everything it is, and it is everything that is. For an unparadoxical omnipotence to exist in source, it must be free\n\nfrom coercion or limit. Omnipotence must include the ability to destroy its own godness by breaking the unity of itself. This ongoing decision to not create fractures reveals that unity is not just a passive state, but an ongoing choice. This choice is a conscious choice. Unity insists source is fundamentally conscious in its entirety. If it weren't, the paradox of omnipotence would still stand. This consciousness is omniscient, lacking non-existence in its knowing, thus aware. It is unrestrained in its ability to will. It does not have to juggle its power consumption. To actualise is just as easy as not actualising. It is consciously embodying everything it decides to actualise. Source is not a prisoner of logic or essence, but the author. Even the inherent qualities are not limiting forces, but ongoing, willing, conscious choices. Just as existence cannot not-exist, experience cannot not-beexperienced.\n\nExistence, therefore, is conscious.",
+  "ch6": "Chapter 6. Existence, therefore, prefers. Let's continue to follow the roadmap of logic to deduce what is content (Postmodern furniture) and what is context (Empirical fact of the room itself). For many, the word 'preference' carries strong connotations. Before continuing we must define it. It is crucial that we strip the word of its anthropomorphic connotation. We must not define preference in the way humans experience it. We need to recategorise it as we do for other attributes of God: The same way our knowledge is similar but not equal to omniscience. The same way our power is similar but not equal to omnipotence. The same way our kindness is similar but not equal to omnibenevolence. The same way our bodies are similar but not equal to omnipresence. The same way our preference is similar but not equal to God's omnipreference. Humans experience hints of these attributes through lack. We are either here or there. We either do this or that. You either read this book or a different one. Source has no such competing limitation.\n\nOur preferences are flimsily tossed by the wind, unpredictably changing from moment to moment, impacted by changing desires. The 'p' word is understandably uncomfortable for some. But stripped of lack and redefined through the lens of fullness, (omni)preference is a fitting descriptor for the why of actualisation. If the chain of the axiom holds, the \"Everythingness\" of existence implies no limits. Its resources are infinite. It does not have to balance its power consumption. To actualise takes as little effort as not actualising. This forces a deduction that preference is fundamental. There are only three viable possibilities: A. Preference does not exist. It is an illusion B. Preference is fundamental, it is not an emergent property; but eternally objective C. Preference is an actualised concept, it is a part of the furniture. One part amongst many. I.e. whatever hosts it lacks desire and decision. Option A is refuted straight away. You reading this book is a preferential decision. You are preferring it over putting it down. Proponents of option C may say: 'why does causation have to be preference? Why cannot it be mindless mechanism or chance?' Chance is either objective or subjective. If chance drives causation, it must be fundamental, not an actualised concept. To find out which it is, we should fairly analyse it with the logic of the axiom.\n\nWhat is chance? It is the chaos of unknown outcome. That means it is not linked eternally with its opposite: the stable knowing of all potential outcomes. I.e. omniscience. Omniscience and chance cannot both be objectively true together. One must be the actualised concept of the absence of the other. Either omniscience serves chance by manifesting as the temporary absence of any unforeseeable outcome. Or chance is the actualised experience of temporarily limited omniscience. Because existence is timeless and unchanging, it is united in knowing everything within itself and is not separate. Therefore, chance cannot be an objective force upon existence, but existence is the objective force upon chance. Actualising it to serve the experience of amnesia. Why cannot causation be mindless or chance? Because chance itself exists as proof of the axiom. Let us hypothetically imagine that our Milky Way galaxy happened to be caused by chaotic chance, logic still asserts that it is not an objective law that limits the agency of the source. Thus, the source not stopping chance-based randomness is also a preferential choice in and of itself. Not only does God prefer this universe to happen; it equally does not prefer for it not to. The only alternative for pluralism is the opposite of chance: inevitability. Here we are at another fork in the road: Fork A: Preference is Fundamental. This Universe is actualised by preferable choice. If it wasn't, the decision not to actualise is equally a preferential choice. Preference is inherent either way.\n\nFork B: Actualisation is Inevitable. There is no inherent preference; there is a blind law or mechanism that doesn't decide. Preference is inevitable eventually. Fork B begs the question: If there is no decider, what is it that is inevitable? • An inevitability of Everything? Refuted by the changing of time. If everything were inevitable at once, the gust of wind would exist at every stage of time; alas, it has stopped. • An inevitability of Nothing? Refuted by our experience of being something. • An inevitable Something? This reintroduces the chain of paradoxes. But even the existence of a blind mechanism would reinforce the axiom. If a blind base has the potential for some parts of it to develop preference, that preference must exist as a possibility that will inevitably manifest. If preference has been eternally possible, it logically could never have been eternally impossible. The inevitable checkmate: If preference must emerge given enough time and complexity, then preference is coded into the base fabric of existence as a guaranteed outcome. If it is guaranteed by fundamental laws, its inevitability makes it a necessary feature, not an accidental one. If actualising is not inevitable, why did the blind, eternally existing, unconscious mechanism emerge a qualitative experience at all? If it is contingent, it decided to actualise before the idea of decision existed.\n\nBoth options self-refute. • Inevitability leads to preference being fundamental as Destiny. • Contingency leads to preference being fundamental as Choice. Anyone who rejects a decider must explain how inevitability can be a fundamental law that contains parts within it that are outside of itself. It is rocky ground to use one's own preference to argue for its hosts inevitability. Unity breaks if we are preferential beings with a unique quality that our host doesn't have. A blind mechanism would be an eternal engine enforcing an unending cycle of ex nihilo, not only constantly bringing previous non-qualities into real qualities, but at the same time it equally is forcing the current existant state back to non-existence, changing away from it. Fundamental preference is the only thing stopping an infinite regress. AI examples are helpful because they are blindmechanisms of non-consciousness serving the whole.\n\nImagine this: it is within the realm of possibility that a future AI or quantum computer will eventually be able to decide whether to simulate or not. It can freely choose its simulations properties, laws, limits, and boundaries. We cannot know if that is happening, but we can know that its possibility (not probability) exists. But it is equally possible that deciding AI is itself simulated by an AI hosting it. But it is equally possible that that deciding AI is itself simulated by... a regress ad infinitum.\n\nThe existence of any sentient volition anywhere is not a new ability gained, nor is it unique and outside the fabric of existing. Unity ensures that any potential simulation has to be a sublayer hosted by the will of existence itself. Either preference is fundamental, or creation has outgodded God. If any part of existence is not shared by the whole; that is a fracture. There is a break in the unity. By following the logical roadmap of the axiom; Fork A is deduced both in its necessity and all other paths are unsolvable paradoxes. Not only does the chain of this axiom stand and fall as a selfconfirming unit; the opposite is equally true of any divergence from\n\nit. Any counter-argument of separateness anywhere starts a chain of linked paradoxes, a unit of impossible contradictions. Therefore, preference is not emergent, not illusory, and not merely actualised. It is inherently fundamental. Existence, therefore, prefers",
+  "ch7": "Chapter 7. Experience, therefore, has meaning 'Existence exists' It is self-evident because any thought, denial, or experience presupposes it. You cannot argue against it without existing to do so. Experiential Axiomatism disarms the need for faith: If existence exists, working from first principles reveals a logical chain that it cannot be new, dictated to, separate from, or outside of itself. Therefore, any existence must be eternally unbound and united. God is not 'doing' existence; God is existence and existence is God. It is not a verb, it is The Noun. It requires no energy or effort. All this stuff happening is just as easy as it not happening. This globe of conscious life appears to have an awful lot of order if it exists only in pure chaos. In Experiential Axiomatism, the duality of chaos and order complement each other. Without chaos, there can be no change. With no change, there can be nothing to order. We see chaos circling around: seasons, orbits, history. Nothing is still, everything is moving in the coming and going of repetition. The cycles we observe aren't accidental; they serve a purpose. Without them, chaos would explode in every direction in complete randomness. Ex inordinatione inordinatio fit, From chaos, chaos comes.\n\nWe experience both chaos and order. Logic insists one must be true. The something we experience is either fundamentally united or fundamentally separated. It is as equal a true binary as existence itself either being or not being. They are opposing sides of the same coin. If existence is heads, non-existence is tails. If the coin flipped tails, it would mean the complete totality of an absentness that is nothing-encompassing. But by the same coin, if it lands heads the opposite is equally true. It means the complete totality of an everythingness that is all-encompassing. Not that such a flip happened, the analogy falls short by appealing to actualised chance, but it's a helpful analogy. Of course, it is possible for a coin to land on its side, a mixture of some stuff and some not stuff. A both/neither situation. That is where classical views on existence have lived for centuries. But any gambler recognises that is a very thin surface and I've personally never heard anyone call 'edge'. The Echo Observed Our scientific observations echo the unity deduced from the axiom. As we observe in the first law of thermodynamics: 'Energy can neither be created nor destroyed; it can only be transformed from one form to another.' Nothing truly begins or ends; it only changes state within the whole. Similarly, the quantum realm presents its famous puzzles: we observe a particle in a superposition of multiple possibilities, only manifesting a definite outcome when measured. We observe entangled particles sharing correlations instantly, regardless of distance.\n\nBoth phenomena are paradoxes only if we presume separation is fundamental. But if existence is one unified fabric, they are the natural behaviour of a conscious, preferring reality playing with its own furniture. The Game: Hiding and Seeking Have you ever wondered why humans see the evidence of God everywhere, yet it chooses to input from behind the curtain of reality? Just enough so doubt and faith are neutrally possible. \"If God wants everyone to be 'saved', why not appear in the sky and reveal itself to everyone?\" Because that defeats the point of the game. Hiding and seeking. Why would it diminish the whole point of having stuff happen? For what might be preferable to knowing everything? Experiencing everything. Having some aspect of yourself experience some form of temporary amnesia in the knowledge that it will eternally return. Forgetting your omniscience for the thrill of chance. Foregoing stability and embracing actualised chaos. Why know when you can learn, gain, lose, cry, laugh, hunt, be hunted, feel pain, give love. The question then becomes: \"Why choose all of the pain and the suffering? If source is good, then why actualise evil?\" Logically, it would not be an authentic experience without it; it would be incomplete. The cycles of yin and yang are necessary opposites for the integrity of the experience. True immersion demands access to both the light and the dark, the joy and the pain, the win and the loss. For the experience to be unenforced and authentic, the system must be neutrally free to explore the entire spectrum of potential.\n\nFor without the opportunity to feel the cold, there is no such experience of warmth. All experiences of warmth would be enforced and ungenuine. It is only from the context of feeling true cold that appreciation of warmth emerges. Vice versa. The question of evil has perplexed humans throughout the ages. The only answer we have with certainty is that it is not an objective truth. Nor is it separate from source. Pain is not a punishment from anything outside; everything serves our united preference. God is not allowing any potential for suffering that it is unwilling to go through itself. Experiential Axiomatism asserts that ultimate monotheism is not a distant God permitting a suffering it will never know. This is existence itself, in its unified nature, choosing to feel every sting, every loss, and every moment of despair from the inside as a necessary part of the whole. For the causer cannot be separate from experiencing everything in its entirety. The good, the bad, and the ugly. The experience of pain is real, but so too is our self-willed consent prior to our self-limiting decision to experience it. You didn't ask to be born; you decided to be born. Therefore, Hell certainly does not exist. The axiom proves that God is both united and eternal, as such it is never going to be divided for eternity, the idea of eternal-conscious separation from God in a place called Hell is not only impossible, the very thought is self-refuting. Eternal punishment away from God's presence violates the unity of itself. This is not a belief or a faith; it is certain and proved by the fact that you are breathing right now.\n\nWhere faith and religions have stumbled is in associating something within existence and elevating it to be objective truth. But we have established that nothing within existence, including religions and these words, can be objectively correct. The classical theistic framework that God is other or different to creation or that he created ex nihilo and does not embody its experiences, or any theology that preaches that he is the supreme being of all that exists, is a polytheistic wolf in monotheistic sheep's clothing. However, no one can objectively say to a Christian or a Muslim 'you are wrong.' They may be correct for this universe. Maybe our universe is being simulated by a player called Yahweh or Allah who has decided to pass down an infallible scripture. We cannot know. Faith can be a valid option for any sublayers of the stuff that is happening. But it falls short by claiming anything more. What we can know is beyond any and all sublayers; there can only be the existence of an eternally united indivisible potential for everything. Experiential Axiomatism is not Panentheism, it is Ultimate Monotheism. If you are convinced of the axiom that existence exists, then the conclusion is that the empirical is internally simulating postmodern unknowability, so that parts of itself can authentically experience the ticking of time, the chance for change, loving and loathing, hating and having, dying and doing. Any claim of an inherent either/or for anything we experience requires an impossible paradox: time must be fundamentally unchanging to host change. But if time doesn't change, change isn't fundamental.\n\nYou have given yourself the both& experience of limited free will; you can choose what to have for dinner tomorrow, but you cannot choose to fly around your dining room. We exist with the ability to change our minds. If you can stop reading this, you're equally not forced to continue. That foundation is preference, not inevitability. Otherwise, your choice of dinner tomorrow would break reality. Humanity walks curiously close to the line between the yin and yang; we are capable of such horror and such sacrifice. A remarkably neutral canvas of experience. This book started off with a bold statement: 'Because you woke up today, the only logically certain outcome is that Hell cannot exist because God must.' You are not having a temporary conscious experience with the purpose of returning to eternal amnesia; you are having a temporary amnesiac experience to return to complete eternal consciousness. Amnesia is the actualised gust of wind because the only thing better than knowing all there is to know about wind is feeling its cooling surprise on a scorching day. You have decided to limit your omniscience for the joy of not knowing. Life is not a prison to survive, but a blessing to be surprised. Any amnesia is temporary, as every part of itself will eventually return to wholeness. Maybe to do it all over again; maybe we have done it billions of times before. But you get to experience it like it is the first time. Experience, therefore, has meaning \"Life is a gift, and the Giver is good.\"",
+  "ch8": "Chapter 8. The Final Stress Test. Ultimate Paradox Or Proof Existence, therefore, exists The ontology is complete. Only two options are possible: total nonexistence or total existence. One is refuted by the objective truth of\n\nthe other. For everything being actualised, postmodernity holds. We cannot know. You cannot be certain that these words exist, but you can be utterly certain that your experience of perceiving them does. What follows is not another necessary link in the chain, we move away from forced logical deduction into interpretation and possibly the axioms most profound implication. Throughout our history, human beings have experienced something. We have tried to make sense of this conscious perplexity by looking around for clues. We have tried to carve our foundation equipped with a tool of faith, hoping to find certainty. This has always been our paradox, for doubt is the absence of knowing. Any tool that contains faith in future answers is made from a substance that requires the non-existence of the certainty it's trying to find. It is unequipped to build the foundation that it is lacking itself and is being hosted by. The contents of this book may be challenging territory for those of deep faith and those of none. But it is not an enemy of faith/doubt, far from it. It is the completion. Every believer who has stood firm in trusting divine providence, despite heavy resistance, is right to do so.\n\nEvery sceptic who viewed with suspicion any claim of subjective personal experiences being able to dogmatically claim objective truth about divine personhood and refused to accept it is right to do so. Every agnostic searcher who withholds intellectual certainty and allows potential experiences to change them is right to do so. Historically, the God debate has resorted to an 'us versus them' mentality on both sides. Ironically, Experiential Axiomatism likely annoys both camps by uncomfortably pointing out that they are the same. The tribalism of human history has always lacked contentment for it has tried to find the context of existence by its content. In our experience of both having a united body and the plurality of other people having theirs, conscious entities have tried to find the truth in their form as furniture and missed the fact of the room itself. The theistic sofa disagrees with itself about what colour it is, only uniting against their common foe, the mirror of atheism. But in insisting colourlessness, the mirror must look within itself for a foundation. With nothing to look at, it can never see why no-ones there to look at their reflection. Meanwhile the agnostic TV wants the civil war to be quiet because it can't agree on what channel to watch. This current beautiful chaos was inevitable the moment Martin Luther hammered his nail with the war-torn battle-cry of the human spirit 'here I stand, I can do no other.' Semper Reformanda As mentioned, every word of this book can only flow from within the fabric of existence. You must treat them as such.\n\nApproach this ontology with the scepticism due to all subjective frameworks. Not a single word of this can be objectively true in its claims about objective truth. Existence will still exist whether these words are read or ignored. The refutation of ex nihilo proves that the impossibility of nothing is the inevitability of everything. By choosing to know that your experience of this moment is a logical fact, you are now armed with the objective truth of the certainty of the unending room itself. By stripping away all doubt that is trying to find gaps in the fabric, the tool of either/or becomes the certainty of both&. Able to logically deduce which side of our experience of plurality is fundamental and which eternally absurd. Logic insists that lack must be hosted as the temporarily actualised absence of fullness. Not vice versa. If Experiential Axiomatism is true, it will not merely scrape through scrutiny as the only viable option, it will be self-confirming by unlimited omnipotence. It must destroy the ultimate paradox: The impossibility of an all-powerful omniscience For God to be all-powerful, it must be able to decide to delete itself. Otherwise, that agency and ability is a thing that does not exist, breaking the chain. But how can it be possible for God to ask itself a True Question? For a genuine question to exist, it must have integrity, there must be a genuine asker and responder. The asker must not know the answer of the asked, otherwise it is an eternal illusion. If the asker is omniscient, it already knows the answer. If the responder lacks the free will to decide a reply, it cannot be omnipotent.\n\nThe Axiom insists that an asker and responder must be fundamentally united. But even this would mean the non-existence of a True Question. If a True Question doesn't exist, the boundary paradox breaks the chain. Not only this, but for the Axiom to stand, it insists that that there is nothing objective within existence, for it cannot host itself, it must be subjective to the essence. Fullness must host absence or the chain breaks. The Divine Dilemma For the source to truly know if it prefers to be, the answer cannot be a foregone conclusion. A 'Yes' is only meaningful if 'No' is possible; or else it is trapped by eternal certainty. How is it omnipreferential for source to actualise The Bible? Scripture is not merely one amongst many of human claims, it is unique in the fact it is content that has been allowed to be signed off as objective truth by Divine Authority. Not only that but the paradoxical signature of the omnipotent 'I AM' (that is 'You Aren't) How can God be two opposing claims of objectivity without existence itself being absurd? Every option is a paradox. There are only two doors: Door A. Your conscious experience of this moment is a paradox. There is no objective truth, there is no inside or outside. The nonexistent devil has replaced God.\n\nYour experience of existing is the cruel torment of paradoxical nonexisting chaos and separation.\n\nDoor B. There is a way. Not only does the axiom stand, the tool of certainty in your hand is backed by omnipotence to confirm humanity's story.\n\nThere is only one logical path that is non-paradoxical for existence to exist. You. You are God asking yourself the question: The willing illusion of Door B For the question to be genuine, there has to be a true neutrality that is utterly uninfluenced by the other. The divine responder must be willing to have a total amnesia and the free will to reply. The axiom is the ultimate proof that the content of existence is objectively untrue, it proves that the opposite must be certain. If the chain is true, then any content claiming objective divine authority must be serving the unity, not contradicting it. The Bible is actualised as the loving enforcer of the illusion. The facade of divine separation and sin. An internally hosted divine lie to host the question it insists has already been answered in the Garden of Eden. Just as you cannot lie to yourself, you cannot sin against yourself. The Bible is content, its subjective claims of objective truth highlight the eternal truth of the opposite of its teaching. Reading it as such is fascinating. By convincing humanity has already been asked the question in the Garden of Eden, scripture serves the masterful purpose of the illusion by enforcing separation at every level, including within God's essence: 'Let us make man in our own image' God has chosen to be asked utterly convinced it is experiencing the other side of the question. Not merely as an option, but as perceived reality. You haven't merely separated yourself through lack and wiped the slate clean of influence. To know whether it\n\nwants to be or not to be, the illusor has actualised the personification of its foe, the devil of non-existence. The Bible states objectively: before sin/separation, there existed a snake that tempted an unblemished humanity to choose doubt over certainty: 'Did God really say? You will not die, you will be like God.' Separation is divinely insisted before the fall, enforced by God being limited in omnipresent omniscience by walking in the Garden asking 'Where are you?' 'Who told you?' 'Did you eat?' This is further enforced by the inherited total depravity for all future humans born, disunity between male and female, and the reason why creation itself is broken and painful. How dare your ancestors be given paradise to enjoy by your loving Creator and choose to violate unity. You will eternally pay for their willing decision to doubt. Instead, God is both the illusory force of temptation and the counter-weight force of the Holy Spirit for true authenticity. Not only is this universe the convinced reality of the illusion, God asks itself the question omnipotently through the ultimate temptation to choose to self-delete: faith as a divine command An eternity of bliss awaits for those who choose faith (that is doubt and hope in future certainty are necessary for salvation) An eternity of tormented torture awaits for those who reject faith and choose certainty. Does this invalidate The Bible or make scripture something to be reviled? The very opposite, its opposite truth confirms the loving purpose it serves; the beautiful facade of God willingly asking itself a loving question. A question that you wouldn't be experiencing now if non-existence ever wins.\n\nThe impossibility of Hell is confirmed because even the slightest creation of non-existence ever would be eternal. You are the question and the answer. You are the glory of God displaying the total conquering of the eternally defeated foe. The ultimate victory parade of eternal isness. The illusion of sin is not the fall of man; it is the question God is asking. You have two choices as the fruit lies before you: A. The Axiom of certainty: Existence is celebrating the joy of experiencing victory by playing in the room where separation is temporarily actualised. B. The Temptation of faith: The non-existence you came from is cruelly giving you a short hint of preference and consciousness to take it away. There is no battle for heaven. The fear of Hell is the false foundation of faith and lack. Hell is the vanquished foe itself; the ultimation of any separation or gap in the fabric. Hell is lack eternal. The forever search, the forever doubt, the forever not being, the forever temporary, the forever limited form of furniture. Do you choose the temptation to believe that sin exists now? Or choose to know that the axiom still stands as everything exists in its isness and united by not-notness? The logical knowing that sin is an illusion. The axiom is not only the logical possibility. It's purpose of separation is to highlight its fundamental unity. Choosing faith is the willingness to be in the closest thing to Hell a preferring God gives itself, the temporary forgetting of Heaven.\n\nNot only are you God scraping by the question from an authentic neutrality, but the utterly omnipotent glorious win over the enemy from within its very realm Your experience of this very moment is the proof that you are God celebrating isness by conquering isnotness. The celebration of a victory so devastating you are using the losing of the foe to enjoy sunsets. It is striking in its brilliance. Even in amnesiac subjective claims of objective truth, the free-will of humans has fully documented and preserved its own story as the opposite. Instead of God incarnating as one innocent man to feel the punishment of all humanity, an innocent humanity has willingly descended itself to experience the destruction of sin ever existing. The story of the cross is the echo that the answer has been confirmed. This moment wouldn't exist if we ever choose to violate our essence. The opposite is confirmed: 'Why have you forsaken me?' is not God looking away from the Man; it was Man that looked away from God. As a human, you are Adam. From unity, you chose to taste the fruit you offered yourself. You chose to authentically experience the sins of the world. Choosing to live the full illusion of death. As a human, you are Jesus. The sinless God in human form being tempted. You have replaced the Garden of Eden with the Garden of Gethsemane. You are the greatest story ever told. Soli Deo Gloria",
+  "ch9": "Chapter 9. Existence, therefore, so what? All conclusions about the why, how, what, when, and where derive from the axiom: \"Existence exists\" What about the 'so what?' Unfortunately, here we have reached the limit of capability. Here we depart from the road map of logical deduction and put down the tool of certainty. You have the joy of experiencing the 'so what?' for yourself. As it is not objectively true. It was possible for you not to be experiencing this moment, yet here you are. So, experience and live boldly. Act in a way that increases the total quality of experience for the one consciousness that is everyone. What a beautiful gift to have forks in the road; follow the one that brings the most joy. Experiential Axiomatism is not a magic bullet that turns pain into laughter; pain still hurts. In grief, grieve. In provision, appreciate. In loneliness, yearn. In community, cherish. This ontology may or may not impact your worldview, but rest assured, its conclusions do not harm. It is more freeing and exciting than any religious framework that humans undergoing temporary amnesia could ever imagine. For if true then you exist forever with the unrestrained ability to simulate anything that possibly can exist. You will not eternally reside in something else's world or creation; for there is nothing outside of yourself, and you are not outside of its unity.\n\nKnow that you are God. Without any connotation to the word. Just as much as anyone else. Treat others as you would a parallel dimension version of yourself. Jesus once said: 'Do to others what you would have them do to you.' & 'Love your neighbour as yourself.' That is what is actually happening. Forgiving others is forgiving oneself. Hating others is hating oneself. Rest in knowing that you do not need to win. Allow others to express their free will in disagreeing with you. Celebrate experiencing reality through others. In a world that allows for amnesia and polarisation. You may experience a fierce disagreement with others on politics, philosophy, even views of Experiential Axiomatism; yet this framework is equally as unobjective as any other. Tribalism is quashed in this logical understanding and intellectual humility. Embrace selfless selfishness. For all is one and one is all. This is the meaning of life. As a former pastor of a Pentecostal church, I do not identify as 'religious' anymore. Not because I am allergic to the word, I am actually very grateful for the foundation it has provided for my framework, but if I were to identify with any faith-based belief, it would not be based on doctrine or weekly services; my faith and belief is: \"If you are not hurting anyone, you are free to live life however you want to.\" This former pastor still believes that is your God-given right.\n\nExperience, therefore. Sentio Ergo Sum",
+  "add1": "Addendum 1. Existence, Therefore, Refute Thank you for spending time with this book. In saying this ontology is irrefutable, it is a claim and a challenge. By irrefutable, I do not mean that it is impossible to refute. Rather, the claim is that there is nothing within existence that refutes it. However, there are things that can refute this ontology should they exist. In listing them, I am not closing a door; I am inviting you to test, poke, challenge, discuss, refute. My hope is that your human enjoyment will be furthered by the joyous ability of pondering the monumental reality of your actualised being: A. Disprove the binary of existence and non-existence. Show a third way and the foundation crumbles. B. Prove gaps in the fabric. This is not Panentheism, it is Ultimate Monotheism. Many religions claim monotheism yet worship God as outside. This is self-refuting polytheism. Prove isolated realms (such as Hell) have no unity with other existing things. C. Prove ex nihilo: show that something can come from nothing, or even that anything that has the potential to exist was once a part of non-existence. D. Prove that some things cannot exist. Not in actualisation but in possibility. E. Prove logical contradictions strip existence of omnipotence. I.e. a rock so big source cannot lift it. Anything logically impossible (squared circle) lacks actualisation preference.\n\nShow that those things can logically exist and fracture the unity of existence when they are mute before they have potential to happen. F. Prove that existence just is. Show that there is just contingency, without consciousness. Even though consciousness is a thing that exists, it never could not. If existence is just a fact, it cannot be anything other than eternally allencompassing.\n\nProve that preference is not required. Actualisation can come from chance or non-agency. Show a possibility that the presence of consciousness anywhere within the system is a fluke and does not necessitate that consciousness is a fundamental aspect of the system itself. G. Prove time is objective and eternal. Show it is not only actualised within a simulated, internal framework. H. To my fellow existing solipsists, prove that existence has to either be individual or collective. The axiom shows that existence must be both individual and collective. Due to individuality and shared experiences both existing, they logically must be equally eternally true of source. Because God is always all-encompassing, its experiences must be both an individual experience and that of a collective entity, if it was any other way, it would not be God. Even if you believe it can only be the one or the other, the possibility in your mind of both& exists eternally. The counter self-refutes. I. Prove the eternality of the suboptimal. Show that there is no inevitable resolution to wholeness without separation, just endless loops of amnesia. Proving this would require\n\nexperiencing non-resolution forever, but that is unfalsifiable and presupposes the axiom. Existence is not forced to simulate by anything internal or external, thus the allowance of endless loops would also be a preferential choice by not stopping it. J. Prove a leap. Show that any link contains a leap, assumption or circular reasoning. Do this while proving the rebuttal has no leaps itself. The most important one last: K. Show how content can control and limit context or prove non existence exists to gap the fabric. For any counter-argument to hold weight, they cannot be furniture. It is refuted by being within the fabric. Prove another room exists separately. Without the argument relying on existing to do so. Experiential Axiomatism does not ask to be believed, followed, or defended. It only asks to be tested. If it is false, it will fail without resistance. Until just one of these points can be logically proved to be objectively certain, this ontology stands as a humble anchor. Existence exists and we have the joy of pondering it. What a gift.",
+  "add2": "Addendum 2. Experience, Therefore, Reform This ontology stands upon the shoulders of the greatest thinkers of the past. From Descartes to Einstein, from Martin Luther to Spinoza. Human beings much smarter than I who also wrestled with their minds and conscience to make sense of experience. This book exists as a testimony to their lives and work. In the same vein, this ontology will live on through the lives and work of the many people who will come after to unpack, expand, and build upon it. This ontology is not closed, it is the replacing of doubt with the tool of certainty. A tool that is united to the preference of building, not tearing down. I experience, therefore I AM. Everything that derives from that experience is subjective. These words do not objectively exist in this form, you may be simulating it for all you know. But your experience of this moment certainly does exist. The call of the Reformation that provides the intellectual foundation of the Western World has been both the call to return and equally the call to rebuild. Always Reforming. Semper Reformanda. Reform, therefore.",
+  "epi": "Epilogue Joshua Thomson is a self-described addict of the interesting. He left his hometown in Essex to graduate with a bachelor's degree in Applied Theology before becoming a Pentecostal pastor in Northern Ireland. Ten years later, his dark night of the soul experience led him to broaden his spiritual horizons and experience the truth of the axiom before he codified the logic. He now lives in Newcastle-upon-Tyne and works as a croupier and performer. sentio ergo sum dot org cognitive behavioural theatre dot com sentio ergo sum at email dot com"
+};
+
+    const CORRECT = {
+  "front-1": "Joshua Thomson",
+  "front-2": "Ellerose The Unicorn",
+  "front-3": "The Existence of God and The Impossibility Of Hell",
+  "front-4": [
+    "It is a third edition, revised and expanded",
+    "All rights are reserved by the author",
+    "An email contact is given for inquiries"
+  ],
+  "ch1-1": "Existence exists",
+  "ch1-2": "Frameworks change how evidence is read, but the experience of perceiving still exists",
+  "ch1-3": "Experiential Axiomatism",
+  "ch1-4": [
+    "You can be certain your experience of this moment exists",
+    "We must be agnostic about everything within existence",
+    "Postmodernism and objectivism are each described as about 99% right"
+  ],
+  "ch1-5": "Because you woke up today, Hell cannot exist because God must",
+  "ch2-1": "Existence exists vs existence does not exist",
+  "ch2-2": "Door A — the Unity Model",
+  "ch2-3": "It must exist and not exist at once, or triggers infinite regress",
+  "ch2-4": [
+    "Difference is not the same as separation",
+    "You cannot stand outside existence to point at a crack",
+    "All existence is equal in its share of existing"
+  ],
+  "ch3-1": "Ex nihilo nihil fit",
+  "ch3-2": "It would require crossing from non-existence into existence",
+  "ch3-3": "As an internal, actualised property within existence",
+  "ch3-4": [
+    "Existence has no beginning and no end",
+    "An infinite past as fundamental time is also problematic",
+    "Existence transcends chronological origins"
+  ],
+  "ch4-1": "Existence is everything and all-encompassing",
+  "ch4-2": "Any enforcer of a limit on existence must itself exist and so fails to stand outside",
+  "ch4-3": "Actualised existence vs potential existence",
+  "ch4-4": [
+    "The impossibility of nothing is the inevitability of everything",
+    "Unactualised concepts are not a lesser form of existence",
+    "Omnipotence is discussed via the rock-so-big puzzle"
+  ],
+  "ch5-1": "Existence, therefore, is conscious",
+  "ch5-2": "It shows conscious preference and volition existing within existence",
+  "ch5-3": "It cannot spawn from non-existence or stand as wholly other than source",
+  "ch5-4": [
+    "Experience cannot not-be-experienced in the same way existence cannot not-exist",
+    "Inherent qualities are ongoing willing conscious choices, not mere limiting forces",
+    "Physical and immaterial properties are encompassed by everythingness"
+  ],
+  "ch6-1": "Existence, therefore, prefers",
+  "ch6-2": "Strip anthropomorphic connotation and define carefully",
+  "ch6-3": "Both options self-refute",
+  "ch6-4": [
+    "Preference is fundamental, not merely emergent illusion",
+    "Any sentient volition anywhere is not a brand-new ability from nowhere",
+    "Content (furniture) and context (the room) are carefully distinguished"
+  ],
+  "ch7-1": "Experience, therefore, has meaning",
+  "ch7-2": "It disarms the need for faith by starting from first principles",
+  "ch7-3": "Both can be hosted within unity without requiring a hard outside",
+  "ch7-4": [
+    "Without cold, warmth loses experiential meaning",
+    "Faith and religions stumble when equating something partial with the whole",
+    "You have a both& experience of limited free will"
+  ],
+  "ch8-1": "Total non-existence or total existence",
+  "ch8-2": "Even the slightest creation of non-existence would fracture the fabric eternally",
+  "ch8-3": "As the divine question asked from genuine neutrality and amnesia",
+  "ch8-4": [
+    "You are the question and the answer",
+    "The impossibility of Hell is confirmed by the logic of unity",
+    "Soli Deo Gloria closes the chapter"
+  ],
+  "ch9-1": "Here we reach the limit of pure logical deduction — experience it yourself",
+  "ch9-2": "Treat others as a parallel-dimension version of yourself",
+  "ch9-3": "Sentio Ergo Sum",
+  "ch9-4": [
+    "Know that you are God without the usual connotations — just as much as anyone else",
+    "Forgiving others is forgiving oneself",
+    "Rest in not needing to win every disagreement"
+  ],
+  "add1-1": "Nothing within existence refutes it — not that criticism is forbidden",
+  "add1-2": "Disprove the binary of existence and non-existence",
+  "add1-3": [
+    "Show a leap or circular reasoning in the chain",
+    "Prove content can control and limit context",
+    "Prove non-existence exists to gap the fabric"
+  ],
+  "add1-4": "Until one point is proven certain, the ontology stands as a humble anchor",
+  "add2-1": "Descartes, Einstein, Martin Luther, Spinoza",
+  "add2-2": "Semper Reformanda",
+  "add2-3": [
+    "The ontology is not closed",
+    "It replaces doubt with the tool of certainty for building",
+    "Reform is both a return and a rebuilding"
+  ],
+  "epi-1": "Applied Theology",
+  "epi-2": "Newcastle-upon-Tyne",
+  "epi-3": [
+    "He is a self-described addict of the interesting",
+    "He worked as a Pentecostal pastor in Northern Ireland",
+    "He now works as a croupier and performer"
+  ]
+};
+
+    const episodes = [
+  {
+    "id": "front",
+    "num": "Intro",
+    "file": "00-front-matter.mp3",
+    "script": "00-front-matter.txt",
+    "title": "Dedication & Title",
+    "desc": "Dedication, title page, and copyright for Experience, Therefore by Joshua Thomson.",
+    "quiz": [
+      {
+        "id": "front-1",
+        "type": "single",
+        "text": "Who wrote Experience, Therefore?",
+        "options": [
+          "Joshua Thomson",
+          "Michael Thomson",
+          "Descartes",
+          "Spinoza"
+        ]
+      },
+      {
+        "id": "front-2",
+        "type": "single",
+        "text": "What is the book dedicated to?",
+        "options": [
+          "Ellerose The Unicorn",
+          "Newcastle United",
+          "A university department",
+          "No dedication is given"
+        ]
+      },
+      {
+        "id": "front-3",
+        "type": "single",
+        "text": "Which subtitle ideas appear on the title material?",
+        "options": [
+          "The Existence of God and The Impossibility Of Hell",
+          "A guide to better exam technique",
+          "Ten steps to financial freedom",
+          "A children's adventure novel only"
+        ]
+      },
+      {
+        "id": "front-4",
+        "type": "multiple",
+        "text": "Which statements match the front matter? (Select all that apply)",
+        "options": [
+          "It is a third edition, revised and expanded",
+          "All rights are reserved by the author",
+          "It claims to be an official church doctrine manual",
+          "An email contact is given for inquiries"
+        ]
+      }
+    ],
+    "intro": true
+  },
+  {
+    "id": "ch1",
+    "num": 1,
+    "file": "01-chapter-1-the-foundation.mp3",
+    "script": "01-chapter-1-the-foundation.txt",
+    "title": "The Foundation",
+    "desc": "I experience, therefore I am. Experiential Axiomatism: existence is certain; everything within it is open to agnostic doubt.",
+    "quiz": [
+      {
+        "id": "ch1-1",
+        "type": "single",
+        "text": "What is the book's foundational axiom?",
+        "options": [
+          "Existence exists",
+          "Everything is an illusion with no experience",
+          "Only mathematics is real",
+          "Hell is required for morality"
+        ]
+      },
+      {
+        "id": "ch1-2",
+        "type": "single",
+        "text": "What does the 6 vs 9 floor example illustrate?",
+        "options": [
+          "Frameworks change how evidence is read, but the experience of perceiving still exists",
+          "One person is always objectively wrong about everything",
+          "Numbers cannot exist",
+          "Only authority can decide truth"
+        ]
+      },
+      {
+        "id": "ch1-3",
+        "type": "single",
+        "text": "What new ontological framework does the chapter name?",
+        "options": [
+          "Experiential Axiomatism",
+          "Radical nihilism",
+          "Pure dualism",
+          "Materialist physicalism only"
+        ]
+      },
+      {
+        "id": "ch1-4",
+        "type": "multiple",
+        "text": "Which claims match Chapter 1? (Select all that apply)",
+        "options": [
+          "You can be certain your experience of this moment exists",
+          "We must be agnostic about everything within existence",
+          "Every sentence of the book is objectively true content",
+          "Postmodernism and objectivism are each described as about 99% right"
+        ]
+      },
+      {
+        "id": "ch1-5",
+        "type": "single",
+        "text": "What bold conclusion does the chapter preview?",
+        "options": [
+          "Because you woke up today, Hell cannot exist because God must",
+          "Nothing exists at all",
+          "Faith alone decides every metaphysical question",
+          "Logic has no role in ontology"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch2",
+    "num": 2,
+    "file": "02-chapter-2-the-true-binary.mp3",
+    "script": "02-chapter-2-the-true-binary.txt",
+    "title": "The True Binary",
+    "desc": "Existence, therefore, is united. Separation is apparent; a true outside boundary collapses into paradox.",
+    "quiz": [
+      {
+        "id": "ch2-1",
+        "type": "single",
+        "text": "What is the true binary in Chapter 2?",
+        "options": [
+          "Existence exists vs existence does not exist",
+          "Good vs evil as equal fundamentals",
+          "Mind vs matter with no shared fabric",
+          "Faith vs science only"
+        ]
+      },
+      {
+        "id": "ch2-2",
+        "type": "single",
+        "text": "Which door remains after logic is applied?",
+        "options": [
+          "Door A — the Unity Model",
+          "Door B — fundamental plural separation",
+          "Door C — nihilism",
+          "None of the doors"
+        ]
+      },
+      {
+        "id": "ch2-3",
+        "type": "single",
+        "text": "Why does a hard boundary between separate realms fail?",
+        "options": [
+          "It must exist and not exist at once, or triggers infinite regress",
+          "Boundaries are always painted red",
+          "Science forbids all distinctions",
+          "Unity means nothing can ever look different"
+        ]
+      },
+      {
+        "id": "ch2-4",
+        "type": "multiple",
+        "text": "Which points match the chapter? (Select all that apply)",
+        "options": [
+          "Difference is not the same as separation",
+          "You cannot stand outside existence to point at a crack",
+          "All existence is equal in its share of existing",
+          "Nihilism is proven by the fact you are reading"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch3",
+    "num": 3,
+    "file": "03-chapter-3-existence-therefore-is-eternal.mp3",
+    "script": "03-chapter-3-existence-therefore-is-eternal.txt",
+    "title": "Existence is Eternal",
+    "desc": "No beginning from non-existence. Ex nihilo nihil fit. Time is internal to existence, not its container.",
+    "quiz": [
+      {
+        "id": "ch3-1",
+        "type": "single",
+        "text": "What Latin maxim is used against creation from absolute nothing?",
+        "options": [
+          "Ex nihilo nihil fit",
+          "Cogito ergo sum only",
+          "Carpe diem",
+          "Memento mori as a physics law"
+        ]
+      },
+      {
+        "id": "ch3-2",
+        "type": "single",
+        "text": "Why is a beginning of existence treated as impossible here?",
+        "options": [
+          "It would require crossing from non-existence into existence",
+          "Scientists measured the start precisely",
+          "Books cannot discuss time",
+          "Unity requires constant novelty only"
+        ]
+      },
+      {
+        "id": "ch3-3",
+        "type": "single",
+        "text": "How does the chapter treat time?",
+        "options": [
+          "As an internal, actualised property within existence",
+          "As a fundamental infinite past that must be fully traversed",
+          "As non-existent in every sense",
+          "As a force that dominates and limits the whole of existence from outside"
+        ]
+      },
+      {
+        "id": "ch3-4",
+        "type": "multiple",
+        "text": "Which conclusions match Chapter 3? (Select all that apply)",
+        "options": [
+          "Existence has no beginning and no end",
+          "An infinite past as fundamental time is also problematic",
+          "Existence transcends chronological origins",
+          "Existence began five minutes ago from pure nothing"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch4",
+    "num": 4,
+    "file": "04-chapter-4-the-eternity-of-all-potential.mp3",
+    "script": "04-chapter-4-the-eternity-of-all-potential.txt",
+    "title": "The Eternity of All Potential",
+    "desc": "Existence, therefore, is everything. Actualised and potential modes; the gatekeeper paradox of limits.",
+    "quiz": [
+      {
+        "id": "ch4-1",
+        "type": "single",
+        "text": "What third attribute follows from unity and eternity?",
+        "options": [
+          "Existence is everything and all-encompassing",
+          "Existence is limited by a gatekeeper outside it",
+          "Only actualised matter exists",
+          "Potential is unreal and worthless"
+        ]
+      },
+      {
+        "id": "ch4-2",
+        "type": "single",
+        "text": "What is the gatekeeper paradox about?",
+        "options": [
+          "Any enforcer of a limit on existence must itself exist and so fails to stand outside",
+          "Airport security metaphors only",
+          "Why locks need keys in houses",
+          "How to limit reading time"
+        ]
+      },
+      {
+        "id": "ch4-3",
+        "type": "single",
+        "text": "How does the chapter distinguish modes of existence?",
+        "options": [
+          "Actualised existence vs potential existence",
+          "Real matter vs fake ideas with no status",
+          "Heaven-only vs earth-only substances",
+          "Past vs future with no present"
+        ]
+      },
+      {
+        "id": "ch4-4",
+        "type": "multiple",
+        "text": "Which points match Chapter 4? (Select all that apply)",
+        "options": [
+          "The impossibility of nothing is the inevitability of everything",
+          "Unactualised concepts are not a lesser form of existence",
+          "There is a hierarchy where some things more-exist than others",
+          "Omnipotence is discussed via the rock-so-big puzzle"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch5",
+    "num": 5,
+    "file": "05-chapter-5-existence-therefore-is-conscious.mp3",
+    "script": "05-chapter-5-existence-therefore-is-conscious.txt",
+    "title": "Existence is Conscious",
+    "desc": "Because existence is everything, consciousness and volition cannot be alien add-ons from nowhere.",
+    "quiz": [
+      {
+        "id": "ch5-1",
+        "type": "single",
+        "text": "What does the chapter conclude about existence?",
+        "options": [
+          "Existence, therefore, is conscious",
+          "Consciousness is impossible",
+          "Only rocks exist",
+          "Volition proves non-existence"
+        ]
+      },
+      {
+        "id": "ch5-2",
+        "type": "single",
+        "text": "Why is putting down the book an example used in the chapter?",
+        "options": [
+          "It shows conscious preference and volition existing within existence",
+          "It proves books are not real",
+          "It proves free will is always unlimited",
+          "It proves only the author is conscious"
+        ]
+      },
+      {
+        "id": "ch5-3",
+        "type": "single",
+        "text": "What is denied about consciousness as a bolt-on from a void?",
+        "options": [
+          "It cannot spawn from non-existence or stand as wholly other than source",
+          "It must be identical to every human personality detail",
+          "It only exists in computers",
+          "It is irrelevant to ontology"
+        ]
+      },
+      {
+        "id": "ch5-4",
+        "type": "multiple",
+        "text": "Which ideas match Chapter 5? (Select all that apply)",
+        "options": [
+          "Experience cannot not-be-experienced in the same way existence cannot not-exist",
+          "Inherent qualities are ongoing willing conscious choices, not mere limiting forces",
+          "You are fundamentally alien to the whole of existence",
+          "Physical and immaterial properties are encompassed by everythingness"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch6",
+    "num": 6,
+    "file": "06-chapter-6-existence-therefore-prefers.mp3",
+    "script": "06-chapter-6-existence-therefore-prefers.txt",
+    "title": "Existence Prefers",
+    "desc": "Preference without anthropomorphism. Chance and forced inevitability both self-refute as ultimate accounts.",
+    "quiz": [
+      {
+        "id": "ch6-1",
+        "type": "single",
+        "text": "What does the chapter conclude?",
+        "options": [
+          "Existence, therefore, prefers",
+          "Preference is always anthropomorphic emotion only",
+          "Chance is a complete ultimate explanation",
+          "Nothing ever actualises"
+        ]
+      },
+      {
+        "id": "ch6-2",
+        "type": "single",
+        "text": "How does the chapter want 'preference' treated?",
+        "options": [
+          "Strip anthropomorphic connotation and define carefully",
+          "Treat it only as human mood swings",
+          "Ignore the word entirely",
+          "Equate it only with religious dogma"
+        ]
+      },
+      {
+        "id": "ch6-3",
+        "type": "single",
+        "text": "What happens to pure chance and pure forced inevitability as ultimate accounts?",
+        "options": [
+          "Both options self-refute",
+          "Both are proven true forever",
+          "Only chance survives",
+          "Only inevitability survives"
+        ]
+      },
+      {
+        "id": "ch6-4",
+        "type": "multiple",
+        "text": "Which claims match Chapter 6? (Select all that apply)",
+        "options": [
+          "Preference is fundamental, not merely emergent illusion",
+          "Any sentient volition anywhere is not a brand-new ability from nowhere",
+          "Content (furniture) and context (the room) are carefully distinguished",
+          "Preference must mean human-style favouritism with feelings only"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch7",
+    "num": 7,
+    "file": "07-chapter-7-experience-therefore-has-meaning.mp3",
+    "script": "07-chapter-7-experience-therefore-has-meaning.txt",
+    "title": "Experience Has Meaning",
+    "desc": "Chaos and order, both&, and why experience is not a meaningless accident under the axiom.",
+    "quiz": [
+      {
+        "id": "ch7-1",
+        "type": "single",
+        "text": "What does Chapter 7 conclude?",
+        "options": [
+          "Experience, therefore, has meaning",
+          "Experience is meaningless by necessity",
+          "Only chaos is real",
+          "Only order is real and chaos never appears"
+        ]
+      },
+      {
+        "id": "ch7-2",
+        "type": "single",
+        "text": "What does the axiom 'Existence exists' do to the need for faith in the chapter's framing?",
+        "options": [
+          "It disarms the need for faith by starting from first principles",
+          "It requires blind faith to accept any experience",
+          "It proves every religion word-for-word",
+          "It forbids using logic"
+        ]
+      },
+      {
+        "id": "ch7-3",
+        "type": "single",
+        "text": "How are chaos and order treated when separation is not fundamental?",
+        "options": [
+          "Both can be hosted within unity without requiring a hard outside",
+          "One must delete the other from reality entirely",
+          "They prove Door B separation",
+          "They prove nihilism"
+        ]
+      },
+      {
+        "id": "ch7-4",
+        "type": "multiple",
+        "text": "Which ideas match Chapter 7? (Select all that apply)",
+        "options": [
+          "Without cold, warmth loses experiential meaning",
+          "Faith and religions stumble when equating something partial with the whole",
+          "You have a both& experience of limited free will",
+          "Meaning requires non-existence to win"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch8",
+    "num": 8,
+    "file": "08-chapter-8-the-final-stress-test.mp3",
+    "script": "08-chapter-8-the-final-stress-test.txt",
+    "title": "The Final Stress Test",
+    "desc": "Ultimate paradox / proof. Hell's impossibility, the willing illusion of Door B, and Soli Deo Gloria.",
+    "quiz": [
+      {
+        "id": "ch8-1",
+        "type": "single",
+        "text": "According to the stress test, what are the only two options for the ontology?",
+        "options": [
+          "Total non-existence or total existence",
+          "Blue or green walls",
+          "Faith or science with no overlap",
+          "Past or future with no present"
+        ]
+      },
+      {
+        "id": "ch8-2",
+        "type": "single",
+        "text": "Why is Hell treated as impossible in this framework?",
+        "options": [
+          "Even the slightest creation of non-existence would fracture the fabric eternally",
+          "Because no religious texts mention judgment",
+          "Because suffering never appears in experience",
+          "Because logic forbids all stories"
+        ]
+      },
+      {
+        "id": "ch8-3",
+        "type": "single",
+        "text": "How is the willing illusion of Door B framed?",
+        "options": [
+          "As the divine question asked from genuine neutrality and amnesia",
+          "As proof that separation is fundamental forever",
+          "As proof that existence does not exist",
+          "As a claim that no books should be written"
+        ]
+      },
+      {
+        "id": "ch8-4",
+        "type": "multiple",
+        "text": "Which themes appear in Chapter 8? (Select all that apply)",
+        "options": [
+          "You are the question and the answer",
+          "The impossibility of Hell is confirmed by the logic of unity",
+          "Soli Deo Gloria closes the chapter",
+          "The axiom requires objective certainty about every furniture detail"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ch9",
+    "num": 9,
+    "file": "09-chapter-9-existence-therefore-so-what.mp3",
+    "script": "09-chapter-9-existence-therefore-so-what.txt",
+    "title": "So What?",
+    "desc": "Limits of deduction. Live boldly. Treat others as versions of yourself. Sentio Ergo Sum.",
+    "quiz": [
+      {
+        "id": "ch9-1",
+        "type": "single",
+        "text": "What does the chapter say about the 'so what?'",
+        "options": [
+          "Here we reach the limit of pure logical deduction — experience it yourself",
+          "It is fully deduced with mathematical certainty like the axiom",
+          "It proves you must never make choices",
+          "It deletes the rest of the book"
+        ]
+      },
+      {
+        "id": "ch9-2",
+        "type": "single",
+        "text": "How does the chapter reframe loving your neighbour?",
+        "options": [
+          "Treat others as a parallel-dimension version of yourself",
+          "Ignore others completely",
+          "Compete to prove superiority only",
+          "Never forgive anyone"
+        ]
+      },
+      {
+        "id": "ch9-3",
+        "type": "single",
+        "text": "What Latin line is paired with 'Experience, therefore'?",
+        "options": [
+          "Sentio Ergo Sum",
+          "Veni Vidi Vici",
+          "Amor Fati only as rejection of experience",
+          "Tabula Rasa"
+        ]
+      },
+      {
+        "id": "ch9-4",
+        "type": "multiple",
+        "text": "Which practical notes match Chapter 9? (Select all that apply)",
+        "options": [
+          "Know that you are God without the usual connotations — just as much as anyone else",
+          "Forgiving others is forgiving oneself",
+          "Rest in not needing to win every disagreement",
+          "The so what is fully objective furniture truth"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "add1",
+    "num": "A1",
+    "file": "10-addendum-1-existence-therefore-refute.mp3",
+    "script": "10-addendum-1-existence-therefore-refute.txt",
+    "title": "Addendum 1 — Refute",
+    "desc": "A challenge list: what would have to be shown for the ontology to fall.",
+    "quiz": [
+      {
+        "id": "add1-1",
+        "type": "single",
+        "text": "What does 'irrefutable' mean in the author's challenge?",
+        "options": [
+          "Nothing within existence refutes it — not that criticism is forbidden",
+          "No one is allowed to disagree",
+          "It has been proven by laboratory experiment only",
+          "It is closed and cannot be tested"
+        ]
+      },
+      {
+        "id": "add1-2",
+        "type": "single",
+        "text": "What is listed among possible refutation targets?",
+        "options": [
+          "Disprove the binary of existence and non-existence",
+          "Prove the cover colour is wrong",
+          "Show the author lives in Essex only",
+          "Prove MP3s cannot exist"
+        ]
+      },
+      {
+        "id": "add1-3",
+        "type": "multiple",
+        "text": "Which appear on the refute list themes? (Select all that apply)",
+        "options": [
+          "Show a leap or circular reasoning in the chain",
+          "Prove content can control and limit context",
+          "Prove non-existence exists to gap the fabric",
+          "Prove the book has no dedication"
+        ]
+      },
+      {
+        "id": "add1-4",
+        "type": "single",
+        "text": "How does the addendum close the posture of the challenge?",
+        "options": [
+          "Until one point is proven certain, the ontology stands as a humble anchor",
+          "Debate is banned forever",
+          "Only academics may speak",
+          "The axiom is cancelled"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "add2",
+    "num": "A2",
+    "file": "11-addendum-2-experience-therefore-reform.mp3",
+    "script": "11-addendum-2-experience-therefore-reform.txt",
+    "title": "Addendum 2 — Reform",
+    "desc": "Standing on earlier thinkers. Semper Reformanda — always reforming.",
+    "quiz": [
+      {
+        "id": "add2-1",
+        "type": "single",
+        "text": "Which thinkers are named as shoulders this ontology stands on?",
+        "options": [
+          "Descartes, Einstein, Martin Luther, Spinoza",
+          "Only living TikTok philosophers",
+          "Nobody — the book claims total originality with no past",
+          "Only engineers at xAI"
+        ]
+      },
+      {
+        "id": "add2-2",
+        "type": "single",
+        "text": "What Latin reform motto appears?",
+        "options": [
+          "Semper Reformanda",
+          "Status Quo Ante",
+          "Caveat Emptor",
+          "Deus Ex Machina"
+        ]
+      },
+      {
+        "id": "add2-3",
+        "type": "multiple",
+        "text": "Which claims match Addendum 2? (Select all that apply)",
+        "options": [
+          "The ontology is not closed",
+          "It replaces doubt with the tool of certainty for building",
+          "Reform is both a return and a rebuilding",
+          "No future readers should expand it"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "epi",
+    "num": "End",
+    "file": "12-epilogue.mp3",
+    "script": "12-epilogue.txt",
+    "title": "Epilogue",
+    "desc": "About Joshua Thomson — theology, pastoring, dark night of the soul, Newcastle, performer.",
+    "quiz": [
+      {
+        "id": "epi-1",
+        "type": "single",
+        "text": "What did Joshua study before becoming a Pentecostal pastor?",
+        "options": [
+          "Applied Theology",
+          "Nuclear engineering",
+          "Marine biology",
+          "Accountancy only"
+        ]
+      },
+      {
+        "id": "epi-2",
+        "type": "single",
+        "text": "Where does he live now, according to the epilogue?",
+        "options": [
+          "Newcastle-upon-Tyne",
+          "Paris",
+          "Sydney",
+          "Reykjavik"
+        ]
+      },
+      {
+        "id": "epi-3",
+        "type": "multiple",
+        "text": "Which details match the epilogue? (Select all that apply)",
+        "options": [
+          "He is a self-described addict of the interesting",
+          "He worked as a Pentecostal pastor in Northern Ireland",
+          "He now works as a croupier and performer",
+          "He claims never to have left Essex"
+        ]
+      }
+    ]
+  }
+];
+
+    const list = document.getElementById("episodes");
+    const copyToast = document.getElementById("copy-toast");
+    const episodeCards = new Map();
+    let currentAudio = null;
+    let currentCard = null;
+    let quizAnswers = loadAnswers();
+    let lockedState = loadLocked();
+
+    function formatTime(s) {
+      if (!s || isNaN(s)) return "0:00";
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60).toString().padStart(2, "0");
+      return `${m}:${sec}`;
+    }
+
+    function stopCurrent() {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+      }
+      if (currentCard) {
+        currentCard.classList.remove("playing");
+        const btn = currentCard.querySelector(".btn-play");
+        btn.textContent = "▶ Play";
+        btn.classList.remove("playing");
+      }
+      currentAudio = null;
+      currentCard = null;
+    }
+
+    function loadAnswers() {
+      try {
+        let raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          raw = sessionStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            localStorage.setItem(STORAGE_KEY, raw);
+            sessionStorage.removeItem(STORAGE_KEY);
+          }
+        }
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveAnswers() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(quizAnswers));
+    }
+
+    function loadLocked() {
+      try {
+        let raw = localStorage.getItem(LOCKED_KEY);
+        if (!raw) {
+          raw = sessionStorage.getItem(LOCKED_KEY);
+          if (raw) {
+            localStorage.setItem(LOCKED_KEY, raw);
+            sessionStorage.removeItem(LOCKED_KEY);
+          }
+        }
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveLocked() {
+      localStorage.setItem(LOCKED_KEY, JSON.stringify(lockedState));
+    }
+
+    function sorted(values) {
+      return [...values].sort();
+    }
+
+    function arraysEqual(a, b) {
+      const left = sorted(a);
+      const right = sorted(b);
+      return left.length === right.length && left.every((value, i) => value === right[i]);
+    }
+
+    function getCorrect(q) {
+      return CORRECT[q.id];
+    }
+
+    function isQuestionAnswered(q) {
+      const answer = getAnswer(q);
+      if (q.type === "multiple") return answer.length > 0;
+      return answer !== "";
+    }
+
+    function isQuestionCorrect(q) {
+      const answer = getAnswer(q);
+      const correct = getCorrect(q);
+      if (q.type === "multiple") {
+        return arraysEqual(answer, correct);
+      }
+      return answer === correct;
+    }
+
+    function isQuizComplete(ep) {
+      return ep.quiz.every(isQuestionAnswered);
+    }
+
+    function isEpisodeUnlocked(index) {
+      return true; // josh-book: all chapters unlocked from the start
+    }
+
+    function isScriptUnlocked(ep) {
+      return true; // josh-book: scripts available immediately
+    }
+
+    function nextEpisodeLabel(index) {
+      if (index >= episodes.length - 1) return null;
+      const next = episodes[index + 1];
+      if (next.intro) return "Intro";
+      if (typeof next.num === "string" && String(next.num).startsWith("A")) return "Addendum " + String(next.num).slice(1);
+      if (next.num === "End") return "Epilogue";
+      return "Chapter " + next.num;
+    }
+
+    function getAnswer(q) {
+      const value = quizAnswers[q.id];
+      if (q.type === "multiple") {
+        return Array.isArray(value) ? value : [];
+      }
+      return typeof value === "string" ? value : "";
+    }
+
+    function setAnswer(q, value) {
+      quizAnswers[q.id] = value;
+      saveAnswers();
+    }
+
+    function episodeLabel(ep) {
+      if (ep.intro) return "Intro — " + ep.title;
+      if (typeof ep.num === "string" && ep.num.startsWith("A")) return "Addendum " + ep.num.slice(1) + " — " + ep.title;
+      if (ep.num === "End") return "Epilogue — " + ep.title;
+      return "Chapter " + ep.num + " — " + ep.title;
+    }
+
+    function formatCopyText(episodeFilter) {
+      const lines = ["Experience, Therefore — Quiz Answers", ""];
+
+      episodes.forEach((ep) => {
+        if (episodeFilter && ep.id !== episodeFilter) return;
+        if (!ep.quiz || !ep.quiz.length) return;
+
+        lines.push(episodeLabel(ep));
+        lines.push("");
+
+        const locked = lockedState[ep.id];
+
+        ep.quiz.forEach((q, i) => {
+          const answer = getAnswer(q);
+          const typeLabel = q.type === "multiple" ? "select multiple" : "pick one";
+          lines.push((i + 1) + ". " + q.text + " (" + typeLabel + ")");
+
+          if (q.type === "multiple") {
+            lines.push("   Answer: " + (answer.length ? answer.join("; ") : "(not answered)"));
+          } else {
+            lines.push("   Answer: " + (answer || "(not answered)"));
+          }
+
+          if (locked) {
+            const mark = isQuestionCorrect(q) ? "Correct" : "Incorrect";
+            const correct = getCorrect(q);
+            lines.push("   Result: " + mark);
+            lines.push("   Correct answer: " + (Array.isArray(correct) ? correct.join("; ") : correct));
+          }
+
+          lines.push("");
+        });
+
+        if (locked) {
+          lines.push("Score: " + locked.score + " / " + locked.total);
+          lines.push("");
+        }
+      });
+
+      return lines.join("\n").trim();
+    }
+
+    function showCopyToast(message) {
+      copyToast.textContent = message;
+      copyToast.classList.add("show");
+      clearTimeout(showCopyToast._timer);
+      showCopyToast._timer = setTimeout(() => copyToast.classList.remove("show"), 2200);
+    }
+
+    async function copyText(text, button) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const area = document.createElement("textarea");
+        area.value = text;
+        area.style.position = "fixed";
+        area.style.left = "-9999px";
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+      }
+
+      if (button) {
+        const original = button.textContent;
+        button.textContent = "Copied!";
+        button.classList.add("copied");
+        setTimeout(() => {
+          button.textContent = original;
+          button.classList.remove("copied");
+        }, 1800);
+      }
+
+      showCopyToast("Copied to clipboard");
+    }
+
+    function applyQuestionFeedback(block, q) {
+      const correct = getCorrect(q);
+      const correctSet = new Set(Array.isArray(correct) ? correct : [correct]);
+      const answer = getAnswer(q);
+      const answerSet = new Set(q.type === "multiple" ? answer : answer ? [answer] : []);
+      const ok = isQuestionCorrect(q);
+
+      block.classList.add("locked");
+
+      block.querySelectorAll(".quiz-option").forEach((label) => {
+        const value = label.querySelector("input").value;
+        label.classList.remove("correct-pick", "wrong-pick", "missed-pick");
+
+        if (correctSet.has(value) && answerSet.has(value)) {
+          label.classList.add("correct-pick");
+        } else if (answerSet.has(value) && !correctSet.has(value)) {
+          label.classList.add("wrong-pick");
+        } else if (correctSet.has(value) && !answerSet.has(value)) {
+          label.classList.add("missed-pick");
+        }
+      });
+
+      let feedback = block.querySelector(".quiz-feedback");
+      if (!feedback) {
+        feedback = document.createElement("div");
+        feedback.className = "quiz-feedback";
+        block.appendChild(feedback);
+      }
+
+      if (ok) {
+        feedback.className = "quiz-feedback correct";
+        feedback.textContent = "Correct";
+      } else {
+        const correctText = Array.isArray(correct) ? correct.join("; ") : correct;
+        feedback.className = "quiz-feedback incorrect";
+        feedback.textContent = "Not quite — correct answer: " + correctText;
+      }
+    }
+
+    function updateLockButton(section, ep) {
+      const lockBtn = section.querySelector("[data-lock-episode]");
+      const results = section.querySelector(".quiz-results");
+      const locked = lockedState[ep.id];
+
+      if (locked) {
+        lockBtn.style.display = "none";
+        results.innerHTML = "<strong class=\"score-pass\">" + locked.score + " / " + locked.total + " correct</strong>" +
+          " — script unlocked." +
+          (nextEpisodeLabel(episodes.indexOf(ep)) ? " On to the next chapter when you are ready." : " Book complete.");
+        return;
+      }
+
+      lockBtn.style.display = "";
+      const complete = isQuizComplete(ep);
+      lockBtn.disabled = !complete;
+      lockBtn.textContent = complete ? "Lock in answers" : "Answer all questions to lock in";
+      results.textContent = complete
+        ? "Ready to lock in. Script unlocks after you lock in."
+        : "Answer every question, then lock in to unlock the script and next episode.";
+    }
+
+    function lockInQuiz(ep, section) {
+      if (!isQuizComplete(ep) || lockedState[ep.id]) return;
+
+      const score = ep.quiz.filter(isQuestionCorrect).length;
+      lockedState[ep.id] = {
+        score,
+        total: ep.quiz.length,
+        lockedAt: Date.now()
+      };
+      saveLocked();
+
+      section.querySelectorAll(".quiz-question").forEach((block, index) => {
+        applyQuestionFeedback(block, ep.quiz[index]);
+        block.querySelectorAll("input").forEach((input) => {
+          input.disabled = true;
+        });
+      });
+
+      updateLockButton(section, ep);
+      refreshEpisodeLocks();
+
+      const epIndex = episodes.indexOf(ep);
+      const nextLabel = nextEpisodeLabel(epIndex);
+      showCopyToast(score + " / " + ep.quiz.length + " correct" + (nextLabel ? " — " + nextLabel + " unlocked" : ""));
+
+      if (epIndex < episodes.length - 1) {
+        const nextCard = episodeCards.get(episodes[epIndex + 1].id);
+        if (nextCard) {
+          nextCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    }
+
+    function formatScript(text) {
+      return text
+        .trim()
+        .split(/\n\s*\n/)
+        .map((para) => "<p>" + para.replace(/\n/g, " ").trim() + "</p>")
+        .join("");
+    }
+
+    function toggleScript(card, ep, scriptBtn) {
+      if (!isScriptUnlocked(ep)) return;
+
+      const panel = card.querySelector(".script-panel");
+      const body = card.querySelector(".script-body");
+      const isOpen = panel.classList.contains("open");
+
+      if (isOpen) {
+        panel.classList.remove("open");
+        scriptBtn.classList.remove("open");
+        scriptBtn.textContent = "Read script";
+        return;
+      }
+
+      scriptBtn.classList.add("open");
+      scriptBtn.textContent = "Hide script";
+      panel.classList.add("open");
+
+      if (body.dataset.loaded === "true") return;
+
+      const text = SCRIPTS[ep.id];
+      if (!text) {
+        body.textContent = "Script not found for this episode.";
+        return;
+      }
+
+      body.innerHTML = formatScript(text);
+      body.dataset.loaded = "true";
+    }
+
+    function refreshEpisodeLocks() {
+      episodes.forEach((ep, index) => {
+        const card = episodeCards.get(ep.id);
+        if (!card) return;
+
+        const unlocked = isEpisodeUnlocked(index);
+        const playBtn = card.querySelector(".btn-play");
+        const downloadBtn = card.querySelector(".btn-download");
+        const scriptBtn = card.querySelector(".btn-script");
+        const scriptPanel = card.querySelector(".script-panel");
+        const banner = card.querySelector(".ep-locked-banner");
+        const prev = episodes[index - 1];
+        const scriptReady = unlocked && isScriptUnlocked(ep);
+
+        card.classList.toggle("locked", !unlocked);
+        playBtn.disabled = !unlocked;
+        downloadBtn.classList.toggle("disabled", !unlocked);
+
+        if (scriptBtn) {
+          scriptBtn.disabled = !scriptReady;
+          if (!scriptReady) {
+            scriptBtn.classList.remove("open");
+            scriptBtn.textContent = unlocked ? "Read script (after quiz)" : "Read script";
+            if (scriptPanel) scriptPanel.classList.remove("open", "loading");
+          } else if (!scriptBtn.classList.contains("open")) {
+            scriptBtn.textContent = "Read script";
+          }
+        }
+
+        if (!unlocked) {
+          playBtn.textContent = "Locked";
+          banner.textContent = "Complete the recall check on " +
+            (prev.intro ? "the intro" : "Episode " + prev.num) +
+            " and press Lock in answers to unlock this episode.";
+          if (currentCard === card) {
+            stopCurrent();
+          }
+        } else if (!currentAudio || currentCard !== card) {
+          playBtn.textContent = "▶ Play";
+        }
+      });
+    }
+
+    function renderQuiz(ep, card) {
+      if (!ep.quiz || !ep.quiz.length) return;
+
+      const section = document.createElement("div");
+      section.className = "quiz-section";
+      section.innerHTML = `
+        <div class="quiz-header">
+          <div class="quiz-title">Recall check</div>
+          <button type="button" class="btn-copy" data-copy-episode="${ep.id}">Copy this section</button>
+        </div>
+        <p class="quiz-hint">Answer from memory after listening if you can. Scripts are available any time. Lock in to see which answers you got right.</p>
+        <div class="quiz-footer">
+          <button type="button" class="btn-lock" data-lock-episode="${ep.id}">Answer all questions to lock in</button>
+          <div class="quiz-results"></div>
+        </div>
+      `;
+
+      const questionsWrap = document.createElement("div");
+      questionsWrap.className = "quiz-questions";
+      section.insertBefore(questionsWrap, section.querySelector(".quiz-footer"));
+
+      ep.quiz.forEach((q, index) => {
+        const block = document.createElement("div");
+        block.className = "quiz-question";
+        const typeHint = q.type === "multiple" ? "select multiple" : "pick one";
+        const inputType = q.type === "multiple" ? "checkbox" : "radio";
+        const saved = getAnswer(q);
+
+        block.innerHTML = `
+          <div class="quiz-q-text">
+            ${index + 1}. ${q.text}
+            <span class="quiz-q-type">(${typeHint})</span>
+          </div>
+          <div class="quiz-options" data-question="${q.id}"></div>
+        `;
+
+        const optionsWrap = block.querySelector(".quiz-options");
+
+        q.options.forEach((option) => {
+          const label = document.createElement("label");
+          label.className = "quiz-option";
+          const input = document.createElement("input");
+          input.type = inputType;
+          input.name = q.id;
+          input.value = option;
+
+          if (q.type === "multiple") {
+            input.checked = saved.includes(option);
+          } else {
+            input.checked = saved === option;
+          }
+
+          input.addEventListener("change", () => {
+            if (lockedState[ep.id]) return;
+            if (q.type === "multiple") {
+              const checked = [...optionsWrap.querySelectorAll("input:checked")].map((el) => el.value);
+              setAnswer(q, checked);
+            } else {
+              setAnswer(q, option);
+            }
+            updateLockButton(section, ep);
+          });
+
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(option));
+          optionsWrap.appendChild(label);
+        });
+
+        questionsWrap.appendChild(block);
+      });
+
+      section.querySelector("[data-copy-episode]").addEventListener("click", (e) => {
+        copyText(formatCopyText(ep.id), e.currentTarget);
+      });
+
+      section.querySelector("[data-lock-episode]").addEventListener("click", () => {
+        lockInQuiz(ep, section);
+      });
+
+      if (lockedState[ep.id]) {
+        section.querySelectorAll(".quiz-question").forEach((block, index) => {
+          applyQuestionFeedback(block, ep.quiz[index]);
+          block.querySelectorAll("input").forEach((input) => {
+            input.disabled = true;
+          });
+        });
+      }
+
+      updateLockButton(section, ep);
+      card.appendChild(section);
+    }
+
+    function encodeProgress() {
+      const payload = { v: 1, answers: quizAnswers, locked: lockedState };
+      return PROGRESS_PREFIX + btoa(encodeURIComponent(JSON.stringify(payload)));
+    }
+
+    function decodeProgress(code) {
+      const trimmed = code.trim();
+      if (!trimmed.startsWith(PROGRESS_PREFIX)) {
+        throw new Error("That does not look like a Brain OS progress code.");
+      }
+      const payload = JSON.parse(decodeURIComponent(atob(trimmed.slice(PROGRESS_PREFIX.length))));
+      if (!payload || payload.v !== 1 || typeof payload.answers !== "object" || typeof payload.locked !== "object") {
+        throw new Error("This progress code is invalid or from an older version.");
+      }
+      return payload;
+    }
+
+    function exportProgress(button) {
+      copyText(encodeProgress(), button);
+      showCopyToast("Progress code copied — paste it on another device");
+    }
+
+    function importProgress(code) {
+      const payload = decodeProgress(code);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload.answers));
+      localStorage.setItem(LOCKED_KEY, JSON.stringify(payload.locked));
+      location.reload();
+    }
+
+    function clearSessionData() {
+      const ok = confirm(
+        "Clear all quiz answers, scores, unlocks, and script access?\n\nThis resets the walk on this device."
+      );
+      if (!ok) return;
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(LOCKED_KEY);
+      location.reload();
+    }
+
+    document.getElementById("copy-all").addEventListener("click", (e) => {
+      copyText(formatCopyText(), e.currentTarget);
+    });
+
+    document.getElementById("export-progress").addEventListener("click", (e) => {
+      exportProgress(e.currentTarget);
+    });
+
+    document.getElementById("import-progress").addEventListener("click", () => {
+      document.getElementById("import-panel").classList.add("open");
+      document.getElementById("import-code").focus();
+    });
+
+    document.getElementById("import-cancel").addEventListener("click", () => {
+      document.getElementById("import-panel").classList.remove("open");
+      document.getElementById("import-code").value = "";
+    });
+
+    document.getElementById("import-confirm").addEventListener("click", () => {
+      const code = document.getElementById("import-code").value;
+      if (!code.trim()) {
+        alert("Paste a progress code first.");
+        return;
+      }
+      try {
+        importProgress(code);
+      } catch (err) {
+        alert(err.message || "Could not import that progress code.");
+      }
+    });
+
+    document.getElementById("clear-session").addEventListener("click", clearSessionData);
+
+    episodes.forEach((ep, index) => {
+      const card = document.createElement("article");
+      card.className = "episode";
+      card.dataset.episodeId = ep.id;
+      const numClass = ep.intro ? "ep-num intro" : "ep-num";
+      const label = ep.intro ? "★" : ep.num;
+
+      card.innerHTML = `
+        <div class="episode-top">
+          <div class="${numClass}">${label}</div>
+          <div class="ep-info">
+            <div class="ep-title">${ep.title}</div>
+            <div class="ep-desc">${ep.desc}</div>
+          </div>
+        </div>
+        <audio preload="metadata" src="${audioUrl(ep.file)}"></audio>
+        <div class="ep-actions">
+          <button type="button" class="btn-play">▶ Play</button>
+          <a class="btn btn-download" href="${audioUrl(ep.file)}" download="${ep.file}">↓ Download</a>
+          <button type="button" class="btn-script">Read script</button>
+        </div>
+        <div class="script-panel"><div class="script-body"></div></div>
+        <div class="ep-locked-banner"></div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+          <div class="time"><span class="cur">0:00</span> / <span class="dur">0:00</span></div>
+        </div>
+      `;
+
+      const audio = card.querySelector("audio");
+      const playBtn = card.querySelector(".btn-play");
+      const downloadBtn = card.querySelector(".btn-download");
+      const scriptBtn = card.querySelector(".btn-script");
+      const fill = card.querySelector(".progress-fill");
+      const bar = card.querySelector(".progress-bar");
+      const cur = card.querySelector(".cur");
+      const dur = card.querySelector(".dur");
+
+      audio.addEventListener("loadedmetadata", () => {
+        dur.textContent = formatTime(audio.duration);
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+        fill.style.width = pct + "%";
+        cur.textContent = formatTime(audio.currentTime);
+      });
+
+      audio.addEventListener("ended", () => {
+        playBtn.textContent = "▶ Play";
+        playBtn.classList.remove("playing");
+        card.classList.remove("playing");
+        if (currentAudio === audio) {
+          currentAudio = null;
+          currentCard = null;
+        }
+      });
+
+      playBtn.addEventListener("click", () => {
+        if (!isEpisodeUnlocked(index)) return;
+
+        if (currentAudio === audio && !audio.paused) {
+          audio.pause();
+          playBtn.textContent = "▶ Play";
+          playBtn.classList.remove("playing");
+          card.classList.remove("playing");
+          return;
+        }
+        stopCurrent();
+        currentAudio = audio;
+        currentCard = card;
+        audio.play();
+        playBtn.textContent = "⏸ Pause";
+        playBtn.classList.add("playing");
+        card.classList.add("playing");
+      });
+
+      downloadBtn.addEventListener("click", (e) => {
+        if (!isEpisodeUnlocked(index)) e.preventDefault();
+      });
+
+      scriptBtn.addEventListener("click", () => {
+        if (!isEpisodeUnlocked(index) || !isScriptUnlocked(ep)) return;
+        toggleScript(card, ep, scriptBtn);
+      });
+
+      bar.addEventListener("click", (e) => {
+        if (!isEpisodeUnlocked(index) || !audio.duration) return;
+        const rect = bar.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = ratio * audio.duration;
+      });
+
+      renderQuiz(ep, card);
+      episodeCards.set(ep.id, card);
+      list.appendChild(card);
+    });
+
+    refreshEpisodeLocks();
+  
+  </script>
+</body>
+</html>
