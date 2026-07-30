@@ -246,6 +246,12 @@ def build_site(site: Site) -> Path:
             "body_html": page_body,
             "body_class": page_meta.get("body_class", ""),
         }
+        # Optional Grok starter prompt (software build page)
+        prompt_path = content_dir / "static" / "build-prompt.txt"
+        if prompt_path.exists():
+            page_context["starter_prompt"] = prompt_path.read_text(encoding="utf-8")
+        else:
+            page_context["starter_prompt"] = ""
         page_html = env.get_template(page_template).render(**page_context)
         (dest / f"{stem}.html").write_text(page_html, encoding="utf-8")
 

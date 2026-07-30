@@ -1,0 +1,257 @@
+{% extends "brand_base.html" %}
+
+{% block head_extra %}
+<style>
+  .prompt-box {
+    position: relative;
+    margin: 1.25rem 0 0;
+    border: var(--panel-border);
+    background: #070d18;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--panel-shadow);
+    overflow: hidden;
+  }
+  .prompt-box-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(15, 27, 51, 0.9);
+  }
+  .prompt-box-bar span {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .prompt-box pre {
+    margin: 0;
+    padding: 1rem 1.1rem 1.25rem;
+    max-height: min(28rem, 55vh);
+    overflow: auto;
+    font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", Consolas, monospace;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #cbd5e1;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .prompt-box.copied .btn-copy-prompt {
+    border-color: #22c55e;
+    color: #bbf7d0;
+  }
+  #prompt-status {
+    font-size: 0.85rem;
+    color: #86efac;
+    min-height: 1.2em;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">Jobs engine · first ship</p>
+      <h1>ZERO TO<br>WEBSITE</h1>
+      <p class="hero-tag">
+        Open Grok Build.<br>
+        Paste one prompt.<br>
+        Click around your v1 — then go wild.
+      </p>
+      <p class="hero-lead">
+        You should have a <strong>Grok Build invite in your email</strong>.
+        This page is the shortest path from that invite to a real site you can open and click —
+        built in the same craft as
+        <a href="{{ home_href }}"><strong>tyneside.software</strong></a>
+        (static HTML, clear sections, strong CTA, mobile-first).
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="https://x.ai/cli" rel="noopener" target="_blank">Open Grok Build →</a>
+        <a class="btn btn-secondary btn-lg" href="#prompt">Copy the prompt</a>
+      </div>
+      <p class="hero-meta">
+        Stuck? <a href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp Michael</a>
+        · <a href="{{ site.mailto }}">{{ site.email }}</a>
+        · <a href="{{ home_href }}">← Software home</a>
+      </p>
+    </div>
+  </header>
+
+  <section class="section" id="steps">
+    <div class="wrap">
+      <h2>Four moves. That’s it.</h2>
+      <p class="lede">Do them in order. Don’t overthink the first pass — speed beats polish.</p>
+      <ol class="steps" style="max-width:42rem;margin-top:1.5rem">
+        <li>
+          <span class="n">1</span>
+          <div>
+            <h3>Find your invite</h3>
+            <p>Check the email we used for you. Accept the Grok Build / SuperGrok invite if you haven’t already.</p>
+          </div>
+        </li>
+        <li>
+          <span class="n">2</span>
+          <div>
+            <h3>Open Grok Build</h3>
+            <p>
+              Start here:
+              <a href="https://x.ai/cli" rel="noopener" target="_blank"><strong>x.ai/cli</strong></a>
+              — install if needed, sign in with the invited account.
+              On Windows you can run:
+              <code>irm https://x.ai/cli/install.ps1 | iex</code>
+              then open a project folder and launch Grok Build.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="n">3</span>
+          <div>
+            <h3>Paste the starter prompt</h3>
+            <p>
+              Copy the big prompt below (or
+              <a href="build-prompt.txt" download>download build-prompt.txt</a>).
+              Fill in the <code>YOUR_…</code> client fields — or leave them blank and let Grok invent labelled placeholders.
+              Send it as the <strong>first message</strong> in a fresh Grok Build chat.
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="n">4</span>
+          <div>
+            <h3>Click around v1 — then go wild</h3>
+            <p>
+              Open the folder Grok creates. Preview locally. Click every link.
+              Then keep talking to Grok: better copy, photos, extra pages, deploy to GitHub Pages — whatever you want next.
+            </p>
+          </div>
+        </li>
+      </ol>
+      <div class="btn-row" style="margin-top:1.75rem;justify-content:center">
+        <a class="btn btn-fill btn-lg" href="https://x.ai/cli" rel="noopener" target="_blank">Launch Grok Build →</a>
+        <a class="btn btn-secondary btn-lg" href="#prompt">Jump to prompt</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="why">
+    <div class="wrap">
+      <h2>Why this shape?</h2>
+      <div class="grid-2">
+        <div class="panel panel-c">
+          <h3>Same craft as this site</h3>
+          <p>
+            Static HTML + CSS. Hero, sections, panels, footer.
+            WhatsApp-first contact. Works on a phone. No React tax on day one.
+            That’s how we ship brand sites at Tyneside.
+          </p>
+        </div>
+        <div class="panel">
+          <h3>Jobs engine, not homework</h3>
+          <p>
+            Paid client websites fund junior roles. Your first ship should feel real —
+            something you can show, improve, and put on a CV.
+          </p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:1.5rem;margin-bottom:0">
+        Reference tab while you build:
+        <a href="https://tyneside.software/">tyneside.software</a>
+        — match the <strong>quality of craft</strong>, not the Tyneside family nav
+        (client sites are their own brand).
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="prompt">
+    <div class="wrap">
+      <h2>The starter prompt</h2>
+      <p class="lede">
+        One shot → multi-page site you can click. After v1, Grok will tell you what to do next.
+        Then ignore the rails and experiment.
+      </p>
+
+      <div class="prompt-box" id="prompt-box">
+        <div class="prompt-box-bar">
+          <span>Copy all → paste into a <strong>new</strong> Grok Build session</span>
+          <div class="btn-row" style="margin:0">
+            <button type="button" class="btn btn-fill btn-copy-prompt" id="copy-prompt">Copy prompt</button>
+            <a class="btn btn-secondary" href="build-prompt.txt" download>Download .txt</a>
+          </div>
+        </div>
+        <pre id="starter-prompt" tabindex="0">{{ starter_prompt }}</pre>
+      </div>
+      <p id="prompt-status" class="center" style="margin-top:0.75rem" aria-live="polite"></p>
+
+      <div class="panel" style="margin-top:1.5rem">
+        <h3>After it works</h3>
+        <ul class="list-features">
+          <li>Replace any <code>[PLACEHOLDER]</code> copy with real client words</li>
+          <li>Drop in a real logo and photos</li>
+          <li>Ask Grok to put it on GitHub Pages</li>
+          <li>Show Michael — WhatsApp a link or screenshot</li>
+          <li><strong>Go wild</strong>: second page, booking idea, animation, whatever you want to learn next</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-cta" id="help">
+    <div class="wrap">
+      <h2>Need a shove?</h2>
+      <p class="lede" style="color:var(--text)">
+        Invite missing, install stuck, prompt confused you — message Michael.
+        We’d rather unblock you in five minutes than watch you thrash for an hour.
+      </p>
+      {% include "includes/contact_block.html" %}
+      <p class="hero-meta" style="margin-top:1rem">
+        <a href="{{ home_href }}">← Back to tyneside.software</a>
+        · <a href="https://x.ai/cli" rel="noopener" target="_blank">Grok Build</a>
+      </p>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var btn = document.getElementById("copy-prompt");
+      var pre = document.getElementById("starter-prompt");
+      var box = document.getElementById("prompt-box");
+      var status = document.getElementById("prompt-status");
+      if (!btn || !pre) return;
+
+      function setStatus(msg) {
+        if (status) status.textContent = msg || "";
+      }
+
+      btn.addEventListener("click", function () {
+        var text = pre.textContent || "";
+        function ok() {
+          box.classList.add("copied");
+          btn.textContent = "Copied";
+          setStatus("Copied — paste into a new Grok Build chat.");
+          setTimeout(function () {
+            box.classList.remove("copied");
+            btn.textContent = "Copy prompt";
+          }, 2200);
+        }
+        function fail() {
+          try {
+            var range = document.createRange();
+            range.selectNodeContents(pre);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            setStatus("Selected — press Ctrl+C (or Cmd+C) to copy.");
+          } catch (e) {
+            setStatus("Select the prompt text manually and copy.");
+          }
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(ok).catch(fail);
+        } else {
+          fail();
+        }
+      });
+    })();
+  </script>
+{% endblock %}

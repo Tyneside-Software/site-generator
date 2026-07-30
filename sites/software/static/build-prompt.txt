@@ -1,0 +1,76 @@
+You are helping me build v1 of a professional website for a real local business.
+I am learning by doing at Tyneside Software. Work the way we build our own brand sites
+(especially https://tyneside.software) — not a generic Bootstrap template or a React SPA.
+
+## Client (fill this in before you start — or leave blank for [PLACEHOLDER] copy)
+- Business name: YOUR_BUSINESS_NAME
+- One-line what they do: YOUR_ONE_LINE
+- Location / area: YOUR_AREA (e.g. North Tyneside)
+- Contact phone (WhatsApp-friendly): YOUR_PHONE
+- Contact email: YOUR_EMAIL
+- Primary CTA: e.g. WhatsApp us / Call for a quote / Book a visit
+- 3 things they want the site to say: YOUR_POINT_1 / YOUR_POINT_2 / YOUR_POINT_3
+- Any services or products to list: YOUR_SERVICES
+
+If any field is missing, invent sensible North East placeholder copy labelled
+[PLACEHOLDER] so I can replace it later — do not block on perfect content.
+
+## How Tyneside sites are done (match this craft)
+Study the public live site https://tyneside.software as the visual and structural reference.
+House style for v1:
+
+1. Static site only — plain HTML + CSS (+ tiny JS only if needed). No React/Next/Vue.
+2. GitHub Pages–ready — relative links (index.html, about.html), works via a simple local static server.
+3. Layout pattern like Tyneside Software:
+   - Top nav: logo/mark + brand word + a few section links + one strong CTA button
+   - Hero: short kicker, big H1, 1–2 line tagline, short lead, 1–2 CTAs
+   - Sections: alternate plain / alt background, clear H2s, short ledes
+   - Content cards/panels in a 2-column grid where it helps
+   - Footer: contact links, local / North East tone
+4. Look & feel: clean, modern, mobile-first. Prefer a dark product feel close to
+   tyneside.software (deep navy/slate, blue accent ~#3b82f6, clear type, rounded panels)
+   unless the client is clearly better as light — if light, keep the same structure.
+5. Tone: plain English, confident, no corporate fluff.
+6. Contact: WhatsApp (https://wa.me/…) as primary when we have a phone; email secondary.
+7. No fake backends for v1 — no databases, no auth, no payment. Forms can be mailto: or WhatsApp only.
+
+## Deliverable for this session (v1 I can click around)
+Create a small multi-page static site in a single folder, e.g. website-v1/:
+
+- index.html — home (hero, what we do, services, why us, contact CTA)
+- about.html — short about the business / people
+- services.html — services list (or merge into home if very small)
+- contact.html — phone, WhatsApp, email, area covered (or strong contact on home)
+- styles.css — all styling (layout + theme variables; keep it tidy)
+- logo.svg — simple geometric mark if no real logo is provided
+- README.md — how to open locally and what to edit next
+
+## Process
+1. Scaffold the files now — do not wait for approval.
+2. Make it coherent on mobile and desktop.
+3. Start a simple local preview (e.g. python -m http.server in the folder) and tell me the exact URL.
+4. Give me a short click-path: open home → Services → Contact → try WhatsApp link.
+
+## Quality bar for v1
+- Every nav link works
+- No broken layout at ~360px width
+- Real-looking copy (or clearly marked [PLACEHOLDER])
+- Consistent buttons, spacing, section rhythm
+- Accessible basics: lang, viewport meta, alt on logo, visible focus
+
+## Out of scope for this first pass
+- Deploying to production domain
+- Matching the full multi-brand Tyneside family nav (this is a client site, not a Tyneside brand property)
+- Backend, booking engines, or monorepos
+
+## When v1 is ready — feedback I need from you
+After the site is viewable, stop and reply with:
+
+1. What you built (pages + one sentence each)
+2. How I open it (exact command / path)
+3. What looks good already
+4. What is still placeholder or weak
+5. Suggested next steps in order for a junior — then encourage me to go wild:
+   better copy, photos, GitHub Pages, extra pages, experiments I choose
+
+Do not wait for me to approve the plan — build v1 now, then give the feedback block.
