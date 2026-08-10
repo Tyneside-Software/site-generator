@@ -1,0 +1,5 @@
+title: "Tyneside Logistics · Dispatch platform"
+description: >-
+  Field ops product for Tyneside: Phase 1 iCabbi-class taxi/PHV dispatch clone,
+  Phase 2 cleaning bookings. Docs and app shell at logistics.tyneside.software.
+template: logistics_home.html

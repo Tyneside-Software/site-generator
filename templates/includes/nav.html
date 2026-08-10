@@ -18,6 +18,8 @@
         <a class="btn btn-fill" href="{{ root }}book.html">{{ site.cta_label }}</a>
       {% elif site.id == "technology" %}
         <a class="btn btn-fill btn-shop" href="{{ root }}thinkpad-t14s.html">{{ site.cta_label }}</a>
+      {% elif site.id == "logistics" %}
+        <a class="btn btn-fill" href="{{ root }}app/">{{ site.cta_label }}</a>
       {% else %}
         <a class="btn btn-fill" href="{{ site.whatsapp }}" rel="noopener" target="_blank">{{ site.cta_label }}</a>
       {% endif %}

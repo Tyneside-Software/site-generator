@@ -36,6 +36,10 @@ $repos = @(
     @{
         name = "tyneside.technology"
         description = "Tyneside Technology — second-hand working computers; profit funds free-gear appeals"
+    },
+    @{
+        name = "logistics.tyneside.software"
+        description = "GitHub Pages site for logistics.tyneside.software — field ops web app + docs"
     }
 )
 

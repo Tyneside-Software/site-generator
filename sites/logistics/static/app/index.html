@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tyneside Logistics · App</title>
+  <meta name="description" content="Tyneside Logistics web app shell — product UI coming soon.">
+  <link rel="icon" href="../logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../layout.css?v=20260810a">
+  <link rel="stylesheet" href="../themes.css?v=20260810a">
+  <style>
+    .app-shell {
+      min-height: calc(100vh - 8rem);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding: 1.5rem 1.25rem 3rem;
+      max-width: 52rem;
+      margin: 0 auto;
+    }
+    .app-shell h1 {
+      margin: 0 0 0.35rem;
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
+      letter-spacing: -0.02em;
+    }
+    .app-meta {
+      color: var(--muted);
+      margin: 0 0 1rem;
+      font-size: 0.95rem;
+    }
+    .app-status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+      margin: 0 0 0.5rem;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-bg);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .pill.ok { border-color: #0d9488; color: #0f766e; }
+    .pill.warn { border-color: #d97706; color: #b45309; }
+    .pill.err { border-color: #e11d48; color: #be123c; }
+    .app-panel {
+      padding: 1.15rem 1.25rem;
+      border-radius: var(--radius-lg);
+      background: var(--panel-bg);
+      border: var(--panel-border);
+      box-shadow: var(--panel-shadow);
+    }
+    .app-panel h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.05rem;
+      color: var(--panel-heading);
+    }
+    .app-panel p, .app-panel li {
+      color: var(--panel-text);
+      margin: 0.35rem 0;
+      line-height: 1.55;
+    }
+    .app-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 0.75rem;
+    }
+    code {
+      font-size: 0.88em;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      background: var(--accent-soft);
+    }
+    pre {
+      margin: 0.65rem 0 0;
+      padding: 0.75rem 0.9rem;
+      overflow: auto;
+      font-size: 0.82rem;
+      border-radius: var(--radius-sm);
+      background: rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body class="site theme-logistics">
+  <nav class="site-nav" aria-label="Primary">
+    <div class="inner">
+      <a href="../index.html" class="brand-link">
+        <img src="../logo.svg" width="38" height="38" alt="Tyneside Logistics">
+        <span class="brand-word">TYNESIDE</span>
+        <span class="brand-sub">LOGISTICS</span>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="../docs/">Docs</a>
+        <a href="./" class="is-current" aria-current="page">App</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-fill" href="../docs/tasks.html">Tasks</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="app-shell">
+    <header>
+      <p class="pixel-label" style="text-align:left;margin:0 0 0.5rem">Web app · shell</p>
+      <h1>Tyneside Logistics</h1>
+      <p class="app-meta">
+        Placeholder shell. Product UI will land here.
+        Backend pairing: <code>/v1/logistics/*</code> on tyneside-api.
+      </p>
+      <div class="app-status" id="status-row" aria-live="polite">
+        <span class="pill warn" id="api-pill">API · checking…</span>
+      </div>
+    </header>
+
+    <section class="app-panel">
+      <h2>What this is</h2>
+      <p>
+        Static shell published with the brand site. When the real app is built,
+        replace this page (or mount a SPA build into <code>static/app/</code>).
+      </p>
+      <p>
+        Project tracking lives in the docs area so progress is versioned next to the product.
+      </p>
+      <div class="app-actions">
+        <a class="btn btn-fill" href="../docs/">Open docs</a>
+        <a class="btn btn-secondary" href="../docs/tasks.html">Task tracker</a>
+        <a class="btn btn-secondary" href="../index.html">Brand home</a>
+      </div>
+    </section>
+
+    <section class="app-panel">
+      <h2>API status</h2>
+      <p id="api-message">Calling brand status endpoint…</p>
+      <pre id="api-json" hidden></pre>
+    </section>
+  </main>
+
+  <script src="./app-config.js"></script>
+  <script>
+    (function () {
+      var cfg = window.TYNESIDE_LOGISTICS || {};
+      var base = (cfg.apiBaseUrl || "").replace(/\/$/, "");
+      var pill = document.getElementById("api-pill");
+      var msg = document.getElementById("api-message");
+      var pre = document.getElementById("api-json");
+
+      function setPill(kind, text) {
+        pill.className = "pill " + kind;
+        pill.textContent = text;
+      }
+
+      if (!base) {
+        setPill("warn", "API · not configured");
+        msg.textContent = "Set apiBaseUrl in app-config.js to enable live checks.";
+        return;
+      }
+
+      var headers = { Accept: "application/json" };
+      if (cfg.apiKey) headers["X-Tyneside-Key"] = cfg.apiKey;
+
+      fetch(base + "/v1/logistics/status", { headers: headers })
+        .then(function (res) {
+          return res.json().then(function (body) {
+            return { ok: res.ok, status: res.status, body: body };
+          });
+        })
+        .then(function (result) {
+          if (result.ok && result.body && result.body.ok) {
+            setPill("ok", "API · online");
+            msg.textContent =
+              "Brand package reachable (" +
+              (result.body.brand || "logistics") +
+              "). App UI can be built against this base.";
+          } else {
+            setPill("err", "API · HTTP " + result.status);
+            msg.textContent =
+              "Status endpoint returned an error. Redeploy tyneside-api with brands/logistics if this is 404.";
+          }
+          pre.hidden = false;
+          pre.textContent = JSON.stringify(result.body, null, 2);
+        })
+        .catch(function (err) {
+          setPill("err", "API · unreachable");
+          msg.textContent =
+            "Could not reach " +
+            base +
+            " — CORS, offline, or service down. " +
+            (err && err.message ? err.message : "");
+        });
+    })();
+  </script>
+</body>
+</html>

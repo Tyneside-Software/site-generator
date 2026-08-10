@@ -131,6 +131,20 @@ SITES: tuple[Site, ...] = (
         email=CONTACT_EMAIL,
         cta_label="WhatsApp",
     ),
+    Site(
+        id="logistics",
+        domain="logistics.tyneside.software",
+        repo="logistics.tyneside.software",
+        title="Tyneside Logistics",
+        brand_word="LOGISTICS",
+        tagline="Field ops web app — routes, jobs, and the docs beside them.",
+        description=(
+            "Logistics and field-operations product for the Tyneside family: "
+            "web app shell, project documentation, and paired API on tyneside-api."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="Open app",
+    ),
 )
 
 

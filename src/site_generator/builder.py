@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -40,10 +41,27 @@ def _load_page_meta(path: Path) -> dict:
 def _render_markdown(path: Path) -> str:
     if not path.exists():
         return ""
-    return markdown.markdown(
+    html = markdown.markdown(
         path.read_text(encoding="utf-8"),
-        extensions=["extra", "sane_lists"],
+        extensions=["extra", "sane_lists", "fenced_code", "tables"],
     )
+    # Wrap tables for horizontal scroll on narrow viewports
+    return re.sub(
+        r"(<table\b[\s\S]*?</table>)",
+        r'<div class="prose-table-scroll">\1</div>',
+        html,
+        flags=re.IGNORECASE,
+    )
+
+
+_H1_RE = re.compile(r"^\s*<h1\b[^>]*>.*?</h1>\s*", re.IGNORECASE | re.DOTALL)
+
+
+def _strip_leading_h1(html: str) -> str:
+    """Avoid double titles when the page hero already shows page.title."""
+    if not html:
+        return ""
+    return _H1_RE.sub("", html, count=1)
 
 
 def _copy_static(site: Site, dest: Path) -> None:
@@ -222,30 +240,53 @@ def build_site(site: Site) -> Path:
     html = template.render(**context)
     (dest / "index.html").write_text(html, encoding="utf-8")
 
-    # Extra pages: *.md next to index.md that have a matching *.yaml (or not README)
-    skip_md = {"index.md", "readme.md"}
-    for md_path in sorted(content_dir.glob("*.md")):
-        if md_path.name.lower() in skip_md:
+    # Extra pages: any *.md (recursive) with a sibling *.yaml, except site root index.md
+    for md_path in sorted(content_dir.rglob("*.md")):
+        if md_path.name.lower() == "readme.md":
             continue
-        stem = md_path.stem
-        # Only build if there is explicit page meta, or stem is a known content page
-        page_meta_path = content_dir / f"{stem}.yaml"
+        if md_path.resolve() == (content_dir / "index.md").resolve():
+            continue
+        page_meta_path = md_path.with_suffix(".yaml")
         if not page_meta_path.exists():
             continue
+
+        rel = md_path.relative_to(content_dir)
+        depth = max(0, len(rel.parts) - 1)
+        stem_title = md_path.stem.replace("-", " ").title()
+        if md_path.stem.lower() == "index" and depth > 0:
+            stem_title = rel.parts[-2].replace("-", " ").title()
+
         page_meta = _load_page_meta(page_meta_path)
         page_body = _render_markdown(md_path)
         page_template = page_meta.get("template", "page.html")
-        page_context = _site_context(site, {
-            "title": page_meta.get("title", stem.replace("-", " ").title()),
-            "description": page_meta.get("description", site.description),
-            **page_meta,
-        }, page_body)
+        title = page_meta.get("title", stem_title)
+        description = page_meta.get("description", site.description)
+        hero_title = page_meta.get("hero_title") or title
+        doc_id = page_meta.get("doc_id") or md_path.stem
+        body_for_page = page_body
+        if page_meta.get("strip_leading_h1", True):
+            body_for_page = _strip_leading_h1(page_body)
+        page_context = _site_context(
+            site,
+            {
+                "title": title,
+                "description": description,
+                **page_meta,
+            },
+            body_for_page,
+            depth=depth,
+        )
         page_context["page"] = {
-            "title": page_meta.get("title", stem.replace("-", " ").title()),
-            "description": page_meta.get("description", site.description),
-            "body_html": page_body,
+            "title": title,
+            "hero_title": hero_title,
+            "description": description,
+            "body_html": body_for_page,
             "body_class": page_meta.get("body_class", ""),
+            "kicker": page_meta.get("kicker", ""),
+            "doc_id": doc_id,
+            "docs_hub": bool(page_meta.get("docs_hub")),
         }
+        page_context["doc_id"] = doc_id
         # Optional Grok starter prompt (software build page)
         prompt_path = content_dir / "static" / "build-prompt.txt"
         if prompt_path.exists():
@@ -253,7 +294,9 @@ def build_site(site: Site) -> Path:
         else:
             page_context["starter_prompt"] = ""
         page_html = env.get_template(page_template).render(**page_context)
-        (dest / f"{stem}.html").write_text(page_html, encoding="utf-8")
+        out_html = dest / rel.with_suffix(".html")
+        out_html.parent.mkdir(parents=True, exist_ok=True)
+        out_html.write_text(page_html, encoding="utf-8")
 
     _copy_static(site, dest)
     _copy_site_app(site, dest)

@@ -1,0 +1,109 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">Tyneside Logistics · dispatch → field work</p>
+      <h1>TYNESIDE<br>LOGISTICS</h1>
+      <p class="hero-tag">
+        Phase 1: taxi-class dispatch platform.<br>
+        Phase 2: cleaning bookings on the same spine.
+      </p>
+      <p class="hero-lead">
+        We are building a field-ops product inspired by mature taxi/PHV systems (iCabbi-class),
+        then expanding it into <strong>Tyneside Cleaning</strong> and other job-based work.
+        Docs and research live here; the app and API pair on
+        <code>logistics.tyneside.software</code> + <code>/v1/logistics/*</code>.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="docs/">Read the docs →</a>
+        <a class="btn btn-secondary btn-lg" href="app/">App shell</a>
+      </div>
+      <p class="hero-meta">
+        <a href="docs/icabbi.html">iCabbi research</a>
+        · <a href="docs/roadmap.html">Roadmap</a>
+        · <a href="docs/tasks.html">Tasks</a>
+      </p>
+    </div>
+  </header>
+
+  <section class="section" id="surfaces">
+    <div class="wrap">
+      <h2>Two surfaces, one brand</h2>
+      <p class="lede">
+        Everything interactive is a <strong>pair</strong>: generator content + API brand package.
+        Logistics needs both from day one.
+      </p>
+      <div class="grid-2">
+        <div class="panel">
+          <p class="pixel-label" style="text-align:left;margin:0 0 0.5rem">01 · Site</p>
+          <h3>Web app + docs</h3>
+          <p>
+            Published as <strong>logistics.tyneside.software</strong>.
+            Marketing home, project docs under <code>/docs/</code>, and the app shell under <code>/app/</code>.
+          </p>
+          <p style="margin-top:0.85rem">
+            <a href="docs/">Docs hub →</a>
+            · <a href="app/">App shell →</a>
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <p class="pixel-label" style="text-align:left;margin:0 0 0.5rem">02 · API</p>
+          <h3>tyneside-api brand</h3>
+          <p>
+            FastAPI package <code>app/brands/logistics</code> on the shared Cloud Run service.
+            Secrets stay off GitHub Pages. Routes are namespaced under <code>/v1/logistics/</code>.
+          </p>
+          <p style="margin-top:0.85rem">
+            <a href="docs/decisions.html">Why this shape →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="build">
+    <div class="wrap">
+      <h2>Documentation</h2>
+      <p class="lede">
+        Research, feature map, roadmap, and task tracker — versioned next to the product.
+      </p>
+      <div class="grid-3">
+        <div class="panel">
+          <h3>Domain &amp; research</h3>
+          <p>Entities, status machine, capacity — plus iCabbi reference notes.</p>
+          <p style="margin-top:0.85rem">
+            <a href="docs/domain.html">Domain →</a>
+            · <a href="docs/icabbi.html">iCabbi →</a>
+          </p>
+        </div>
+        <div class="panel panel-m">
+          <h3>Features &amp; roadmap</h3>
+          <p>MVP vs later, and the auth-first build order through dog-food ops.</p>
+          <p style="margin-top:0.85rem">
+            <a href="docs/features.html">Features →</a>
+            · <a href="docs/roadmap.html">Roadmap →</a>
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <h3>Tasks &amp; ADRs</h3>
+          <p>Checklist plus auth, FSM, capacity, and pairing decisions.</p>
+          <p style="margin-top:0.85rem">
+            <a href="docs/tasks.html">Tasks →</a>
+            · <a href="docs/decisions.html">ADRs →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>Talk logistics</h2>
+      <p class="lede">
+        Product still early — WhatsApp Michael for field ops, software, or partnerships.
+      </p>
+      {% include "includes/contact_block.html" %}
+    </div>
+  </section>
+{% endblock %}

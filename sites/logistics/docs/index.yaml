@@ -1,0 +1,9 @@
+title: "Logistics docs · hub"
+hero_title: "Documentation"
+kicker: "Tyneside Logistics · product docs"
+description: >-
+  Phase 1: iCabbi-class dispatch platform. Phase 2: cleaning bookings on the same spine.
+  Research, roadmap, tasks, and architecture decisions.
+template: logistics_docs.html
+doc_id: index
+docs_hub: true

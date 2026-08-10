@@ -10,17 +10,22 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.group](https://tyneside.group) | `group` | `Tyneside-Software/tyneside.group` |
 | [tyneside.games](https://tyneside.games) | `games` | `Tyneside-Software/tyneside.games` |
 | [tyneside.technology](https://tyneside.technology) | `technology` | `Tyneside-Software/tyneside.technology` |
+| [logistics.tyneside.software](https://logistics.tyneside.software) | `logistics` | `Tyneside-Software/logistics.tyneside.software` |
+
+Interactive brands pair with **[tyneside-api](https://github.com/Tyneside-Software/tyneside-api)** (`app/brands/<id>/`). See **[PAIRING.md](./PAIRING.md)**.
 
 ## Layout
 
 ```
 sites/<id>/          # content per brand (meta.yaml + markdown)
+sites/logistics/     # docs/ + static/app/ shell (API-paired brand)
 sites/games/         # games.yaml shelf + static/play/<slug>/index.html
 templates/           # shared Jinja2 templates
 static/              # shared CSS/assets
 src/site_generator/  # build pipeline
 output/<id>/         # local build output (gitignored)
 .github/workflows/   # build + push to Pages repos
+PAIRING.md           # site ↔ API brand pairing model
 ```
 
 ### Adding a game (tyneside.games)
