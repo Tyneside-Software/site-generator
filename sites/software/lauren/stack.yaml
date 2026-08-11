@@ -1,0 +1,6 @@
+title: "Lauren · tech stack"
+hero_title: "Tech stack"
+kicker: "Confirmed"
+description: Django 5, Tailwind, HTMX/Alpine, Postgres, Stripe, S3/R2, Railway/Render/Fly.
+template: lauren_docs.html
+doc_id: stack

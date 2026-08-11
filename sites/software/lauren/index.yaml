@@ -1,0 +1,9 @@
+title: "Lauren · product documentation"
+hero_title: "Lauren"
+kicker: "Tyneside Software · client project docs"
+description: >-
+  Product documentation for the wellbeing skills platform (working name Lauren).
+  Code lives in a private repo; the public product will eventually sit at lauren.tyneside.software.
+template: lauren_docs.html
+doc_id: index
+docs_hub: true
