@@ -33,6 +33,17 @@ sites/logistics/                        app/brands/logistics/
   static/app/   web app shell
 ```
 
+## GitHub teams (who can write)
+
+Add people to a **team**, not as one-off collaborators on each repo.
+
+| Team | Who | Repos (write) |
+|------|-----|----------------|
+| [internal](https://github.com/orgs/Tyneside-Software/teams/internal) | Tyneside staff | `logistics.tyneside.software` + `tyneside-api` |
+| [lauren-outsource](https://github.com/orgs/Tyneside-Software/teams/lauren-outsource) | Lauren contractors | `lauren` only |
+
+Logistics **source** still lives in `site-generator` (`sites/logistics/`). That repo is public; grant write there separately if an internal person ships the site, not only the Pages repo.
+
 ## Adding a brand that needs both
 
 1. Register `Site` in `src/site_generator/sites.py`.
