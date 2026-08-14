@@ -8,7 +8,7 @@ Update in git as work lands.
 - [x] Django scaffold (accounts, practitioners, catalogue, memberships, recordings, core)  
 - [x] Docs hub under `sites/software/lauren/`  
 - [ ] Publish docs to tyneside.software/lauren (deploy software site)  
-- [ ] Invite collaborators to private repo  
+- [ ] Add outsource GitHub usernames to org team `lauren-outsource` (write). Team exists; members TBD.  
 - [ ] Install deps, migrate, smoke-run `runserver`  
 
 ## Next engineering
