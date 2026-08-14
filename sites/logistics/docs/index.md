@@ -1,14 +1,16 @@
-**Tyneside Logistics** is the field-ops product surface for the family — published at
-[logistics.tyneside.software](https://logistics.tyneside.software).
+**Canonical product documentation** for Logistics now lives under Tyneside Software:
 
-**Strategy:** Phase 1 builds a clean, generic **iCabbi-class dispatch spine**
-(`job`, `field_worker`, `service_type`, `zone`, `job_event`).  
-Phase 2 specialises the same spine for **Tyneside Cleaning** — not a second product.
+**→ [tyneside.software/logistics/](https://tyneside.software/logistics/)**
 
-Accepted refinements live in [Domain](domain.html) (language map, snapshots, availability),
-[Features](features.html), [Roadmap](roadmap.html) (execute order 1–8),
-[Tasks](tasks.html), and [Decisions](decisions.html)
-(auth, FSM, price snapshot, WhatsApp, three UIs).
+This area on the product domain is kept as a short mirror for people landing on
+[logistics.tyneside.software](https://logistics.tyneside.software). Prefer editing the
+software-site docs (`sites/software/logistics/` in site-generator) as the source of truth.
 
-Pick a section below, or use the sidebar. Prefer updating these pages in git over
-progress that only lives in chat.
+**Strategy (summary):** Phase 1 = iCabbi-class dispatch spine; Phase 2 = cleaning bookings on the same spine.
+
+| Doc | On software hub |
+|-----|-----------------|
+| Overview | [tyneside.software/logistics/overview.html](https://tyneside.software/logistics/overview.html) |
+| Domain | […/domain.html](https://tyneside.software/logistics/domain.html) |
+| Features | […/features.html](https://tyneside.software/logistics/features.html) |
+| Roadmap / tasks / ADRs | [docs hub](https://tyneside.software/logistics/) |

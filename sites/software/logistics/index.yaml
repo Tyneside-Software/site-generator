@@ -1,0 +1,9 @@
+title: "Logistics · product documentation"
+hero_title: "Logistics"
+kicker: "Tyneside Software · product docs"
+description: >-
+  Phase 1: iCabbi-class dispatch platform. Phase 2: cleaning bookings on the same spine.
+  Canonical product documentation for the Logistics programme.
+template: software_logistics_docs.html
+doc_id: index
+docs_hub: true

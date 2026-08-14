@@ -1,0 +1,8 @@
+title: "Logistics · domain model"
+hero_title: "Domain model"
+kicker: "Entities · status machine · capacity"
+description: >-
+  Tightened core model for Phase 1: org-scoped entities, job FSM with job_events,
+  zones, pricing, and capacity designed for Phase 2 cleaning without a rewrite.
+template: software_logistics_docs.html
+doc_id: domain

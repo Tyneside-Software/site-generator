@@ -1,0 +1,7 @@
+title: "Logistics · decisions"
+hero_title: "Decisions"
+kicker: "Architecture decision records"
+description: >-
+  ADRs for product phases, domain host, brand pairing, and shared Cloud Run API.
+template: software_logistics_docs.html
+doc_id: decisions

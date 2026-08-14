@@ -1,0 +1,116 @@
+{% extends "brand_base.html" %}
+
+{% set doc_id = page.doc_id if page.doc_id is defined else '' %}
+{% set docs_nav = [
+  {"id": "index", "href": "index.html", "label": "Hub", "blurb": "Start here"},
+  {"id": "overview", "href": "overview.html", "label": "Overview", "blurb": "Phases & hand-off"},
+  {"id": "domain", "href": "domain.html", "label": "Domain model", "blurb": "Entities, FSM, capacity"},
+  {"id": "icabbi", "href": "icabbi.html", "label": "iCabbi research", "blurb": "Reference product"},
+  {"id": "features", "href": "features.html", "label": "Feature map", "blurb": "MVP · P2 · later"},
+  {"id": "roadmap", "href": "roadmap.html", "label": "Roadmap", "blurb": "Build order"},
+  {"id": "tasks", "href": "tasks.html", "label": "Tasks", "blurb": "Checklist"},
+  {"id": "decisions", "href": "decisions.html", "label": "Decisions", "blurb": "ADRs"},
+] %}
+
+{% block body %}
+  <header class="docs-hero">
+    <div class="wrap-wide">
+      <div class="docs-hero-top">
+        <p class="docs-breadcrumb">
+          <a href="{{ root }}index.html">Software</a>
+          <span class="docs-bc-sep" aria-hidden="true">/</span>
+          <a href="index.html">Logistics</a>
+          {% if doc_id and doc_id != 'index' %}
+            <span class="docs-bc-sep" aria-hidden="true">/</span>
+            <span>{{ page.hero_title or page.title }}</span>
+          {% endif %}
+        </p>
+        <div class="docs-hero-actions">
+          <a class="btn btn-secondary" href="{{ root }}index.html">Software home</a>
+          <a class="btn btn-fill" href="https://logistics.tyneside.software/" rel="noopener" target="_blank">Product site</a>
+        </div>
+      </div>
+      <p class="hero-kicker">{% if page.kicker %}{{ page.kicker }}{% else %}Logistics · product docs{% endif %}</p>
+      <h1 class="docs-hero-title">{{ page.hero_title or page.title }}</h1>
+      {% if page.description %}
+        <p class="docs-hero-lead">{{ page.description }}</p>
+      {% endif %}
+    </div>
+  </header>
+
+  <section class="section docs-section">
+    <div class="wrap-wide docs-layout">
+      <aside class="docs-sidebar" aria-label="Logistics documentation">
+        <p class="docs-sidebar-label">Documentation</p>
+        <nav class="docs-side-nav">
+          {% for item in docs_nav %}
+            <a
+              href="{{ item.href }}"
+              class="docs-side-link{% if doc_id == item.id %} is-active{% endif %}"
+              {% if doc_id == item.id %}aria-current="page"{% endif %}
+            >
+              <span class="docs-side-label">{{ item.label }}</span>
+              <span class="docs-side-blurb">{{ item.blurb }}</span>
+            </a>
+          {% endfor %}
+        </nav>
+        <div class="docs-sidebar-card">
+          <p class="docs-sidebar-card-title">Where things live</p>
+          <p class="docs-sidebar-card-body">
+            Docs (this hub): <code>tyneside.software/logistics/</code><br>
+            Product: <code>logistics.tyneside.software</code><br>
+            API: <code>tyneside-api</code> · <code>/v1/logistics/*</code><br>
+            Generator content: <code>sites/logistics/</code>
+          </p>
+          <a class="docs-sidebar-card-link" href="https://logistics.tyneside.software/app/">App shell →</a>
+        </div>
+      </aside>
+
+      <div class="docs-main">
+        {% if page.docs_hub %}
+          <div class="docs-hub-intro panel">
+            <div class="prose">{{ page.body_html | safe }}</div>
+          </div>
+          <div class="docs-card-grid">
+            {% for item in docs_nav if item.id != 'index' %}
+              <a class="docs-card" href="{{ item.href }}">
+                <span class="docs-card-kicker">{{ "%02d"|format(loop.index) }}</span>
+                <h2 class="docs-card-title">{{ item.label }}</h2>
+                <p class="docs-card-blurb">{{ item.blurb }}</p>
+                <span class="docs-card-go">Open →</span>
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <article class="docs-article panel">
+            <div class="prose">{{ page.body_html | safe }}</div>
+          </article>
+        {% endif %}
+
+        <nav class="docs-pager" aria-label="Adjacent docs">
+          {% set ns = namespace(prev=None, next=None) %}
+          {% for item in docs_nav %}
+            {% if item.id == doc_id %}
+              {% if not loop.first %}{% set ns.prev = docs_nav[loop.index0 - 1] %}{% endif %}
+              {% if not loop.last %}{% set ns.next = docs_nav[loop.index0 + 1] %}{% endif %}
+            {% endif %}
+          {% endfor %}
+          <div class="docs-pager-inner">
+            {% if ns.prev %}
+              <a class="docs-pager-link prev" href="{{ ns.prev.href }}">
+                <span class="docs-pager-dir">Previous</span>
+                <span class="docs-pager-name">{{ ns.prev.label }}</span>
+              </a>
+            {% else %}<span></span>{% endif %}
+            {% if ns.next %}
+              <a class="docs-pager-link next" href="{{ ns.next.href }}">
+                <span class="docs-pager-dir">Next</span>
+                <span class="docs-pager-name">{{ ns.next.label }}</span>
+              </a>
+            {% endif %}
+          </div>
+        </nav>
+      </div>
+    </div>
+  </section>
+{% endblock %}
