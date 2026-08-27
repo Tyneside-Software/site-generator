@@ -1,7 +1,7 @@
 # Chapter 84
 ## My Word Is My Bond
 
-It began with a broken promise so small it could have been shrugged off: Michael said he would call a mutual friend back *today*, then didn’t, then felt the old grease of *they’ll understand*.
+It began with a broken promise so small it could have been shrugged off: M. said he would call a mutual friend back *today*, then didn’t, then felt the old grease of *they’ll understand*.
 
 They would have understood. That was not the point.
 
@@ -11,19 +11,19 @@ He called. The friend was kind—busy day, no hard feelings, good to hear you. T
 
 Then he sat with the larger chain: red lines with R.; Christ == God said clean; seal and page distinguished; monogram not used as lasso. Words had been doing heavy lifting. If words were cheap, the whole bigger book was a draft written on water, and water does not hold signatures.
 
-Morning, he met Joshua at the gym they both inconsistently attended. Treadmills faced a wall-mounted news channel muted, mouths moving like fish selling urgency. Sweat is a truth serum for men who talk too well when dry. The rubber belt squeaked a small economic complaint under his feet.
+Morning, he met J. at the gym they both inconsistently attended. Treadmills faced a wall-mounted news channel muted, mouths moving like fish selling urgency. Sweat is a truth serum for men who talk too well when dry. The rubber belt squeaked a small economic complaint under his feet.
 
-‘I want word-as-bond to be structural,’ Michael said between breaths. ‘Not branding. If I say I’ll respect a red line, that’s covenant. If I say double-equals, I don’t dilute it in another room to be liked. If I say parallel not capture, I don’t capture when I’m alone with my diary. If I say I’ll call, I call.’
+‘I want word-as-bond to be structural,’ M. said between breaths. ‘Not branding. If I say I’ll respect a red line, that’s covenant. If I say double-equals, I don’t dilute it in another room to be liked. If I say parallel not capture, I don’t capture when I’m alone with my diary. If I say I’ll call, I call.’
 
-Joshua wiped his face with a towel that had seen better decades. ‘Bond means cost. A word that never costs is a weather vane. Where will it cost you this week? Name the bill before it arrives. Name it while you’re still wet enough to be honest.’
+J. wiped his face with a towel that had seen better decades. ‘Bond means cost. A word that never costs is a weather vane. Where will it cost you this week? Name the bill before it arrives. Name it while you’re still wet enough to be honest.’
 
-Michael thought, feet pounding cheap rubber. ‘There’s a meeting where people will reward me for a clever synthesis of “all faiths.” I will not perform R. as evidence. There’s a chat where I could win by sarcasm. I will pay the points—lose the thread-win. There’s a yes I want to say to look generous. I’ll say no if I can’t carry it.’
+M. thought, feet pounding cheap rubber. ‘There’s a meeting where people will reward me for a clever synthesis of “all faiths.” I will not perform R. as evidence. There’s a chat where I could win by sarcasm. I will pay the points—lose the thread-win. There’s a yes I want to say to look generous. I’ll say no if I can’t carry it.’
 
-‘Good. Tell Cameron. Public bonds to friends are harder to weasel. Weasels hate witnesses. Weasels love private diaries where they rebrand capture as insight.’
+‘Good. Tell C. Public bonds to friends are harder to weasel. Weasels hate witnesses. Weasels love private diaries where they rebrand capture as insight.’
 
-Cameron, informed by voice note while Michael stretched a hamstring that argued back, replied in text: *I’m logging this. If you breach, I collect one humiliating anecdote at a time of my choosing. Also: word-as-bond includes not promising cosmic things you can’t deliver. Stay mammal.*
+C., informed by voice note while M. stretched a hamstring that argued back, replied in text: *I’m logging this. If you breach, I collect one humiliating anecdote at a time of my choosing. Also: word-as-bond includes not promising cosmic things you can’t deliver. Stay mammal.*
 
-Michael: *Fair. Mammal.*
+M.: *Fair. Mammal.*
 
 R., when he stated it without flourish over coffee—*my word to you is bond; red lines included; no soft conversion project even in my head if I can help it*—studied him as if checking for counterfeit ink.
 
@@ -33,21 +33,21 @@ R., when he stated it without flourish over coffee—*my word to you is bond; re
 
 ‘Then we continue. And if you repair with a monologue about how interesting your failure was, that is not repair. That is content.’
 
-‘No content,’ Michael said. ‘Repair.’
+‘No content,’ M. said. ‘Repair.’
 
 That week he practised small bonds: arrived when he said; declined what he could not carry; corrected a story he’d exaggerated about a work win in a group chat (*I overstated; here is the duller truth*); called the mutual friend again just to be a presence, not a penitent. Each act felt unphotogenic. Each act made the monogram less of a costume and more of a private joke that didn’t need an audience.
 
-Friday evening Joshua poured tea and said, ‘You’ve been quieter online.’
+Friday evening J. poured tea and said, ‘You’ve been quieter online.’
 
-‘Bond uses fewer posts,’ Michael said. ‘I’m trying not to spend language like confetti. Confetti is pretty. It also means someone else sweeps.’
+‘Bond uses fewer posts,’ M. said. ‘I’m trying not to spend language like confetti. Confetti is pretty. It also means someone else sweeps.’
 
-Joshua grinned. ‘Look at you. Almost forty-two.’
+J. grinned. ‘Look at you. Almost forty-two.’
 
-Michael thought of Cameron and smiled. ‘Don’t tell him. He’ll get smug.’
+M. thought of C. and smiled. ‘Don’t tell him. He’ll get smug.’
 
-‘Too late,’ Joshua said. ‘Smug is his cardio. He’s been training for this moment since the systems week. He sent me a GIF. I deleted it for the good of civilisation.’
+‘Too late,’ J. said. ‘Smug is his cardio. He’s been training for this moment since the systems week. He sent me a GIF. I deleted it for the good of civilisation.’
 
-Before sleep Michael wrote on paper, not phone:
+Before sleep M. wrote on paper, not phone:
 
 **If the field is one, lying still injures the only room we’re in.**  
 **Word is bond because there is no second universe to dump the falsehood into.**  
@@ -55,6 +55,6 @@ Before sleep Michael wrote on paper, not phone:
 
 He folded the paper beside the napkin without letting them marry. Two documents, one wallet, no merger.
 
-Lights out. Harriet’s breathing from the other room. Outside, a car door. Inside, a man who had called when he said he would—at least once—which is how civilisations begin again each night.
+Lights out. H.’s breathing from the other room. Outside, a car door. Inside, a man who had called when he said he would—at least once—which is how civilisations begin again each night.
 
 His word, for once, stayed in the room after he stopped speaking. That is the only bond friendship actually enforces, and it enforces it by the look in a friend’s eyes when you show up or don’t.

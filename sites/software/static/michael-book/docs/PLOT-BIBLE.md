@@ -2,7 +2,7 @@
 
 ## Logline
 
-Michael, a high-agency man who cannot stop noticing, inherits his brother Joshua’s experiential axiom—*your experience of this moment exists*—and follows it through pubs, keyboards, churches, friendships, and sleepless kitchens until the undivided field writes its name as a dual generative joke… and the only honest last line is: **It's a funny old life.**
+M., a high-agency man who cannot stop noticing, inherits his brother J.’s experiential axiom—*your experience of this moment exists*—and follows it through pubs, keyboards, churches, friendships, and sleepless kitchens until the undivided field writes its name as a dual generative joke… and the only honest last line is: **It's a funny old life.**
 
 ## Tone
 
@@ -12,11 +12,11 @@ Terry Pratchett spirit: concrete, comic, kind to fools (including the hero), foo
 
 | Who | Role in plot |
 |-----|----------------|
-| **Michael** | Protagonist; notices; masks; writes; overshoots; corrects |
-| **Joshua** | Brother; Experiential Axiomatism bloodline; amen; shame→love |
-| **Cameron** | Friend; holds 42; Motte-and-Bailey sandpaper; goes to bed |
+| **M.** | Protagonist; notices; masks; writes; overshoots; corrects |
+| **J.** | Brother; Experiential Axiomatism bloodline; amen; shame→love |
+| **C.** | Friend; holds 42; Motte-and-Bailey sandpaper; goes to bed |
 | **R.** | Muslim friend; respect red line; final-chapter faith; Scripture Reasoning |
-| **Lizzie / Harriet** | Home horizontal beam (light touch, love not spectacle) |
+| **H.** | Home horizontal beam (light touch, love not spectacle) |
 | **Narrator** | Slightly God-shaped weather report; winks, never lectures dryly |
 
 ## Timeline (story weeks)
@@ -24,10 +24,10 @@ Terry Pratchett spirit: concrete, comic, kind to fools (including the hero), foo
 | Phase | Ch | Plot |
 |-------|-----|------|
 | **Week 1 — The Datum** | 1–15 | Cold floor axiom; nothing fails; unity; crossbeams; both/and shop; no dick joke yet |
-| **Week 2 — Systems** | 16–29 | Brain, physics, maths; Cameron & ^&; Sisyphus night (24); different speeds |
+| **Week 2 — Systems** | 16–29 | Brain, physics, maths; C. & ^&; Sisyphus night (24); different speeds |
 | **Week 3 — No Outside** | 30–40 | Logic doors; mask; wolves; fonts setup; hell-as-exit fails |
 | **Week 4 — Monogram** | 41–65 | Sin category; 42 verse; heat rises; α==ω dual altar; no sin twin pulse; final line |
-| **Week 5 — Bigger Book** | 66–99 | Unfaithful/6&8; R.; Islam chapter without capture; syncretism; geometry; NRE; Harriet; reprise |
+| **Week 5 — Bigger Book** | 66–99 | Unfaithful/6&8; R.; Islam chapter without capture; syncretism; geometry; NRE; H.; reprise |
 
 ## Revelation schedule (STRICT)
 
@@ -42,7 +42,7 @@ Terry Pratchett spirit: concrete, comic, kind to fools (including the hero), foo
 ## Continuous threads to hit every chapter
 
 1. **Something happens** (not only think)—toast, walk, call, text, door, song, child, pub, desk.  
-2. **Joshua and/or Cameron and/or R.** appear or echo.  
+2. **J. and/or C. and/or R.** appear or echo.  
 3. **One brick of the chain** advances or is tested.  
 4. **A comic concrete image.**  
 5. **No premature full monogram decode** before ch 55.

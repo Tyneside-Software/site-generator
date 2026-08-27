@@ -1,7 +1,7 @@
 # Chapter 1
 ## The Moment That Won’t Go Away
 
-Michael woke up.
+M. woke up.
 
 This was not, in itself, a philosophical achievement. Billions of creatures managed it every day without founding a religion, inventing a symbol, or arguing with their friends about punctuation. Birds did it. Dogs did it. People who had never heard of ontology did it and then made tea.
 
@@ -11,7 +11,7 @@ He was awake.
 
 The room did what rooms do when you are not yet ready for them: it insisted. Grey light at the curtain. The soft electric hum of something plugged in and forgotten. A faint smell of last night’s decisions. The particular weight of a body that had agreed, sometime in the small hours, to keep being a body.
 
-Michael lay still and performed the oldest experiment in the world.
+M. lay still and performed the oldest experiment in the world.
 
 He tried, carefully, not to be here.
 
@@ -25,7 +25,7 @@ Doubt arrived on time, professional as always, and used the same facilities as e
 
 *Your experience of this moment exists,* said a voice that sounded suspiciously like his brother on a good day, and also like the universe doing impressions.
 
-Michael sat up.
+M. sat up.
 
 The floor was cold. That was useful. Cold had a way of cutting through cleverness. You could argue with metaphysics until the cows came home, filed for divorce, and started a podcast; you could not argue with bare feet on laminate.
 
@@ -47,7 +47,7 @@ He thought: *None of this means anything.*
 
 Meaninglessness, too, arrived as a flavour in the mouth of the moment. You could not taste the absence of taste without a tongue.
 
-Michael almost laughed. It was the sort of laugh that had not yet decided whether it was free.
+M. almost laughed. It was the sort of laugh that had not yet decided whether it was free.
 
 Outside, a bus sighed at the stop. Someone shouted cheerfully at a dog. The world continued its policy of not waiting for permission.
 
@@ -71,13 +71,13 @@ He was experiencing this.
 
 The tea went cold while he stared at the page, which was a kind of offering.
 
-Somewhere—everywhere—God experienced being Michael experiencing tea, and did not bother to make a fuss about it yet.
+Somewhere—everywhere—God experienced being M. experiencing tea, and did not bother to make a fuss about it yet.
 
 That would come later.
 
 For now there was only the moment, stubborn as rain, ordinary as breath, immovable as the fact that you are reading this sentence and cannot unread the reading of it without reading that too.
 
-Michael put on socks.
+M. put on socks.
 
 The day began.
 

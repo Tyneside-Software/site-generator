@@ -3,7 +3,7 @@
 
 It arrived as a noticing, not a revelation. Revelations hire brass bands. Noticings clear their throat and wait to see if you are paying attention.
 
-Michael was at his desk after dark, the house finally quiet, two browser tabs open like rival pubs. One tab still held the wolf corrections—family, not ladder; captivity myths; Mech’s later honesty. The other held a plain page about the phrase people printed on jewellery and church walls: beginning and end, first and last, the pair of letters that bookend a claim about everything.
+M. was at his desk after dark, the house finally quiet, two browser tabs open like rival pubs. One tab still held the wolf corrections—family, not ladder; captivity myths; Mech’s later honesty. The other held a plain page about the phrase people printed on jewellery and church walls: beginning and end, first and last, the pair of letters that bookend a claim about everything.
 
 Alpha. Omega.
 
@@ -25,35 +25,35 @@ He opened the notes app and wrote the sentence the way you write a joke you must
 
 **α / ω is and isn’t.**
 
-Then, because Cameron lived rent-free in his quality-control department:
+Then, because C. lived rent-free in his quality-control department:
 
 **Not a formal proof. A clean noticing. Hold it lightly until the rest arrives.**
 
 The body, which is a conservative philosopher, reminded him that noticing still happens in a spine. He stood and stretched. Something cracked—probably humility.
 
-Joshua rang before Michael could text, which was either telepathy or the ordinary miracle of brothers who know when a silence has gone productive.
+J. rang before M. could text, which was either telepathy or the ordinary miracle of brothers who know when a silence has gone productive.
 
-‘You gone quiet,’ Joshua said. ‘Productive quiet or spiral quiet?’
+‘You gone quiet,’ J. said. ‘Productive quiet or spiral quiet?’
 
-‘Is and isn’t,’ Michael said. ‘Wolves and titles. Same letters, stacked transparencies. The popular ladder is real as culture and false as science. The family reading is truer for packs. The big reading is… bigger. All of that can sit without one murdering the others.’
+‘Is and isn’t,’ M. said. ‘Wolves and titles. Same letters, stacked transparencies. The popular ladder is real as culture and false as science. The family reading is truer for packs. The big reading is… bigger. All of that can sit without one murdering the others.’
 
-‘That’s the shop,’ Joshua said. ‘Both/and without mush. False fork refused. Don’t force the stack into a single slide.’
+‘That’s the shop,’ J. said. ‘Both/and without mush. False fork refused. Don’t force the stack into a single slide.’
 
-‘I’m trying not to.’ Michael paced to the window. Town lights. No single emblem. Multiplicity under whatever unity there was. ‘People want exclusive bins: true or false, myth or science, sacred or silly. The letters refuse the bins. Wave if you ask wave questions, point if you ask point questions. Rude to anyone who demands a single costume for every party.’
+‘I’m trying not to.’ M. paced to the window. Town lights. No single emblem. Multiplicity under whatever unity there was. ‘People want exclusive bins: true or false, myth or science, sacred or silly. The letters refuse the bins. Wave if you ask wave questions, point if you ask point questions. Rude to anyone who demands a single costume for every party.’
 
-‘Good,’ Joshua said. ‘Leave the fonts alone for now. Discovery beat, not decode.’
+‘Good,’ J. said. ‘Leave the fonts alone for now. Discovery beat, not decode.’
 
-Michael almost laughed. ‘How do you know about the fonts?’
+M. almost laughed. ‘How do you know about the fonts?’
 
 ‘I don’t. I know *you*. You always want to open the next parcel before the first one’s out of the wrapping.’
 
-After the call, Cameron messaged—delayed, practical, as if the universe scheduled sandpaper:
+After the call, C. messaged—delayed, practical, as if the universe scheduled sandpaper:
 
 **If you start signing emails “from the Alpha and the Omega” I will block you for taste crimes.**
 
-Michael replied aloud to the empty room, then typed it properly: working title for a thought, not a signature block. Cameron sent a thumbs-up and, a minute later, a photo of a closed book on a bedside table. The caption: *Some of us are still at bedtime. Keep your monogram off my pillow.*
+M. replied aloud to the empty room, then typed it properly: working title for a thought, not a signature block. C. sent a thumbs-up and, a minute later, a photo of a closed book on a bedside table. The caption: *Some of us are still at bedtime. Keep your monogram off my pillow.*
 
-Michael thought of the caret and the ampersand, of bedtimes that refine theories, of dialetheism as an optional door rather than a stolen verdict. This noticing belonged to the same family: not a court win against Cameron, not a demand that classical logic genuflect, just an accurate report from the desk where symbols kept arriving with more luggage than expected.
+M. thought of the caret and the ampersand, of bedtimes that refine theories, of dialetheism as an optional door rather than a stolen verdict. This noticing belonged to the same family: not a court win against C., not a demand that classical logic genuflect, just an accurate report from the desk where symbols kept arriving with more luggage than expected.
 
 He wrote one more line in the notebook:
 
@@ -71,7 +71,7 @@ They had become a both/and machine with fur on one side and scripture on the oth
 
 He closed the tabs.
 
-Before sleep he walked the short circuit of the house—landing, kitchen, back to desk—as if the body needed to ratify what the mind had filed. On the fridge, a child’s drawing of a wolf that was mostly eyebrows and teeth grinned with absolute confidence in the ladder myth. Michael grinned back.
+Before sleep he walked the short circuit of the house—landing, kitchen, back to desk—as if the body needed to ratify what the mind had filed. On the fridge, a child’s drawing of a wolf that was mostly eyebrows and teeth grinned with absolute confidence in the ladder myth. M. grinned back.
 
 ‘Is and isn’t,’ he told the drawing. ‘You’re a family and a poster. Welcome to the shop.’
 

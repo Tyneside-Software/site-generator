@@ -1,7 +1,7 @@
 # ΑΩ — Novel Structure (Terry Pratchett mode)
 
 **Working title:** *ΑΩ*  
-**Author line:** by Me, God (trade edition may use Michael Thomson / Me, God)  
+**Author line:** by Me, God (trade edition may use M. Thomson / Me, God)  
 **Genre:** Comic philosophical novel in the **spirit of Terry Pratchett** — footnotes optional, heart mandatory, jokes load-bearing, logic deadly serious under the custard.  
 **Length target:** ~**65 chapters** (bookstore-length; ~11.5k–40k+ words depending on chapter density — first pass aims **short sharp chapters**, expandable).  
 **Accessibility:** Readable by anyone who can enjoy a Discworld-adjacent yarn. No exam required. The proof is **shown**, not graded.  
@@ -30,7 +30,7 @@
 This is the **symbolic structure**. Plot exists to **demonstrate** it.
 
 ```
-A1  Experience of this moment exists.                    [Josh axiom]
+A1  Experience of this moment exists.                    [J. axiom]
 A2  Non-existence is incoherent as alternative.          
 A3  Existence is united (no true outside cut).           
 A4  Existence is eternal (no edge via nothing).          
@@ -49,7 +49,7 @@ END It's a funny old life.
 ```
 
 **Honesty clause (bookstore-safe, still rigorous):**  
-The chain is **inescapable inside Experiential Axiomatism + both/and reading of symbols**. Motte vs bailey is *part of the novel’s comedy* (characters argue Cameron’s point; the universe winks).
+The chain is **inescapable inside Experiential Axiomatism + both/and reading of symbols**. Motte vs bailey is *part of the novel’s comedy* (characters argue C.’s point; the universe winks).
 
 ---
 
@@ -72,10 +72,10 @@ The chain is **inescapable inside Experiential Axiomatism + both/and reading of 
 | 8 | Maths, Words, Things | naming | carrot/stick delimiter memory |
 | 9 | The Crossbeams | V/H cross | God/neighbour; Roman efficiency+shame |
 | 10 | Carrot, Stick, Plus Sign | incentive dual → +/✝️ | data format ^\| \|^ |
-| 11 | Shame Into Love | Josh riff | reinvention of cross |
+| 11 | Shame Into Love | J. riff | reinvention of cross |
 | 12 | Moon, Star, And Rules About Pictures | Islam symbols / aniconism | dump islam notes |
-| 13 | Who Is Like God? | Michael name | archangel offices; “El” |
-| 14 | Gabriel Delivers | messenger | dump 18 |
+| 13 | Who Is Like God? | M. name | archangel offices; “El” |
+| 14 | G. Delivers | messenger | dump 18 |
 | 15 | The Hellfire Club (Historical Footnote) | satire of religion | Wharton / sacred parody (careful tone) |
 
 ### ACT II — The Cut That Isn’t (Ch 16–40)  
@@ -94,11 +94,11 @@ The chain is **inescapable inside Experiential Axiomatism + both/and reading of 
 | 22 | Emergence Is Fundamental | dump 23 | levels of reality |
 | 23 | CCC And Other Options | dump layers | dinosaurs / previous universe (comic options, not dogma) |
 | 24 | Sisyphus On Holiday | despair text + “enjoying journey” | dump 24 mood dual |
-| 25 | Different Speeds | same journey | Cameron still at 42 |
+| 25 | Different Speeds | same journey | C. still at 42 |
 | 26 | The Ordinary Answer | 42 | Adams; Luke 6:42 plank |
 | 27 | Keys Six And Seven | keyboard | ^ and & adjacency |
 | 28 | Both And Not Both | ^& | Motte/bailey fight scene |
-| 29 | Cameron Goes To Bed | skeptic patron | definition fallacy comedy |
+| 29 | C. Goes To Bed | skeptic patron | definition fallacy comedy |
 | 30 | Dialetheism For Beginners | true contradictions optional frame | soft, footnote-heavy Pratchett |
 | 31 | NPC Theory (With Kindness) | dump 21 | agency dual; not cruelty |
 | 32 | High Agency, Low Bandwidth World | dump 24 | care vs capacity |
@@ -139,7 +139,7 @@ The chain is **inescapable inside Experiential Axiomatism + both/and reading of 
 | 59 | Length Girth Depth Breadth | four axes | ontology dimensions |
 | 60 | No Sin (Orgasmic Clarity) | A9 complete | twin pulse starts |
 | 61 | Same Heartbeat | no-sin + monogram | simultaneous |
-| 62 | Fuck Life / Fucked By Life | Josh amen | adult, warm |
+| 62 | Fuck Life / Fucked By Life | J. amen | adult, warm |
 | 63 | God Has / Is / Maybe | uncollapsed wave | both did and didn’t |
 | 64 | The Rest Of Us Wake Up | reader included | “haven’t woken up yet” |
 | 65 | A Funny Old Life | A15 + END LINE | **It's a funny old life.** |
@@ -150,12 +150,12 @@ The chain is **inescapable inside Experiential Axiomatism + both/and reading of 
 
 | Role | Working name | Function |
 |------|--------------|----------|
-| Protagonist | **Michael** (or “the Man Who Noticed”) | High-agency noticer; mask; both/and apprentice |
-| Brother / Amen | **Joshua** | Experiential Axiomatism bloodline; shame→love; fuck/fucked-by-life |
-| Skeptic friend | **Cameron** | 42; Motte-and-Bailey; bed; refine by refusing |
+| Protagonist | **M.** (or “the Man Who Noticed”) | High-agency noticer; mask; both/and apprentice |
+| Brother / Amen | **J.** | Experiential Axiomatism bloodline; shame→love; fuck/fucked-by-life |
+| Skeptic friend | **C.** | 42; Motte-and-Bailey; bed; refine by refusing |
 | Partner / orbit | composite | bandwidth, care, double life (fiction-valid, kind) |
-| Messenger | **Gabriel** (or postal worker who is also Gabriel) | Annunciations of inconvenient truths |
-| Patron office | **Michael** archangel as job description | “Who is like God?” as running gag |
+| Messenger | **G.** (or postal worker who is also G.) | Annunciations of inconvenient truths |
+| Patron office | **M.** archangel as job description | “Who is like God?” as running gag |
 | Narrator | **God / the Total / the Weather** | Pratchett-grade cosmic gossip |
 
 Avoid libel: real living third parties → composite or permission; gold-tablet local dealer → mythic only.
@@ -192,8 +192,8 @@ carrot + stick
 
 | File | Themes captured |
 |------|-----------------|
-| NTD.txt, (3)(7)(8)(9) | ^&, αω cases, bitwise, Cameron |
-| (2)(18) | Michael, Gabriel |
+| NTD.txt, (3)(7)(8)(9) | ^&, αω cases, bitwise, C. |
+| (2)(18) | M., G. |
 | (4) | screenshot α==ω visual |
 | (5) | wolves alpha/omega science |
 | (6) | cross / inverted cross prompt |
@@ -204,7 +204,7 @@ carrot + stick
 | (16)(22) | both/and, paradoxical thinking |
 | (17) | El = God |
 | (19) | Hellfire Club / Wharton |
-| (20) | Josh axiomatic chain simple |
+| (20) | J. axiomatic chain simple |
 | (21) | NPC + Experiential Axiomatism synthesis |
 | (23) | Emergence fundamental |
 | prior vault 15–20 | already structured |

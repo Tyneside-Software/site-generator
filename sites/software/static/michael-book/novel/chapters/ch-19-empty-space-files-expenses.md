@@ -3,41 +3,41 @@
 
 Thursday night the sky was clear enough to argue with.
 
-The day had been full of solid objects—desks, emails, a sandwich that left crumbs like evidence. Evening removed the props and left the stage black. That is when people reach for romance or for physics. Michael, being greedy, reached for both.
+The day had been full of solid objects—desks, emails, a sandwich that left crumbs like evidence. Evening removed the props and left the stage black. That is when people reach for romance or for physics. M., being greedy, reached for both.
 
 He stood in the small backyard with a mug cooling in his hands and looked up: humanity's oldest unfunded research programme. Stars did their indifferent glitter. Between them, black—the sort that invited the word *nothing* from people who had not yet lost an argument with a kitchen chair.
 
 He knew better now, or at least knew more carefully. Empty was not simple.
 
-Joshua had sent him an article at lunch about the vacuum—not the household appliance, the physics kind. Empty space, it turned out, was a busy accountant. Fields. Fluctuations. Energy that refused to clock out. The void filed expenses.
+J. had sent him an article at lunch about the vacuum—not the household appliance, the physics kind. Empty space, it turned out, was a busy accountant. Fields. Fluctuations. Energy that refused to clock out. The void filed expenses.
 
-Michael had laughed at the phrase and then could not stop seeing invoices in the dark. He rang.
+M. had laughed at the phrase and then could not stop seeing invoices in the dark. He rang.
 
-'You're romanticising the vacuum again,' Joshua said.
+'You're romanticising the vacuum again,' J. said.
 
 'I'm standing under it. Hard not to. People point at the gaps between stars and call it absence. Physics says the gaps are doing work.'
 
 'Both true in their lanes. The night looks empty. The maths says emptiness has a cost of living. Don't flatten them.'
 
-A plane crawled across the dark, a moving point with a wave of sound lagging behind. Michael tracked it until it became someone else's problem over a different postcode.
+A plane crawled across the dark, a moving point with a wave of sound lagging behind. M. tracked it until it became someone else's problem over a different postcode.
 
 'I used to think blank space meant the story stopped,' he said. 'Margins. Silence. The bits between events. Now the blank feels load-bearing.'
 
-'Rests in music,' Joshua said. 'Not nothing. Structure.'
+'Rests in music,' J. said. 'Not nothing. Structure.'
 
-Michael sipped cold tea and grimaced. Even the grimace was data. 'When people say the universe is mostly empty—'
+M. sipped cold tea and grimaced. Even the grimace was data. 'When people say the universe is mostly empty—'
 
 '—they often mean mostly not-us. A mood, not a final ontology. Distance is real. Loneliness is real. Pure nothing still can't get a security badge.'
 
 A cat two gardens over announced a policy position on foxes. The night absorbed it and continued.
 
-Michael thought of offices: the empty meeting room that still cost rent; the silent channel that still shaped behaviour; the calendar block labelled *focus time* that was full of refusal. Empty space filed expenses everywhere, not only in quantum field theory.
+M. thought of offices: the empty meeting room that still cost rent; the silent channel that still shaped behaviour; the calendar block labelled *focus time* that was full of refusal. Empty space filed expenses everywhere, not only in quantum field theory.
 
 'What am I supposed to do with this?' he asked—the eternal question of people who read articles at lunch.
 
 'Stop treating the dark as an insult. Stop treating busyness as the only proof of being. The vacuum works without performing for you.'
 
-Michael smiled at the sky as if it might invoice him for the smile. 'Week two is full of systems that refuse to be simple villains.'
+M. smiled at the sky as if it might invoice him for the smile. 'Week two is full of systems that refuse to be simple villains.'
 
 'Good. Simple villains are how either/or stays employed.'
 
@@ -55,6 +55,6 @@ A streetlamp flickered once and held. In the gap between flickers he almost said
 
 Friday would bring maths with a bartender. Tonight brought only the quiet joke that the emptiest-looking thing he could see was, according to the best instruments available, still on the payroll of existence.
 
-Michael slept.
+M. slept.
 
 Between his thoughts, something kept the books.

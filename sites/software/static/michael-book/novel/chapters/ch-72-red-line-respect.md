@@ -7,13 +7,13 @@ R. arrived with two flat whites and a face that said *business first, then frien
 
 ‘I want a red line said out loud,’ she said. ‘Not implied. Not polite fog. Fog is how people get hurt while everyone claims they meant well.’
 
-Michael sat on the bench. The wood was cold through his coat. ‘Say it. I’ll repeat it back until you believe I heard—not until I can weaponise a summary.’
+M. sat on the bench. The wood was cold through his coat. ‘Say it. I’ll repeat it back until you believe I heard—not until I can weaponise a summary.’
 
 R. counted on her fingers, not theatrical—practical, like packing a bag for a journey that might include weather.
 
 ‘One: no conversion project. Not soft, not clever, not “I just want you to be free.” I am not a trophy for your monogram. I am not the prize at the end of your both/and.’
 
-‘One: no conversion project,’ Michael said. ‘You are not a trophy. If I slide, you say *trophy* and I stop. No appeal, no rebranding the slide as love.’
+‘One: no conversion project,’ M. said. ‘You are not a trophy. If I slide, you say *trophy* and I stop. No appeal, no rebranding the slide as love.’
 
 ‘Two: no explaining Islam to me as if I were a tourist in my own house. Questions allowed. Lectures banned. Curiosity that talks more than it listens is still a lecture in a nice jumper.’
 
@@ -25,7 +25,7 @@ R. counted on her fingers, not theatrical—practical, like packing a bag for a 
 
 ‘Four: if we disagree in public or in a group, you don’t use our friendship as evidence that your system already includes me. Friendship is not a footnote. I am not a citation.’
 
-Michael swallowed. That one had been close enough to taste, once—cleverness dressing itself as inclusion. ‘Four: friendship is not evidence for my thesis. It’s a relationship. Full stop. If I need a thesis, I write one that doesn’t draft you without consent.’
+M. swallowed. That one had been close enough to taste, once—cleverness dressing itself as inclusion. ‘Four: friendship is not evidence for my thesis. It’s a relationship. Full stop. If I need a thesis, I write one that doesn’t draft you without consent.’
 
 R. watched his face for the micro-expressions of men who agree in order to win later. She found effort instead—uglier, better, the look of someone doing work rather than performing sincerity.
 
@@ -41,11 +41,11 @@ He hadn’t expected the reciprocity so cleanly. It steadied him—the mutuality
 
 ‘Heard,’ R. said. No flinch. Good.
 
-‘Two: Cameron-style sandpaper is welcome; contempt is not. I will take *you’re doing the cardigan again*. I won’t take *you’re disposable*. Disagreement isn’t exile.’
+‘Two: C.-style sandpaper is welcome; contempt is not. I will take *you’re doing the cardigan again*. I won’t take *you’re disposable*. Disagreement isn’t exile.’
 
 ‘Fair. Contempt is laziness with a sneer. We can do better.’
 
-‘Three: Joshua is not a weapon for either of us. No *your brother agrees with me* as a club. He’s a person, not a swing vote.’
+‘Three: J. is not a weapon for either of us. No *your brother agrees with me* as a club. He’s a person, not a swing vote.’
 
 R. almost smiled. ‘Agreed. He’s too useful as a human to be demoted to ammunition.’
 
@@ -59,7 +59,7 @@ They sat with the list between them like a third person who would keep the minut
 
 ‘People think respect is soft,’ R. said. ‘Respect is a fence with a gate. Fence so we don’t trample. Gate so we can still visit. No fence is not love. No fence is a free-for-all where the strongest feelings win.’
 
-‘Pratchett would like that,’ Michael said, then added, ‘Sorry—habit of citing imaginary allies when a living one just said something better.’
+‘Pratchett would like that,’ M. said, then added, ‘Sorry—habit of citing imaginary allies when a living one just said something better.’
 
 ‘Cite whoever helps you behave,’ R. said. ‘Just don’t cite me into your footnotes as *the Muslim friend who proves universality*. I am not a proof. I am a person who drinks coffee and has red lines and will not be your universality’s poster.’
 
@@ -75,6 +75,6 @@ Outside, for a few more minutes, two people practised the rare adult skill of sa
 
 At the door of the building R. paused. ‘If you forget, I’ll remind you. If I forget, you may remind me. No scoreboard.’
 
-‘No scoreboard,’ Michael said.
+‘No scoreboard,’ M. said.
 
 They went in. The flat whites were finished. The red lines were not.

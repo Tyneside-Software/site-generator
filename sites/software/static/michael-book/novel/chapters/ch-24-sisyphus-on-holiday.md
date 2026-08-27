@@ -1,7 +1,7 @@
 # Chapter 24  
 ## Sisyphus On Holiday
 
-There are nights when the universe feels like a customer service department with no manager, and Michael had been queueing for hours.
+There are nights when the universe feels like a customer service department with no manager, and M. had been queueing for hours.
 
 He was not drunk. He was not dramatic for sport. He was simply, inconveniently, awake at the depth where the ordinary tricks stop working—tea, jokes, the kindly lie that tomorrow will be a different shape.
 
@@ -29,7 +29,7 @@ He sat with it.
 
 The words looked back at him without blinking. They were not a bit. They were not a brand. They were the weather report from inside his chest on a night when the barometer had fallen through the floor.
 
-Sisyphus, in the old stories, pushes the stone because the gods have a sense of humour with excellent upper-body requirements. Michael had begun to suspect the stone was *explanation*, and the hill was *everything*, and the gods were not above him but *as* him, which made the whole arrangement either much worse or strangely intimate.
+Sisyphus, in the old stories, pushes the stone because the gods have a sense of humour with excellent upper-body requirements. M. had begun to suspect the stone was *explanation*, and the hill was *everything*, and the gods were not above him but *as* him, which made the whole arrangement either much worse or strangely intimate.
 
 He almost closed the phone.
 
@@ -47,7 +47,7 @@ He walked to the window. Streetlight. A cat with a schedule. The soft machinery 
 
 Everyone is on the same journey, he thought. They just travel at different speeds.
 
-Some people were asleep at forty-two and content. Some people were building cathedrals out of punctuation. Some people were too tired to care about distant horror and still loved their children correctly. Some people were Michael, trying to get as far as he could before he died, and also—embarrassingly, hopefully—trying to get *out*, which might be the same direction described by two different panic languages.
+Some people were asleep at forty-two and content. Some people were building cathedrals out of punctuation. Some people were too tired to care about distant horror and still loved their children correctly. Some people were M., trying to get as far as he could before he died, and also—embarrassingly, hopefully—trying to get *out*, which might be the same direction described by two different panic languages.
 
 He did not resolve the layers.
 
@@ -62,7 +62,7 @@ and so was the cat
 
 and Sisyphus, on rare shifts, is allowed to sit on the stone and feel the sun and admit that the hill is ridiculous and keep pushing anyway—not because the pushing becomes sensible, but because the pusher is still *here*, still experiencing, still the one fact that cannot be filed under *maybe later*.
 
-Michael saved the note.
+M. saved the note.
 
 He did not know yet that the layers were not only a trap.
 
