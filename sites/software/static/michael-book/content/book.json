@@ -1,0 +1,39 @@
+{
+  "title": "ΑΩ",
+  "subtitle": "by Me, God — Alpha Omega",
+  "path": "/michael-book/",
+  "word_target": 11500,
+  "page_target": 65,
+  "word_band": [11270, 11730],
+  "calibration": {
+    "source": "Joshua Thomson — Experience, Therefore",
+    "measured_words_spoken_combined": 11467,
+    "measured_words_full_extract": 11511,
+    "locked_target": 11500
+  },
+  "status": "pratchett-novel-structure-draft",
+  "genre": "terry-pratchett-style-comic-philosophical-novel",
+  "epigraph": "I am the Alpha and the Omega. I am also what the font does when those letters sit together. It's a funny old life.",
+  "answer_motif": "α==ω",
+  "answer_motif_secondary": ["^&", "42", "both&"],
+  "final_line": "It's a funny old life.",
+  "chapter_count_target": 65,
+  "structure_doc": "docs/NOVEL-STRUCTURE.md",
+  "working_model": "the meaning of life is a dick joke (dual monogram) proven by comic novel demonstration",
+  "discovery_stamp": "2026-07-29T03:13",
+  "chapters": [
+    { "file": "ch-00-front.md", "id": "ch-00", "number": 0, "title": "Front / Invocation" },
+    { "file": "ch-01-points-and-waves.md", "id": "ch-01", "number": 1, "title": "Of Points and Waves" },
+    { "file": "ch-02-zero-and-infinity.md", "id": "ch-02", "number": 2, "title": "Of Zero and Infinity" },
+    { "file": "ch-03-names-and-spells.md", "id": "ch-03", "number": 3, "title": "Of Names and Spells" },
+    { "file": "ch-04-flesh-that-remembers.md", "id": "ch-04", "number": 4, "title": "Of Flesh That Remembers" },
+    { "file": "ch-05-gods-who-disagree.md", "id": "ch-05", "number": 5, "title": "Of Gods Who Disagree" },
+    { "file": "ch-06-empires-and-echoes.md", "id": "ch-06", "number": 6, "title": "Of Empires and Echoes" },
+    { "file": "ch-07-minds-that-model.md", "id": "ch-07", "number": 7, "title": "Of Minds That Model" },
+    { "file": "ch-08-light-and-dark.md", "id": "ch-08", "number": 8, "title": "Of Light and Dark Alike" },
+    { "file": "ch-09-in-and-out.md", "id": "ch-09", "number": 9, "title": "Of In and Out" },
+    { "file": "ch-10-both-altars.md", "id": "ch-10", "number": 10, "title": "Of Both Altars" },
+    { "file": "ch-11-funny-old-world.md", "id": "ch-11", "number": 11, "title": "Of the Funny Old World" },
+    { "file": "ch-12-amen.md", "id": "ch-12", "number": 12, "title": "Amen / After-laugh" }
+  ]
+}
