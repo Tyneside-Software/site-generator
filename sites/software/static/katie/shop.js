@@ -1,64 +1,4 @@
 (function () {
-  function mail(name) {
-    return "mailto:katie@tyneside.software?subject=" + encodeURIComponent("Order " + name);
-  }
-
-  function slidePhoto(src, alt) {
-    if (src) {
-      return (
-        '<div class="slide"><img src="' + src + '" alt="' + alt.replace(/"/g, "") +
-        '" onerror="this.parentNode.innerHTML=\'<div class=empty><strong>Photo</strong>Picture coming</div>\'"></div>'
-      );
-    }
-    return '<div class="slide"><div class="empty"><strong>Photo</strong>Picture coming</div></div>';
-  }
-
-  function renderStock(root, items) {
-    root.innerHTML = items.map(function (item) {
-      var photos = item.photos && item.photos.length ? item.photos : [""];
-      var slides = photos.map(function (src) {
-        return slidePhoto(src, item.name);
-      });
-      slides.push('<div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>');
-      if (item.video) {
-        slides[slides.length - 1] =
-          '<div class="slide"><video src="' + item.video + '" controls playsinline></video></div>';
-      }
-      var dots = slides.map(function (_, i) {
-        return '<button type="button" data-dot' + (i === 0 ? ' class="is-on"' : "") +
-          ' aria-label="Slide ' + (i + 1) + '"></button>';
-      }).join("");
-      slides[0] = slides[0].replace('class="slide"', 'class="slide is-on"');
-      return (
-        '<article class="product">' +
-          '<div class="gallery" data-gallery>' +
-            '<div class="slides">' + slides.join("") + "</div>" +
-            '<button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>' +
-            '<button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>' +
-            '<div class="dots">' + dots + "</div>" +
-          "</div>" +
-          '<p class="price">' + item.price + "</p>" +
-          "<h2>" + item.name + "</h2>" +
-          '<p class="meta">' + item.description + "</p>" +
-          '<a class="buy" href="' + mail(item.name) + '">Email to buy</a>' +
-        "</article>"
-      );
-    }).join("");
-  }
-
-  var stockRoot = document.querySelector("[data-stock]");
-  if (stockRoot) {
-    var src = stockRoot.getAttribute("data-stock") || "stock.json";
-    fetch(src).then(function (r) { return r.json(); }).then(function (data) {
-      renderStock(stockRoot, data.items || []);
-      bindGalleries();
-    }).catch(function () {
-      stockRoot.innerHTML = "<p>Could not load the shop list. Email katie@tyneside.software.</p>";
-    });
-  } else {
-    bindGalleries();
-  }
-
   function show(gallery, index) {
     var slides = gallery.querySelectorAll(".slide");
     var dots = gallery.querySelectorAll("[data-dot]");
@@ -112,4 +52,6 @@
     }
     });
   }
+
+  bindGalleries();
 })();
