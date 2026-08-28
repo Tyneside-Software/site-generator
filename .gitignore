@@ -11,6 +11,18 @@ venv/
 .env
 .python-version
 
+# Local xAI / TTS secrets — never commit
+secrets/*.key
+secrets/*.env
+!secrets/*.example
+!secrets/README.md
+
+# Bulky public-domain Bible dumps (fetched on build)
+sites/church/bible-source/DRC.json
+sites/church/bible-source/dra/
+sites/church/bible-source/web/
+sites/software/bible-source/
+
 # Generator output (deployed to site repos, not committed here)
 output/
 
