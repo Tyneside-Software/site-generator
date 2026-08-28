@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Squishies · fidget squish</title>
-  <meta name="description" content="fidget squish — squishies for sale. Email katie@tyneside.software to buy.">
+  <meta name="description" content="fidget squish — squishies and fidgets for sale. Email katie@tyneside.software to buy.">
   <link rel="icon" href="../logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="shop.css">
 </head>
@@ -23,102 +23,31 @@
 
   <main class="wrap">
     <div class="page-head">
-      <h1>Squishies</h1>
-      <p>New squishies, skins, and Needoh when we have them. Slide the photos to get to the video. Price is under the picture. Email katie@tyneside.software to buy.</p>
+      <h1>In stock</h1>
+      <p>Slide the photos to get to the video. Price is under the picture. Email katie@tyneside.software to buy.</p>
     </div>
 
-    <section class="grid" aria-label="Squishies for sale">
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this squishy</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Fairly priced</p>
-        <h2>New squishy</h2>
-        <p class="meta">Matches the photo. Email to buy.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20new%20squishy">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this skin</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Fairly priced</p>
-        <h2>Squishy skin</h2>
-        <p class="meta">Squishy skins for sale.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20squishy%20skin">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this fidget</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Fairly priced</p>
-        <h2>Needoh</h2>
-        <p class="meta">When in stock. Fairly priced.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20Needoh">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this squishy</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Fairly priced</p>
-        <h2>New squishy</h2>
-        <p class="meta">Restocked every month — some more often.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20from%20fidget%20squish">Email to buy</a>
-      </article>
-    </section>
+    <section class="grid" data-stock="stock.json" aria-label="Items for sale"></section>
+    <noscript>
+      <ul>
+        <li>Dumpling — glow in the dark mystery dumpling — £4</li>
+        <li>Noodles and mochies — stretchy — £2</li>
+        <li>Santa popit — red and white popit — £5.49</li>
+        <li>Popit — fidget dice popit — £4.99</li>
+        <li>Taba dumplings — sticky taba dumplings — £2.49</li>
+        <li>Fidget spinner — earth fidget spinner — £3.99</li>
+        <li>Capybara watermelon — slow-rise capybara squishie — £1.99</li>
+        <li>Cheese — super slow-rise cheese — £4.99</li>
+      </ul>
+      <p>Email katie@tyneside.software to buy.</p>
+    </noscript>
 
     <section class="policies">
       <h2>Shop rules</h2>
       <ul>
         <li>No scams. The item matches the photo.</li>
         <li>No returns.</li>
-        <li>Restock every month. Some squishies more than once a month.</li>
+        <li>Restock every month. Some items more than once a month.</li>
         <li>Packed in cardboard boxes with stickers.</li>
         <li>To sell a squishy or fidget to the shop, email katie@tyneside.software — it must match the photo.</li>
       </ul>

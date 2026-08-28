@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "name": "Dumpling",
+      "description": "Glow in the dark mystery dumpling",
+      "price": "£4",
+      "photos": ["photos/1.jpeg"]
+    },
+    {
+      "name": "Noodles and mochies",
+      "description": "Stretchy",
+      "price": "£2",
+      "photos": []
+    },
+    {
+      "name": "Santa popit",
+      "description": "Red and white popit",
+      "price": "£5.49",
+      "photos": []
+    },
+    {
+      "name": "Popit",
+      "description": "Fidget dice popit",
+      "price": "£4.99",
+      "photos": []
+    },
+    {
+      "name": "Taba dumplings",
+      "description": "Sticky taba dumplings",
+      "price": "£2.49",
+      "photos": []
+    },
+    {
+      "name": "Fidget spinner",
+      "description": "Earth fidget spinner",
+      "price": "£3.99",
+      "photos": []
+    },
+    {
+      "name": "Capybara watermelon",
+      "description": "Slow-rise capybara squishie",
+      "price": "£1.99",
+      "photos": []
+    },
+    {
+      "name": "Cheese",
+      "description": "Super slow-rise cheese",
+      "price": "£4.99",
+      "photos": []
+    }
+  ]
+}
