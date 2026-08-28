@@ -1,11 +1,12 @@
 :root {
-  --bg: #0f1419;
-  --panel: #1a222c;
-  --border: #2c3a4a;
-  --text: #e8eef4;
-  --muted: #8b9aab;
-  --accent: #e8b84a;
-  --accent-dim: rgba(232, 184, 74, 0.12);
+  --bg: #121018;
+  --panel: #1c1924;
+  --border: #3a3546;
+  --text: #f3eee4;
+  --muted: #b7a99a;
+  --accent: #c4b5fd;
+  --accent-dim: rgba(196, 181, 253, 0.12);
+  --ink: #1a1228;
   --measure: 40rem;
   --serif: "Iowan Old Style", Palatino, Georgia, serif;
   --sans: "Segoe UI", system-ui, sans-serif;
@@ -28,8 +29,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 70% 40% at 50% -8%, rgba(232,184,74,0.1), transparent),
-    radial-gradient(ellipse 50% 30% at 100% 100%, rgba(80,120,180,0.06), transparent);
+    radial-gradient(ellipse 70% 40% at 50% -8%, rgba(196,181,253,0.1), transparent),
+    radial-gradient(ellipse 50% 30% at 100% 100%, rgba(167,139,250,0.08), transparent);
   pointer-events: none;
   z-index: -1;
 }
@@ -53,7 +54,7 @@ a { color: var(--accent); }
   min-height: 100vh;
 }
 .side {
-  background: rgba(15,20,25,0.97);
+  background: rgba(14, 12, 18, 0.97);
   border-right: 1px solid var(--border);
   padding: 1.25rem 0.9rem 2rem;
   max-height: 100vh;
@@ -201,7 +202,7 @@ a { color: var(--accent); }
   font-family: var(--sans);
   font-size: 0.72rem;
   background: var(--accent-dim);
-  border: 1px solid rgba(232,184,74,0.35);
+  border: 1px solid rgba(196,181,253,0.35);
   color: var(--accent);
   padding: 0.45rem 0.6rem;
   border-radius: 8px;
@@ -234,7 +235,7 @@ a { color: var(--accent); }
 }
 .jump input:focus {
   outline: none;
-  border-color: rgba(232,184,74,0.55);
+  border-color: rgba(196,181,253,0.55);
 }
 .jump button {
   font-family: var(--sans);
@@ -242,7 +243,7 @@ a { color: var(--accent); }
   font-weight: 600;
   color: var(--accent);
   background: var(--accent-dim);
-  border: 1px solid rgba(232,184,74,0.35);
+  border: 1px solid rgba(196,181,253,0.35);
   border-radius: 6px;
   padding: 0.42rem 0.55rem;
   cursor: pointer;
@@ -267,7 +268,7 @@ a { color: var(--accent); }
 }
 .filter:focus {
   outline: none;
-  border-color: rgba(232,184,74,0.55);
+  border-color: rgba(196,181,253,0.55);
 }
 .nav {
   display: flex;
@@ -323,7 +324,7 @@ a { color: var(--accent); }
 .nav-item.is-active {
   color: #fff;
   background: var(--accent-dim);
-  border-color: rgba(232,184,74,0.2);
+  border-color: rgba(196,181,253,0.2);
   outline: none;
 }
 .nav-item:hover .t,
@@ -353,7 +354,7 @@ a { color: var(--accent); }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid rgba(232,184,74,0.3);
+  border: 1px solid rgba(196,181,253,0.3);
   background: var(--accent-dim);
   display: inline-block;
   padding: 0.3rem 0.65rem;
@@ -387,7 +388,7 @@ a { color: var(--accent); }
 }
 .btn-fill {
   background: var(--accent);
-  color: #1a1408;
+  color: var(--ink);
 }
 .btn-ghost {
   border: 1px solid var(--border);
@@ -431,7 +432,7 @@ a { color: var(--accent); }
 .stanza {
   margin: 0.85rem 0 1.15rem;
   padding-left: 0.75rem;
-  border-left: 2px solid rgba(232,184,74,0.28);
+  border-left: 2px solid rgba(196,181,253,0.28);
   line-height: 1.55;
 }
 .vn {
@@ -489,7 +490,7 @@ a { color: var(--accent); }
   padding: 0.7rem 0.75rem;
 }
 .card:hover {
-  border-color: rgba(232,184,74,0.45);
+  border-color: rgba(196,181,253,0.45);
   background: var(--accent-dim);
 }
 .card-name {

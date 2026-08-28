@@ -244,7 +244,7 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css"
+    css = f"{asset_prefix}bible.css?v=lilac"
     canon = f"{asset_prefix}canon.js"
     js = f"{asset_prefix}bible.js"
     return f"""<!DOCTYPE html>
@@ -254,7 +254,7 @@ def page_shell(
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escape(title)}</title>
   <meta name="description" content="{escape(description)}">
-  <meta name="theme-color" content="#0f1419">
+  <meta name="theme-color" content="#121018">
   <link rel="stylesheet" href="{css}">
   <script defer src="{canon}"></script>
   <script defer src="{js}"></script>
