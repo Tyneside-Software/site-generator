@@ -11,6 +11,8 @@ Pages publish from separate `tyneside.<domain>` repos. The API is one Cloud Run 
 
 Marketing-only brands may skip the API package until they need secrets or server logic.
 
+Family nav/footer only includes sites with `nav_order` set (software, cleaning, technology, games, group). Other live doors (charity, logistics) and aspirational sketches are reached from **tyneside.group**. Sketches (`aspirational=True`) also appear on **tyneside.group/next.html**.
+
 ## Current brands
 
 | id | Domain | Site content | API package | Notes |
@@ -22,6 +24,12 @@ Marketing-only brands may skip the API package until they need secrets or server
 | `technology` | tyneside.technology | yes | optional later | Client Tide shop |
 | `games` | tyneside.games | yes | no | Static games |
 | `logistics` | logistics.tyneside.software | yes | yes (`logistics`) | App shell + docs + `/v1/logistics/*` |
+| `green` | tyneside.green | yes | no | Aspirational. Lifetime carbon via Greenacres + volunteers; Gift Aid via charity later. Not in family nav. Listed on `tyneside.group/next.html` |
+| `garden` | tyneside.garden | yes | no | Aspirational. Paid local gardening / outdoor maintenance. Not in family nav. Listed on `tyneside.group/next.html` |
+| `beer` | tyneside.beer | yes | no | Aspirational. Dropship Dynamite Valley; order here, +2% to charity. Not in family nav. Listed on `tyneside.group/next.html` |
+| `academy` | tyneside.academy | yes | no | Aspirational. Lewis early GCSEs + notes site; possible group tutoring. Not in family nav. Listed on `tyneside.group/next.html` |
+| `church` | tyneside.church | yes | no | Aspirational. Multi-faith conversation / maybe monthly meetup. Not in family nav. Listed on `tyneside.group/next.html` |
+| `store` | tyneside.store | yes | no | Aspirational. RST Wholesale (friend’s shop) click-through; +2% charity later. Not in family nav. Listed on `tyneside.group/next.html` |
 
 ## Logistics layout (reference pair)
 
@@ -40,7 +48,7 @@ Add people to a **team**, not as one-off collaborators on each repo.
 | Team | Who | Repos (write) |
 |------|-----|----------------|
 | [internal](https://github.com/orgs/Tyneside-Software/teams/internal) | Tyneside staff | `logistics.tyneside.software` + `tyneside-api` |
-| [lauren-outsource](https://github.com/orgs/Tyneside-Software/teams/lauren-outsource) | Lauren contractors | `lauren` only |
+| [lauren-outsource](https://github.com/orgs/Tyneside-Software/teams/lauren-outsource) | Lauren contractors (Indian firm, two days/week; practice project done, awaiting review then a private sandbox) | `lauren` only — never `site-generator` / tyneside.software |
 
 Logistics **source** still lives in `site-generator` (`sites/logistics/`). That repo is public; grant write there separately if an internal person ships the site, not only the Pages repo.
 

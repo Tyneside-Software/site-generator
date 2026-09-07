@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>3 John · tyneside.church</title>
+  <meta name="description" content="3 John in house modern English where we have it, Douay-Rheims (Challoner) everywhere else.">
+  <meta name="theme-color" content="#121018">
+  <link rel="icon" href="../../logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../bible.css">
+</head>
+<body class="book-page">
+  <a class="skip" href="#c-1">Skip to chapter 1</a>
+  <div class="book-wrap">
+    <p class="crumb">
+      <a href="../../index.html">tyneside.church</a>
+      · <a href="../index.html">bible</a>
+      · <a href="../index.html#library">library</a>
+      · 3 John
+    </p>
+    <header class="book-hero">
+      <div class="badge">New Testament</div>
+      <h1>3 John</h1>
+      <p class="lede">1 chapters · Douay-Rheims (Challoner revision) until we catch up</p>
+    </header>
+    <nav class="book-nav" aria-label="Nearby books">
+      <a href="../index.html#library">All books</a><a href="2-john.html">← 2 John</a><a href="jude.html">Jude →</a>
+    </nav>
+    <div class="chap-picker-wrap">
+      <p class="label">Chapters · lilac is house wording</p>
+      <nav class="chap-picker" aria-label="Chapters"><a href="#c-1">1</a></nav>
+    </div>
+    
+      <article class="chapter" id="c-1">
+        <header class="ch-head">
+          <span class="ribbon ribbon-dra">Douay-Rheims (Challoner)</span>
+          <h2>3 John 1</h2>
+          <p class="meta">14 verses · 317 words · Douay-Rheims, Challoner revision (public domain) — house wording not yet</p>
+        </header>
+        
+        <div class="body"><p class="run"><span class="vn first">1</span>The Ancient, to the dearly beloved Gaius, whom I love in truth. <span class="vn">2</span>Dearly beloved, concerning all things I make it my prayer that thou mayest proceed prosperously and fare well, as thy soul doth prosperously. <span class="vn">3</span>I was exceedingly glad when the brethren came and gave testimony to the truth in thee, even as thou walkest in the truth. <span class="vn">4</span>I have no greater grace than this, to hear that my children walk in truth. <span class="vn">5</span>Dearly beloved, thou dost faithfully whatever thou dost for the brethren: and that for strangers, <span class="vn">6</span>Who have given testimony to thy charity in the sight of the church. Whom thou shalt do well to bring forward on their way in a manner worthy of God: <span class="vn">7</span>Because, for his name they went out, taking nothing of the Gentiles. <span class="vn">8</span>We therefore ought to receive such: that we may be fellow helpers of the truth. <span class="vn">9</span>I had written perhaps to the church: but Diotrephes, who loveth to have the preeminence among them, doth not receive us. <span class="vn">10</span>For this cause, if I come, I will advertise his works which he doth; with malicious words prating against us. And as if these things were not enough for him, neither doth he himself receive the brethren, and them that do receive them he forbiddeth, and casteth out of the church. <span class="vn">11</span>Dearly beloved, follow not that which is evil: but that which is good. He that doth good is of God: he that doth evil hath not seen God. <span class="vn">12</span>To Demetrius, testimony is given by all, and by the truth itself: yea and we also give testimony. And thou knowest that our testimony is true. <span class="vn">13</span>I had many things to write unto thee: but I would not by ink and pen write to thee. <span class="vn">14</span>But I hope speedily to see thee: and we will speak mouth to mouth. Peace be to thee. Our friends salute thee. Salute the friends by name. </p></div>
+      </article>
+    <p class="foot">
+      <a href="../index.html#library">← All books</a>
+      · House English, or Douay-Rheims (Challoner) labelled on each chapter
+    </p>
+  </div>
+  <a class="top" href="#">Top</a>
+  <script>
+    function fmt(t) {
+      if (!isFinite(t)) return "0:00";
+      const m = Math.floor(t / 60);
+      const s = Math.floor(t % 60);
+      return m + ":" + String(s).padStart(2, "0");
+    }
+    let current = null;
+    document.querySelectorAll(".audio-bar").forEach((bar) => {
+      const btn = bar.querySelector(".btn-play");
+      const audio = bar.querySelector("audio");
+      const fill = bar.querySelector(".progress-fill");
+      const time = bar.querySelector(".time");
+      const pbar = bar.querySelector(".progress-bar");
+      if (!btn || !audio) return;
+      function stopBar(b) {
+        const a = b.querySelector("audio");
+        const bt = b.querySelector(".btn-play");
+        if (a) a.pause();
+        if (bt) { bt.classList.remove("playing"); bt.textContent = "Play"; }
+        b.classList.remove("playing");
+      }
+      btn.addEventListener("click", () => {
+        if (current && current !== audio) stopBar(current.closest(".audio-bar"));
+        if (audio.paused) {
+          audio.play();
+          btn.classList.add("playing");
+          btn.textContent = "Pause";
+          bar.classList.add("playing");
+          current = audio;
+        } else {
+          audio.pause();
+          btn.classList.remove("playing");
+          btn.textContent = "Play";
+          bar.classList.remove("playing");
+        }
+      });
+      audio.addEventListener("timeupdate", () => {
+        if (fill && audio.duration) fill.style.width = (100 * audio.currentTime / audio.duration) + "%";
+        if (time) time.textContent = fmt(audio.currentTime) + " / " + fmt(audio.duration);
+      });
+      if (pbar) {
+        pbar.addEventListener("click", (e) => {
+          const r = pbar.getBoundingClientRect();
+          audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+        });
+      }
+      audio.addEventListener("ended", () => {
+        btn.classList.remove("playing");
+        btn.textContent = "Play";
+        bar.classList.remove("playing");
+      });
+    });
+  </script>
+</body>
+</html>

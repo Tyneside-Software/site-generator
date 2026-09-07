@@ -1,0 +1,87 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">{{ page.kicker or "Sketchbook · not live yet" }}</p>
+      <h1>NOT<br>YET</h1>
+      <p class="hero-tag">
+        Real domains.<br>
+        Honest sketches.<br>
+        Doors that are not open for business.
+      </p>
+      <p class="hero-lead">
+        The six live doors on the homepage are things Michael is already doing.
+        This page is the <strong>sketchbook</strong> — brands that have a name, a domain,
+        and a page so they can be talked about, without pretending they are finished.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="#doors">See the sketches →</a>
+        <a class="btn btn-secondary btn-lg" href="{{ home_href }}">Back to live doors</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="doors">
+    <div class="wrap-wide">
+      <h2>Coming doors</h2>
+      <p class="lede">
+        Each card is a real site in the generator. None of these are operating businesses yet.
+        WhatsApp if you want to help shape one.
+      </p>
+
+      <div class="portal-grid">
+        {% for s in aspirational_sites %}
+          <a class="portal-card portal-{{ s.id }}" href="https://{{ s.domain }}/">
+            <div class="portal-card-main">
+              <p class="portal-kicker">Sketch · {{ s.domain }}</p>
+              <h3>{{ s.title }}</h3>
+              <p>{{ s.description }}</p>
+            </div>
+            <span class="portal-go">Open the sketch →</span>
+          </a>
+        {% else %}
+          <div class="panel">
+            <h3>Nothing on the sketchbook yet</h3>
+            <p>When a new door is ready to be named, it will land here first.</p>
+          </div>
+        {% endfor %}
+
+        <div class="portal-card portal-next-empty">
+          <div class="portal-card-main">
+            <p class="portal-kicker">Another sketch?</p>
+            <h3>Got a door in mind</h3>
+            <p>
+              This page is meant to grow. If a Tyneside door is worth a domain
+              but not yet a business, it belongs here — not on the live homepage.
+            </p>
+          </div>
+          <a class="portal-go" href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp an idea →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="why">
+    <div class="wrap">
+      <h2>Why this page exists</h2>
+      <div class="panel">
+        <p style="margin-bottom:1rem">
+          The live homepage should stay honest. Cleaning, charity, software, kit, games,
+          logistics — those are doors people can walk through now, even if the product
+          behind some of them is still being built.
+        </p>
+        <p style="margin:0">
+          Aspirational brands get a <strong>domain, a repo, and a sketch page</strong>
+          so the idea has a home, without crowding the front door.
+          When a sketch is ready to stand with the family, it moves onto the homepage
+          and into the nav on every site.
+        </p>
+      </div>
+      <div class="btn-row" style="margin-top:1.5rem">
+        <a class="btn btn-secondary" href="{{ home_href }}">Live doors →</a>
+        <a class="btn btn-fill" href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp Michael</a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

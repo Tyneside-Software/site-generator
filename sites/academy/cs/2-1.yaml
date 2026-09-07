@@ -1,0 +1,185 @@
+title: "2.1 Algorithms"
+hero_title: "Algorithms"
+kicker: "Paper 2 · J277/02 · unit 2.1"
+description: >-
+  Decomposition, abstraction, flowcharts, trace tables, linear/binary search,
+  bubble/insertion/merge sort. Practice and quiz — no required order.
+template: academy_cs_unit.html
+doc_id: "2-1"
+unit_id: "2.1"
+strip_leading_h1: true
+exercises:
+  - id: e1
+    topic: "2.1.1"
+    kind: paper
+    title: Name the thinking
+    task: |
+      Abstraction, decomposition, or algorithmic thinking?
+
+      1. Splitting “make a platformer” into map, player, enemies, HUD.
+      2. Treating enemies as rectangles when checking hits, ignoring their sprites.
+      3. Writing the step-by-step for “if hit and not invincible, lose a life”.
+    hint: Pieces vs ignoring detail vs the steps.
+    answer: |
+      1. Decomposition
+      2. Abstraction
+      3. Algorithmic thinking
+  - id: e2
+    topic: "2.1.2"
+    kind: paper
+    title: Trace table
+    task: |
+      Complete a trace for:
+
+      total = 0
+      for i = 1 to 4
+        total = total + i
+      next i
+
+      Columns: i, total. What is total at the end?
+    hint: i takes 1,2,3,4. Add each time.
+    answer: |
+      i=1 total=1
+      i=2 total=3
+      i=3 total=6
+      i=4 total=10
+
+      Final total = 10  (sum 1+2+3+4)
+  - id: e3
+    topic: "2.1.2"
+    kind: paper
+    title: Find the logic error
+    task: |
+      Password must be at least 8 characters.
+
+      if len(password) > 8 then
+        print("OK")
+      else
+        print("Too short")
+      endif
+
+      What is wrong? Write a corrected condition.
+    hint: Off-by-one. “At least 8” includes 8.
+    answer: |
+      `>` rejects length 8, which should pass.
+
+      Use `>= 8` or `> 7`.
+  - id: e4
+    topic: "2.1.3"
+    kind: paper
+    title: Binary search dry-run
+    task: |
+      Sorted list: 2, 5, 8, 11, 14, 17, 20
+      Search for 14.
+
+      Write the middle item at each step and which half you keep, until found.
+    hint: Seven items, middle index 3 (0-based) is 11, or 1-based mid 4 is 14 depending on how you pick mid — be consistent. Using items 1–7, mid = 4th = 11.
+    answer: |
+      Mid = 11. 14 > 11, keep right: 14, 17, 20
+      Mid = 17. 14 < 17, keep left: 14
+      Found 14.
+
+      (If your mid on the full list is 14 immediately, say so — different mid conventions exist. The skill is discarding half each time.)
+  - id: e5
+    topic: "2.1.3"
+    kind: paper
+    title: One bubble pass
+    task: |
+      One left-to-right pass of bubble sort on: 4, 1, 3, 2
+      Write the list after each neighbour comparison/swap.
+    hint: Compare 4 and 1, swap; then the new neighbours, and so on.
+    answer: |
+      4>1 swap → 1, 4, 3, 2
+      4>3 swap → 1, 3, 4, 2
+      4>2 swap → 1, 3, 2, 4
+
+      End of pass: 4 is in place.
+  - id: e6
+    topic: "2.1.3"
+    kind: think
+    title: Which search?
+    task: |
+      1. Phone book already in name order, 10,000 entries, find “Thomson”.
+      2. A bag of shuffled score chits, find whether 87 is in there.
+      Which search, and why?
+    hint: Binary needs sorted. Linear always works.
+    answer: |
+      1. Binary — sorted, large n
+      2. Linear — unsorted; sorting first might be more work than one scan
+quiz:
+  - id: q1
+    topic: "2.1.1"
+    type: single
+    prompt: Abstraction is…
+    options:
+      - Breaking a problem into sub-problems
+      - Removing unnecessary detail to focus on what matters
+      - Always using Python
+      - A type of malware
+    correct: Removing unnecessary detail to focus on what matters
+    explain: Decomposition is the splitting. Abstraction is the hiding of detail.
+  - id: q2
+    topic: "2.1.2"
+    type: single
+    prompt: In a flowchart, a diamond represents…
+    options:
+      - Start or stop
+      - A decision
+      - A file on disk
+      - A MAC address
+    correct: A decision
+    explain: Oval start/stop, parallelogram I/O, rectangle process, diamond decision.
+  - id: q3
+    topic: "2.1.2"
+    type: single
+    prompt: A program runs but prints the wrong total. This is best described as a…
+    options:
+      - Syntax error
+      - Logic error
+      - Topology error
+      - Successful compile with no issues
+    correct: Logic error
+    explain: Syntax would not run. Logic runs and is wrong. That is the trap.
+  - id: q4
+    topic: "2.1.3"
+    type: single
+    prompt: Binary search requires the data to be…
+    options:
+      - Unsorted
+      - Sorted
+      - Compressed
+      - Stored in ROM
+    correct: Sorted
+    explain: The algorithm throws away a half using order. Unsorted → use linear (or sort first).
+  - id: q5
+    topic: "2.1.3"
+    type: single
+    prompt: In bubble sort, after the first full pass of a list, which statement is true?
+    options:
+      - The whole list is always fully sorted
+      - The largest item (for ascending) is in its final position
+      - No further passes are ever needed
+      - The list becomes hex
+    correct: The largest item (for ascending) is in its final position
+    explain: Each pass “bubbles” the next extreme to the end. You still need more passes for the rest.
+  - id: q6
+    topic: "2.1.3"
+    type: multi
+    prompt: Which algorithms are divide-and-conquer sorts in this spec? (Select all that apply)
+    options:
+      - Merge sort
+      - Bubble sort
+      - Linear search
+      - Insertion sort
+    correct:
+      - Merge sort
+    explain: Merge sort splits then merges. Bubble and insertion are simple comparison sorts; linear search is not a sort.
+  - id: q7
+    topic: "2.1.3"
+    type: truefalse
+    prompt: Linear search can be used on an unsorted list.
+    options:
+      - True
+      - False
+    correct: "True"
+    explain: It simply checks each item. That is why it is the fallback when you cannot binary-search.

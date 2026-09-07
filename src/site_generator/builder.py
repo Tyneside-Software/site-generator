@@ -104,6 +104,72 @@ def _load_games_catalog(content_dir: Path) -> list[dict]:
     return data
 
 
+def _load_cs_syllabus(content_dir: Path) -> dict:
+    """Optional cs.yaml course map for the academy Computer Science page."""
+    path = content_dir / "cs.yaml"
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected mapping in {path}")
+    return data
+
+
+def _cs_nav(cs: dict) -> list[dict]:
+    """Flat list of lesson pages — always linked, never gated."""
+    items: list[dict] = []
+    for paper in cs.get("papers") or []:
+        for unit in paper.get("units") or []:
+            uid = str(unit.get("id") or "")
+            slug = str(unit.get("slug") or uid.replace(".", "-"))
+            items.append(
+                {
+                    "id": uid,
+                    "slug": slug,
+                    "title": unit.get("title") or slug,
+                    "blurb": unit.get("blurb") or "",
+                    "kind": "unit",
+                    "group": paper.get("code") or "",
+                }
+            )
+    for extra_key, kind, group in (
+        ("programming", "programming", "Practice"),
+        ("exams", "exams", "Exam"),
+        ("mocks", "mock", "Mock"),
+    ):
+        extra = cs.get(extra_key) or {}
+        if not extra:
+            continue
+        eid = str(extra.get("id") or extra_key)
+        slug = str(extra.get("slug") or eid.replace(".", "-"))
+        items.append(
+            {
+                "id": eid,
+                "slug": slug,
+                "title": extra.get("title") or slug,
+                "blurb": extra.get("blurb") or "",
+                "kind": kind,
+                "group": group,
+            }
+        )
+        for paper in extra.get("papers") or []:
+            pid = str(paper.get("id") or paper.get("slug") or "")
+            if not pid:
+                continue
+            pslug = str(paper.get("slug") or pid.replace(".", "-"))
+            items.append(
+                {
+                    "id": pid,
+                    "slug": pslug,
+                    "title": paper.get("title") or pslug,
+                    "blurb": paper.get("blurb") or "",
+                    "kind": "mock-paper",
+                    "group": "Mock",
+                }
+            )
+    return items
+
+
 def _load_store_catalog(content_dir: Path) -> dict:
     """Optional RST-synced catalogue for the store site."""
     path = content_dir / "catalog" / "index.json"
@@ -203,6 +269,7 @@ def _site_context(
 ) -> dict:
     content_dir = SITES_DIR / site.id
     root = _root_prefix(depth)
+    cs = _load_cs_syllabus(content_dir)
     return {
         "site": site,
         "page": {
@@ -212,9 +279,18 @@ def _site_context(
             "body_class": meta.get("body_class", ""),
         },
         "sites": SITES,
+        "nav_sites": tuple(
+            sorted(
+                (s for s in SITES if s.nav_order is not None),
+                key=lambda s: s.nav_order or 0,
+            )
+        ),
+        "aspirational_sites": [s for s in SITES if s.aspirational],
         "games": _load_games_catalog(content_dir),
         "store": _load_store_catalog(content_dir),
         "tracker": _load_charity_tracker(content_dir),
+        "cs": cs,
+        "cs_nav": _cs_nav(cs),
         # Relative path to site root for local file:// and nested pages
         "root": root,
         "home_href": f"{root}index.html" if root else "index.html",
@@ -285,6 +361,13 @@ def build_site(site: Site) -> Path:
             "kicker": page_meta.get("kicker", ""),
             "doc_id": doc_id,
             "docs_hub": bool(page_meta.get("docs_hub")),
+            "exercises": page_meta.get("exercises") or [],
+            "quiz": page_meta.get("quiz") or [],
+            "unit_id": page_meta.get("unit_id") or "",
+            "open_note": page_meta.get("open_note") or "",
+            "minutes": page_meta.get("minutes") or 0,
+            "paper_code": page_meta.get("paper_code") or "",
+            "marks": page_meta.get("marks") or len(page_meta.get("quiz") or []),
         }
         page_context["doc_id"] = doc_id
         # Optional Grok starter prompt (software build page)

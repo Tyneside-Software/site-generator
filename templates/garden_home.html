@@ -1,0 +1,158 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">Open sketch · very doable · not a public booking yet</p>
+      <h1>TYNESIDE<br>GARDEN</h1>
+      <p class="hero-tag">
+        Lawns, beds, hedges.<br>
+        The outside of the house.<br>
+        Someone already does this kind of work.
+      </p>
+      <p class="hero-lead">
+        This is the <strong>paid gardening</strong> door — not
+        <a href="https://tyneside.green/">tyneside.green</a>
+        (that one is carbon, Greenacres, and volunteers).
+        Michael already has a person who does <strong>house maintenance</strong>.
+        That person could take on gardens. So this is not a fantasy crew.
+        It is a service that could start small and stay honest.
+      </p>
+      <div class="panel" style="margin:1.25rem 0 0;text-align:left">
+        <h3 style="margin-top:0">Honest status</h3>
+        <p style="margin:0">
+          An idea with a domain and a person in mind.
+          No public price list. No online booking. No promise of a start date
+          on this page. WhatsApp if a garden needs looking after —
+          we will say yes or not yet, plainly.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="{{ site.whatsapp }}" rel="noopener" target="_blank">{{ site.cta_label }} →</a>
+        <a class="btn btn-secondary btn-lg" href="#what">What it would be</a>
+        <a class="btn btn-secondary btn-lg" href="https://tyneside.green/">The other green door</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="what">
+    <div class="wrap">
+      <h2>What this would be</h2>
+      <p class="lede">
+        Indoor volume work already lives at
+        <a href="https://tyneside.cleaning/">tyneside.cleaning</a>.
+        Garden is the outdoor counterpart: looking after the bit of Tyneside
+        that is soil, hedge, and lawn — starting with people we can actually reach.
+      </p>
+      <div class="stat-row">
+        <div class="stat">
+          <span class="value">One</span>
+          <span class="label">Person already doing maintenance</span>
+        </div>
+        <div class="stat">
+          <span class="value">Paid</span>
+          <span class="label">Not volunteer planting</span>
+        </div>
+        <div class="stat">
+          <span class="value">Local</span>
+          <span class="label">Howden first, then as far as it works</span>
+        </div>
+      </div>
+      <div class="grid-3" style="margin-top:1.25rem">
+        <div class="panel panel-c">
+          <h3>Gardens, not climate units</h3>
+          <p>
+            Mowing, beds, hedges, weeding, the path, the outside that gets ignored.
+            Ordinary work that makes a house liveable.
+            If you want lifetime carbon and Greenacres, that is
+            <a href="https://tyneside.green/">tyneside.green</a>.
+          </p>
+        </div>
+        <div class="panel panel-m">
+          <h3>Start from work that exists</h3>
+          <p>
+            The first version is not a recruitment drive.
+            Someone already looks after Michael's house.
+            Asking that person whether gardens are in scope is the practical next step —
+            then a handful of nearby jobs, not a national brand.
+          </p>
+        </div>
+        <div class="panel">
+          <h3>Same honesty as cleaning</h3>
+          <p>
+            Pay the person who does the work. Don’t invent a platform first.
+            If booking software helps later, it can sit beside
+            <a href="https://tyneside.cleaning/book.html">cleaning WhatsApp booking</a>.
+            None of that is built for garden yet.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="not-this">
+    <div class="wrap">
+      <h2>What this is not (yet)</h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Not a shop window of prices</h3>
+          <p>
+            There is no £X per hour on this page because we have not set one
+            in public. A quote would be a conversation, not a catalogue.
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <h3>Not landscape architecture</h3>
+          <p>
+            The sketch is maintenance and keeping places decent —
+            the outdoor cousin of a 2-hour clean — not show gardens or design-and-build.
+            That can change if the work does. Today it has not.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="family">
+    <div class="wrap">
+      <h2>Two outdoor doors, on purpose</h2>
+      <p class="lede">
+        Easy to mix up. They are not the same project.
+      </p>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>tyneside.garden — this page</h3>
+          <p>
+            Paid hours. Lawns and maintenance. A person who already does
+            house work. A service you might book.
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <h3>tyneside.green — the other sketch</h3>
+          <p>
+            Lifetime carbon, Greenacres in Northumberland, volunteers if we can,
+            Gift Aid later via charity. A project you might fund or join, not a gardener.
+          </p>
+          <p style="margin-top:0.85rem;margin-bottom:0">
+            <a href="https://tyneside.green/">Open tyneside.green →</a>
+          </p>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:1.5rem">
+        <a class="btn btn-secondary" href="https://tyneside.group/next.html">All sketches →</a>
+        <a class="btn btn-secondary" href="https://tyneside.cleaning/">Cleaning (live)</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>A garden that needs looking after?</h2>
+      <p class="lede">
+        WhatsApp. This page is a sketch, but the work is ordinary and close.
+        If it is not a fit yet, we will say so.
+      </p>
+      {% include "includes/contact_block.html" %}
+    </div>
+  </section>
+{% endblock %}

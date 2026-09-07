@@ -1,0 +1,244 @@
+title: "Practical programming"
+hero_title: "Practical programming"
+kicker: "Course strand · Python · ERL · Section B"
+description: >-
+  Exam-shaped Python, OCR reference language, trace tables, and Section B
+  tactics. Katas and a quiz — nothing locked, no required order.
+template: academy_cs_unit.html
+doc_id: "programming"
+unit_id: programming
+strip_leading_h1: true
+exercises:
+  - id: e1
+    topic: py-core
+    kind: python
+    title: Guess the number
+    task: |
+      Computer picks a random integer 1–20. User guesses until correct.
+      After each guess print "low", "high", or "got it" and the number of tries.
+    hint: random.randint, while, a counter.
+    answer: |
+      import random
+      secret = random.randint(1, 20)
+      tries = 0
+      guess = 0
+      while guess != secret:
+          guess = int(input("Guess 1-20: "))
+          tries = tries + 1
+          if guess < secret:
+              print("low")
+          elif guess > secret:
+              print("high")
+          else:
+              print("got it in", tries)
+  - id: e2
+    topic: py-extra
+    kind: python
+    title: High-score file
+    task: |
+      File scores.txt, one integer per line. Print how many scores, the
+      highest, and the mean. If the file is missing, print a message and
+      stop cleanly.
+    hint: try/except FileNotFoundError. Strip empty lines.
+    answer: |
+      try:
+          f = open("scores.txt", "r")
+      except FileNotFoundError:
+          print("No scores.txt")
+      else:
+          nums = []
+          for line in f:
+              line = line.strip()
+              if line != "":
+                  nums.append(int(line))
+          f.close()
+          if len(nums) == 0:
+              print("Empty file")
+          else:
+              best = nums[0]
+              total = 0
+              for n in nums:
+                  total = total + n
+                  if n > best:
+                      best = n
+              print(len(nums), best, total / len(nums))
+  - id: e3
+    topic: py-extra
+    kind: python
+    title: 2D battleship peek
+    task: |
+      5×5 grid of "~". Place two "S" ships at coordinates you choose in code.
+      Ask the user for a row and col (0–4). Print HIT or MISS. Do not sink
+      logic unless you want to — this is targeting practice.
+    hint: Nested lists. Validate range (that's 2.3 leaking in — good).
+    answer: |
+      grid = [["~"] * 5 for _ in range(5)]
+      grid[1][2] = "S"
+      grid[4][4] = "S"
+      row = int(input("row 0-4: "))
+      col = int(input("col 0-4: "))
+      if row < 0 or row > 4 or col < 0 or col > 4:
+          print("off the map")
+      elif grid[row][col] == "S":
+          print("HIT")
+      else:
+          print("MISS")
+  - id: e4
+    topic: erl
+    kind: paper
+    title: Translate both ways
+    task: |
+      1. Rewrite this Python in ERL:
+
+      total = 0
+      for n in range(1, 6):
+          total = total + n
+      print(total)
+
+      2. Rewrite this ERL in Python:
+
+      if x MOD 2 == 0 then
+        print("even")
+      else
+        print("odd")
+      endif
+    hint: for n = 1 to 5 / next n. % instead of MOD.
+    answer: |
+      1.
+      total = 0
+      for n = 1 to 5
+        total = total + n
+      next n
+      print(total)
+
+      2.
+      if x % 2 == 0:
+          print("even")
+      else:
+          print("odd")
+  - id: e5
+    topic: trace
+    kind: paper
+    title: Trace this
+    task: |
+      x = 5
+      y = 1
+      while x > 0
+        y = y * x
+        x = x - 1
+      endwhile
+      print(y)
+
+      Table: x, y, (x>0). What prints?
+    hint: Factorial of 5.
+    answer: |
+      Start x=5 y=1, condition true
+      y=5, x=4
+      y=20, x=3
+      y=60, x=2
+      y=120, x=1
+      y=120, x=0, condition false
+      Prints 120
+  - id: e6
+    topic: section-b
+    kind: paper
+    title: Mini Section B
+    task: |
+      A club stores member ages in an array ages[] of 6 integers.
+
+      Write (Python or ERL):
+
+      1. Count how many are 18 or over.
+      2. A function is_adult(n) that returns true if n >= 18.
+      3. One validation: reject an age of -1 when inputting a replacement
+         for ages[0].
+    hint: Count with a for. Function returns Boolean. Loop until valid.
+    answer: |
+      count = 0
+      for i = 0 to 5
+        if ages[i] >= 18 then
+          count = count + 1
+        endif
+      next i
+
+      function is_adult(n)
+        if n >= 18 then
+          return true
+        else
+          return false
+        endif
+      endfunction
+
+      ages[0] = int(input("age"))
+      while ages[0] < 0
+        ages[0] = int(input("age"))
+      endwhile
+quiz:
+  - id: q1
+    topic: py-core
+    type: single
+    prompt: range(1, 6) in Python produces which integers?
+    options:
+      - 1,2,3,4,5,6
+      - 1,2,3,4,5
+      - 0,1,2,3,4,5
+      - 6 only
+    correct: 1,2,3,4,5
+    explain: Stop value is exclusive. ERL for i = 1 to 5 includes 5.
+  - id: q2
+    topic: erl
+    type: single
+    prompt: In OCR ERL, remainder after division is written…
+    options:
+      - Always written as % with no other word
+      - MOD
+      - AND
+      - DIV
+    correct: MOD
+    explain: MOD is remainder. DIV is integer division. Python uses % and //.
+  - id: q3
+    topic: trace
+    type: single
+    prompt: In a while-loop trace table you should also record…
+    options:
+      - Only the first value of each variable
+      - The condition becoming false that stops the loop
+      - The MAC address of the PC
+      - Nothing after the first iteration
+    correct: The condition becoming false that stops the loop
+    explain: Markers look for the last failing check. Skipping it loses the exit row.
+  - id: q4
+    topic: section-b
+    type: multi
+    prompt: Sensible first steps on a Section B scenario include… (Select all that apply)
+    options:
+      - Underline inputs, processes, outputs
+      - Use the array names the paper gives you
+      - Ignore validation because it is optional flavour
+      - Trace your answer with their sample data
+    correct:
+      - Underline inputs, processes, outputs
+      - Use the array names the paper gives you
+      - Trace your answer with their sample data
+    explain: Validation is often explicit marks. Inventing a different data structure fights the question.
+  - id: q5
+    topic: py-extra
+    type: truefalse
+    prompt: board[0][0] is the bottom-right cell of a 5×5 grid stored as row-major lists.
+    options:
+      - True
+      - False
+    correct: "False"
+    explain: >-
+      Index 0,0 is top-left (first row, first column) with the usual numbering.
+  - id: q6
+    topic: py-core
+    type: single
+    prompt: A while loop is the better construct when…
+    options:
+      - You know you need exactly 10 repeats
+      - You must repeat until a condition changes (you may not know how many times)
+      - You are drawing an AND gate
+      - You are choosing secondary storage
+    correct: You must repeat until a condition changes (you may not know how many times)
+    explain: Unknown repeats → while. Known count → for.

@@ -24,6 +24,10 @@ class Site:
     description: str
     email: str
     cta_label: str
+    # When True: listed on tyneside.group/next.html (sketchbook), not a live door.
+    aspirational: bool = False
+    # Family nav/footer order. None = not in the top bar; reach it from tyneside.group.
+    nav_order: int | None = None
 
     @property
     def content_dir(self) -> Path:
@@ -40,6 +44,10 @@ class Site:
     @property
     def phone_display(self) -> str:
         return PHONE_DISPLAY
+
+    @property
+    def phone_e164(self) -> str:
+        return PHONE_E164
 
     @property
     def whatsapp(self) -> str:
@@ -60,6 +68,7 @@ SITES: tuple[Site, ...] = (
         ),
         email=CONTACT_EMAIL,
         cta_label="WhatsApp Michael",
+        nav_order=1,
     ),
     Site(
         id="cleaning",
@@ -74,6 +83,7 @@ SITES: tuple[Site, ...] = (
         ),
         email=CONTACT_EMAIL,
         cta_label="Book a clean",
+        nav_order=2,
     ),
     Site(
         id="charity",
@@ -102,6 +112,7 @@ SITES: tuple[Site, ...] = (
         ),
         email=CONTACT_EMAIL,
         cta_label="WhatsApp Michael",
+        nav_order=5,
     ),
     Site(
         id="technology",
@@ -116,6 +127,7 @@ SITES: tuple[Site, ...] = (
         ),
         email=CONTACT_EMAIL,
         cta_label="Shop · £250",
+        nav_order=3,
     ),
     Site(
         id="games",
@@ -130,6 +142,7 @@ SITES: tuple[Site, ...] = (
         ),
         email=CONTACT_EMAIL,
         cta_label="WhatsApp",
+        nav_order=4,
     ),
     Site(
         id="logistics",
@@ -144,6 +157,102 @@ SITES: tuple[Site, ...] = (
         ),
         email=CONTACT_EMAIL,
         cta_label="Open app",
+    ),
+    Site(
+        id="green",
+        domain="tyneside.green",
+        repo="tyneside.green",
+        title="Tyneside Green",
+        brand_word="GREEN",
+        tagline="A lifetime of CO₂, in reach. Pay Greenacres. Volunteers go further.",
+        description=(
+            "A lifetime of personal CO₂ looking like ~£25k. "
+            "Easy: pay Greenacres in Northumberland. Further: volunteer planting. "
+            "Stretch: tyneside.charity + Gift Aid once registered. Not started."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp the sketch",
+        aspirational=True,
+    ),
+    Site(
+        id="garden",
+        domain="tyneside.garden",
+        repo="tyneside.garden",
+        title="Tyneside Garden",
+        brand_word="GARDEN",
+        tagline="Lawns, beds, and the outside of the house. Someone already does this work.",
+        description=(
+            "Paid local gardening and outdoor house maintenance. "
+            "A person who already looks after Michael's house could take on gardens. "
+            "Different from tyneside.green (carbon / Greenacres). Not a public booking yet."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp the sketch",
+        aspirational=True,
+    ),
+    Site(
+        id="beer",
+        domain="tyneside.beer",
+        repo="tyneside.beer",
+        title="Tyneside Beer",
+        brand_word="BEER",
+        tagline="Order here. Dynamite Valley ships it. 2% to charity. Sketch, not a till.",
+        description=(
+            "Joke domain, real brewery friend (Dynamite Valley, Cornwall). "
+            "Dropship: order through tyneside.beer, they fulfil. "
+            "+2% to tyneside.charity — same idea as the store. No shop yet."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp the sketch",
+        aspirational=True,
+    ),
+    Site(
+        id="academy",
+        domain="tyneside.academy",
+        repo="tyneside.academy",
+        title="Tyneside Academy",
+        brand_word="ACADEMY",
+        tagline="Lewis is sitting GCSEs early. Dad is tutoring. The notes could become a door.",
+        description=(
+            "Michael is tutoring his son Lewis for early GCSEs. "
+            "Lewis is building a site of everything he has learned. "
+            "Possible next: publish that, and/or tutor other children (maybe as a group). Sketch only."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="Open the course",
+        aspirational=True,
+    ),
+    Site(
+        id="church",
+        domain="tyneside.church",
+        repo="tyneside.church",
+        title="Tyneside Church",
+        brand_word="CHURCH",
+        tagline="Bought on a whim. Multi-faith conversation for learning — maybe a monthly meetup.",
+        description=(
+            "Domain bought on a whim. Michael has been talking with local church people "
+            "and friends from other religions, for his own education. "
+            "Maybe a monthly multi-faith meetup. Not a congregation. Sketch only."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp the sketch",
+        aspirational=True,
+    ),
+    Site(
+        id="store",
+        domain="tyneside.store",
+        repo="tyneside.store",
+        title="Tyneside Store",
+        brand_word="STORE",
+        tagline="A friend's wholesale shop (RST). Browse here, buy there. Sketch, not our till.",
+        description=(
+            "White-label idea over RST Wholesale — a friend's shop. "
+            "Catalogue links through to rst-wholesale.com. "
+            "Later stretch: +2% to tyneside.charity. Not our checkout yet."
+        ),
+        email=CONTACT_EMAIL,
+        cta_label="WhatsApp the sketch",
+        aspirational=True,
     ),
 )
 

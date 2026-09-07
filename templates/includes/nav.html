@@ -5,13 +5,20 @@
       <span class="brand-word">TYNESIDE</span>
       <span class="brand-sub">{{ site.brand_word }}</span>
     </a>
-    {# Always list every brand in fixed order so the nav chrome matches site-to-site #}
+    {# Academy: course nav. Everyone else: live family doors. #}
+    {% set adoc = page.get("doc_id", "") if page is mapping else "" %}
     <div class="nav-links">
-      {% for s in sites %}
-        <a href="https://{{ s.domain }}/"
-           class="{% if s.id == site.id %}is-current{% endif %}"
-           {% if s.id == site.id %}aria-current="page"{% endif %}>{{ s.brand_word }}</a>
-      {% endfor %}
+      {% if site.id == "academy" %}
+        <a href="{{ home_href }}" class="{% if not adoc %}is-current{% endif %}"{% if not adoc %} aria-current="page"{% endif %}>Home</a>
+        <a href="{{ root }}computer-science.html" class="{% if adoc and not adoc.startswith('mock') %}is-current{% endif %}"{% if adoc and not adoc.startswith('mock') %} aria-current="page"{% endif %}>Course</a>
+        <a href="{{ root }}cs/mock.html" class="{% if adoc.startswith('mock') %}is-current{% endif %}"{% if adoc.startswith('mock') %} aria-current="page"{% endif %}>Mocks</a>
+      {% else %}
+        {% for s in nav_sites %}
+          <a href="https://{{ s.domain }}/"
+             class="{% if s.id == site.id %}is-current{% endif %}"
+             {% if s.id == site.id %}aria-current="page"{% endif %}>{{ s.brand_word }}</a>
+        {% endfor %}
+      {% endif %}
     </div>
     <div class="nav-cta">
       {% if site.id == "cleaning" %}
@@ -20,6 +27,8 @@
         <a class="btn btn-fill btn-shop" href="{{ root }}thinkpad-t14s.html">{{ site.cta_label }}</a>
       {% elif site.id == "logistics" %}
         <a class="btn btn-fill" href="{{ root }}app/">{{ site.cta_label }}</a>
+      {% elif site.id == "academy" %}
+        <a class="btn btn-fill" href="{{ root }}computer-science.html">Open the course</a>
       {% else %}
         <a class="btn btn-fill" href="{{ site.whatsapp }}" rel="noopener" target="_blank">{{ site.cta_label }}</a>
       {% endif %}

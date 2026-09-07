@@ -1,0 +1,8 @@
+# Psalm 23
+# Modern English rendering of the Douay-Rheims
+1 A psalm for David. The Lord rules me, and I shall want nothing.
+2 He has set me in a place of pasture. He has brought me up on the water of refreshment.
+3 He has converted my soul. He has led me on the paths of justice, for his own name's sake.
+4 For though I should walk in the midst of the shadow of death, I will fear no evils, for you are with me. Your rod and your staff, they have comforted me.
+5 You have prepared a table before me against those who afflict me. You have anointed my head with oil; and my chalice which inebriates me, how goodly is it!
+6 And your mercy will follow me all the days of my life. And I may dwell in the house of the Lord unto length of days.

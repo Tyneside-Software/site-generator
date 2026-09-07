@@ -1,0 +1,214 @@
+{% extends "brand_base.html" %}
+
+{% set papers = cs.papers if cs and cs.papers is defined else [] %}
+{% set mocks = cs.mocks if cs and cs.mocks is defined else {} %}
+
+{% block body %}
+  <header class="hero">
+    <div class="wrap">
+      <p class="hero-kicker">Open sketch · GCSEs early · not taking other pupils yet</p>
+      <h1>TYNESIDE<br>ACADEMY</h1>
+      <p class="hero-tag">
+        Lewis wants the exams early.<br>
+        Dad is tutoring.<br>
+        The notes are becoming a website.
+      </p>
+      <p class="hero-lead">
+        A family project with a real door. Michael is tutoring his son
+        <strong>Lewis</strong> (13) through <strong>GCSEs, early</strong>.
+        First subject: <strong>Computer Science</strong> — OCR J277, every unit
+        an open lesson. Two possible next steps, both still ideas: publish
+        Lewis’s notes, and/or tutor other children — maybe as a group.
+      </p>
+      <ul class="academy-status" aria-label="Honest status">
+        <li><span>Tutoring</span><strong>Lewis · happening</strong></li>
+        <li><span>First subject</span><strong>OCR J277 · all open</strong></li>
+        <li><span>Other pupils</span><strong>None · no fees</strong></li>
+        <li><span>This is not</span><strong>A registered school</strong></li>
+      </ul>
+      <div class="hero-actions">
+        <a class="btn btn-fill btn-lg" href="computer-science.html">Computer Science course →</a>
+        <a class="btn btn-secondary btn-lg" href="cs/mock.html">Mock exams</a>
+        <a class="btn btn-secondary btn-lg" href="https://tyneside.games/">Lewis’s games shelf</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="cs">
+    <div class="wrap">
+      <p class="pixel-label" style="text-align:left">The work on the table</p>
+      <h2>First subject: Computer Science</h2>
+      <p class="lede">
+        Lewis wants this exam first. The syllabus is a course home — Paper 1,
+        Paper 2, programming practice, every spec point — so he can see the
+        whole map and jump to the bit he is on.
+      </p>
+      <div class="academy-spot">
+        <div class="academy-spot-main">
+          <p class="pixel-label" style="text-align:left;margin:0 0 0.45rem">OCR J277 · course home</p>
+          <h3>Navigate the spec from one page</h3>
+          <p>
+            Two written papers, no coursework, no calculator.
+            {% if cs.stats %}{{ cs.stats.units }} units, {{ cs.stats.topics }} official topic codes,{% else %}11 units, 26 spec points,{% endif %} plus the Python / Exam Reference Language work Paper 2 will actually mark.
+            Each card opens a full lesson. Skip around; nothing is locked.
+          </p>
+          <div class="academy-spot-meta">
+            <span class="academy-chip">{{ cs.board or "Cambridge OCR" }}</span>
+            <span class="academy-chip">{{ cs.spec or "J277" }}</span>
+            <span class="academy-chip">{{ cs.stats.papers if cs.stats else 2 }} papers</span>
+            <span class="academy-chip">{{ cs.stats.units if cs.stats else 11 }} units</span>
+            <span class="academy-chip">Mocks auto-mark</span>
+          </div>
+          <div class="btn-row" style="margin-top:1.2rem">
+            <a class="btn btn-fill" href="computer-science.html">Open the Computer Science course →</a>
+            <a class="btn btn-secondary" href="cs/mock.html">Sit a mock</a>
+          </div>
+        </div>
+        <div class="academy-spot-grid">
+          {% for paper in papers %}
+          <a class="academy-spot-card" href="computer-science.html#{{ paper.id }}">
+            <p class="pixel-label" style="text-align:left;margin:0 0 0.25rem">{{ paper.code }} · {{ paper.weight }}</p>
+            <h3>{{ paper.title }}</h3>
+            <p>{{ paper.blurb }}</p>
+          </a>
+          {% endfor %}
+          <a class="academy-spot-card" href="cs/programming.html">
+            <p class="pixel-label" style="text-align:left;margin:0 0 0.25rem">Required practice</p>
+            <h3>Programming</h3>
+            <p>Python, Exam Reference Language, and the Section B skills Paper 2 actually marks.</p>
+          </a>
+          <a class="academy-spot-card" href="cs/mock.html">
+            <p class="pixel-label" style="text-align:left;margin:0 0 0.25rem">Optional · auto-marked</p>
+            <h3>Mock exams</h3>
+            <p>{% if mocks.blurb %}{{ mocks.blurb }}{% else %}Sit a paper, submit, get a score. A mark never locks the next lesson.{% endif %}</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="now">
+    <div class="wrap">
+      <h2>What is already true</h2>
+      <p class="lede">
+        We do not need a new company to start. The work is the kitchen table,
+        the spec papers, and a lad who wants to sit the exams before the usual year.
+      </p>
+      <div class="stat-row">
+        <div class="stat">
+          <span class="value">Lewis</span>
+          <span class="label">13 · GCSEs early</span>
+        </div>
+        <div class="stat">
+          <span class="value">Dad</span>
+          <span class="label">Tutoring, one-to-one</span>
+        </div>
+        <div class="stat">
+          <span class="value">Site</span>
+          <span class="label">His notes, as he goes</span>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:0.4rem">
+        <p style="margin:0">
+          If you have seen
+          <a href="https://tyneside.games/">tyneside.games</a>:
+          that shelf was Lewis at 12, one night, from a standing start.
+          Academy is slower and more serious — exam content, not arcade —
+          but it is the same person building a thing that holds what he knows.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="two-paths">
+    <div class="wrap">
+      <h2>Two things we could do with this</h2>
+      <p class="lede">
+        Either, both, or neither. Written down so the idea doesn’t live only in chat.
+      </p>
+      <div class="academy-paths">
+        <article class="academy-path">
+          <span class="n">A · The notes</span>
+          <h3>Do something with Lewis’s site</h3>
+          <p>
+            He is already writing down what he learns so it isn’t trapped in a folder.
+            That could stay private. Or it could become a public, living revision site —
+            a Tyneside-shaped set of notes other early-takers (and ordinary-year pupils)
+            could actually use. His voice, his gaps, his worked examples.
+            Not a content farm. A trail of one person going through the spec.
+          </p>
+          <p>Nothing from that site is on this page yet. When he is ready to show it, it can live here.</p>
+        </article>
+        <article class="academy-path">
+          <span class="n">B · Other kids</span>
+          <h3>Tutor more people, maybe as a group</h3>
+          <p>
+            If the method works for Lewis, it might work for others —
+            paid sessions, perhaps a small group rather than only one-to-one.
+            Same honesty as cleaning: start with work we can actually do,
+            Howden / Tyneside first, no pretend campus.
+          </p>
+          <p>
+            No price list. No subjects advertised. No DBS claim on this page
+            because we are not taking bookings. If a parent WhatsApps, we will say
+            where we actually are — likely “not yet”.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="not-this">
+    <div class="wrap">
+      <h2>What this is not</h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Not the school proposal</h3>
+          <p>
+            One day a month in the real company, with Mr Merrit and the school team,
+            lives at
+            <a href="https://tyneside.software/school.html">tyneside.software/school.html</a>.
+            That is about Lewis <em>at work</em>. Academy is about exams and notes.
+            Related son. Different door.
+          </p>
+        </div>
+        <div class="panel panel-c">
+          <h3>Not a school</h3>
+          <p>
+            No classrooms, no Ofsted, no “academy chain”. The word on the domain
+            is the ambition, not a status. Safeguarding, qualifications to teach,
+            and whether group tuition even happens — all still open.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="family">
+    <div class="wrap">
+      <h2>Where it sits</h2>
+      <p class="lede">
+        On the group sketchbook until it earns a homepage door.
+        Games is Lewis’s proof of shipping. Software is the jobs engine.
+        Academy would be the learning door if the notes — or the tutoring — grow up.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-secondary" href="https://tyneside.group/next.html">All sketches →</a>
+        <a class="btn btn-secondary" href="https://tyneside.games/">tyneside.games</a>
+        <a class="btn btn-secondary" href="https://tyneside.software/school.html">Proposal for Lewis</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>If you are a parent, or you teach</h2>
+      <p class="lede">
+        Curious is welcome. Booked-in is not, yet.
+        WhatsApp if early GCSEs, revision notes, or a small group on Tyneside
+        is something you have been looking for — we will keep the answer honest.
+      </p>
+      {% include "includes/contact_block.html" %}
+    </div>
+  </section>
+{% endblock %}

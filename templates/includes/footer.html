@@ -1,6 +1,6 @@
 <footer class="site-footer">
   <div class="footer-brands">
-    {% for s in sites %}
+    {% for s in nav_sites %}
       <a href="https://{{ s.domain }}/" class="{% if s.id == site.id %}is-current{% endif %}">{{ s.brand_word }}</a>
     {% endfor %}
   </div>

@@ -1,0 +1,214 @@
+title: "2.2 Programming fundamentals"
+hero_title: "Programming fundamentals"
+kicker: "Paper 2 · J277/02 · unit 2.2"
+description: >-
+  Sequence, selection, iteration, types, strings, arrays, files, functions, SQL,
+  random. Exercises you can do in Python or on paper. Quiz is open.
+template: academy_cs_unit.html
+doc_id: "2-2"
+unit_id: "2.2"
+strip_leading_h1: true
+exercises:
+  - id: e1
+    topic: "2.2.1"
+    kind: python
+    title: Fizz-ish
+    task: |
+      Write a program that prints numbers 1 to 20. If a number is a multiple
+      of 3, print "Tyneside" instead. Multiple of 5: print "Academy". Both:
+      print "Tyneside Academy".
+
+      Use a count-controlled loop and nested/compound conditions.
+    hint: "n % 15 == 0 first, or check both flags. range(1, 21)."
+    answer: |
+      for n in range(1, 21):
+          if n % 15 == 0:
+              print("Tyneside Academy")
+          elif n % 3 == 0:
+              print("Tyneside")
+          elif n % 5 == 0:
+              print("Academy")
+          else:
+              print(n)
+  - id: e2
+    topic: "2.2.1"
+    kind: paper
+    title: Nested loop trace
+    task: |
+      How many times is print called?
+
+      for i = 1 to 4
+        for j = 1 to 3
+          print(i * j)
+        next j
+      next i
+    hint: Outer 4, inner 3, independent.
+    answer: 12 times (4 × 3).
+  - id: e3
+    topic: "2.2.2"
+    kind: paper
+    title: Type the result
+    task: |
+      Give the type and value if it runs, or say error:
+
+      1. 7 + 2
+      2. "7" + "2"
+      3. int("7") + 2
+      4. "score: " + 7
+    hint: Casting. Python will error on 4 unless you str(7).
+    answer: |
+      1. integer 9
+      2. string "72"
+      3. integer 9
+      4. error in Python (must cast 7 to str) — exam ERL may want concat with a conversion
+  - id: e4
+    topic: "2.2.3"
+    kind: python
+    title: 1D then 2D
+    task: |
+      1. A list of 5 scores. Print the highest without using max() — a loop.
+      2. A 3×3 grid of "." . Set the centre to "X" and print each row.
+    hint: Keep a running best. grid[1][1] is the centre of a 0-indexed 3×3.
+    answer: |
+      scores = [4, 9, 1, 9, 2]
+      best = scores[0]
+      for s in scores:
+          if s > best:
+              best = s
+      print(best)
+
+      grid = [["."] * 3 for _ in range(3)]
+      grid[1][1] = "X"
+      for row in grid:
+          print("".join(row))
+  - id: e5
+    topic: "2.2.3"
+    kind: python
+    title: Function + file
+    task: |
+      Write a function average(nums) that returns the mean of a list of
+      integers (empty list → return 0). Then read integers from a file
+      numbers.txt (one per line) and print the average.
+    hint: Guard empty. Strip lines. int().
+    answer: |
+      def average(nums):
+          if len(nums) == 0:
+              return 0
+          total = 0
+          for n in nums:
+              total = total + n
+          return total / len(nums)
+
+      nums = []
+      f = open("numbers.txt", "r")
+      for line in f:
+          line = line.strip()
+          if line != "":
+              nums.append(int(line))
+      f.close()
+      print(average(nums))
+  - id: e6
+    topic: "2.2.3"
+    kind: paper
+    title: SQL
+    task: |
+      Table games: title, genre, year
+
+      1. All titles of genre "arcade".
+      2. All columns for games from 2024.
+    hint: SELECT ... FROM ... WHERE ...
+    answer: |
+      1. SELECT title FROM games WHERE genre = "arcade"
+      2. SELECT * FROM games WHERE year = 2024
+quiz:
+  - id: q1
+    topic: "2.2.1"
+    type: single
+    prompt: A count-controlled loop is used when…
+    options:
+      - You already know how many times to repeat
+      - You must encrypt a disk
+      - The program has no variables
+      - SQL is required
+    correct: You already know how many times to repeat
+    explain: for-loops. while is condition-controlled — you may not know the count in advance.
+  - id: q2
+    topic: "2.2.1"
+    type: single
+    prompt: Nesting means…
+    options:
+      - Putting one construct inside another (e.g. if inside for)
+      - Compressing a file
+      - Using only global variables
+      - A type of topology
+    correct: Putting one construct inside another (e.g. if inside for)
+    explain: Nested selection/iteration is on the spec. Draw or indent it clearly.
+  - id: q3
+    topic: "2.2.2"
+    type: single
+    prompt: Which data type is appropriate for “has the user paid?”
+    options:
+      - Integer
+      - Boolean
+      - Character only
+      - Real, always
+    correct: Boolean
+    explain: True/False. An integer 0/1 can represent it but Boolean is the type they want.
+  - id: q4
+    topic: "2.2.3"
+    type: single
+    prompt: A function differs from a procedure because a function…
+    options:
+      - Cannot take parameters
+      - Returns a value
+      - Cannot be named
+      - Is always written in SQL
+    correct: Returns a value
+    explain: Procedures do a job; functions return. Parameters are allowed on both.
+  - id: q5
+    topic: "2.2.3"
+    type: single
+    prompt: Opening a file in write mode ("w") typically…
+    options:
+      - Appends without touching existing content
+      - Creates/overwrites the file
+      - Encrypts the disk
+      - Runs a binary search
+    correct: Creates/overwrites the file
+    explain: >-
+      Mode a appends. Mode r reads. Mode w is the dangerous one if you still
+      needed the old contents.
+  - id: q6
+    topic: "2.2.3"
+    type: single
+    prompt: SELECT name FROM pupils WHERE year = 8  returns…
+    options:
+      - Every column of every pupil
+      - The name field of pupils in year 8
+      - A sorted binary tree
+      - Nothing — SQL cannot filter
+    correct: The name field of pupils in year 8
+    explain: SELECT chooses columns; WHERE filters rows.
+  - id: q7
+    topic: "2.2.2"
+    type: truefalse
+    prompt: The expression "3" + "4" gives the integer 7 in Python.
+    options:
+      - True
+      - False
+    correct: "False"
+    explain: String concatenation gives "34". Cast to int first if you wanted 7.
+  - id: q8
+    topic: "2.2.3"
+    type: multi
+    prompt: Which are true of a local variable inside a function? (Select all that apply)
+    options:
+      - It exists while that function call is running
+      - Code outside the function cannot normally see it
+      - It is the same as a MAC address
+      - It is an example of scope
+    correct:
+      - It exists while that function call is running
+      - Code outside the function cannot normally see it
+      - It is an example of scope
+    explain: Scope is where a name is visible. Locals stay inside the function.

@@ -1,0 +1,140 @@
+title: "1.6 Ethical, legal, cultural and environmental impacts"
+hero_title: "Impacts of digital technology"
+kicker: "Paper 1 · J277/01 · unit 1.6"
+description: >-
+  Stakeholders, privacy, UK laws (DPA, CMA, CDPA), open source vs proprietary,
+  and how to write a discuss answer. Open exercises and quiz.
+template: academy_cs_unit.html
+doc_id: "1-6"
+unit_id: "1.6"
+strip_leading_h1: true
+exercises:
+  - id: e1
+    topic: "1.6.1"
+    kind: paper
+    title: Name the Act
+    task: |
+      Which law is most clearly involved?
+
+      1. A pupil uses a stolen password to open the school’s grade database.
+      2. A company keeps customer emails forever and sells the list to a marketing firm.
+      3. A student rips a whole textbook PDF and puts it on a public drive.
+      4. Ransomware encrypts a hospital’s files.
+    hint: CMA for unauthorised access/modification; DPA for personal data; CDPA for copying work.
+    answer: |
+      1. Computer Misuse Act (unauthorised access)
+      2. Data Protection Act / UK GDPR
+      3. Copyright, Designs and Patents Act
+      4. Computer Misuse Act (unauthorised modification) — and likely other offences
+  - id: e2
+    topic: "1.6.1"
+    kind: paper
+    title: Proprietary vs open source
+    task: |
+      A charity needs a website CMS. Give two reasons they might choose open source
+      and two reasons they might still pay for a proprietary product.
+    hint: Cost, inspectable code, community vs support contracts, liability, skills.
+    answer: |
+      Open source: often no licence fee; can inspect and adapt the code; not locked to one vendor.
+
+      Proprietary: paid support/SLA; one company to sue/call; staff may already know it; some features bundled with indemnity.
+  - id: e3
+    topic: "1.6.1"
+    kind: paper
+    title: Mini discuss (6)
+    task: |
+      “Schools should use cameras with facial recognition at the gate.”
+
+      Write 6–8 sentences: two stakeholders, a benefit, a harm, a law, a limitation, a conclusion.
+      Then compare with the model — yours does not have to match word for word.
+    hint: Pupils, parents, school, police. DPA special data. False matches. Consent.
+    answer: |
+      Sample:
+
+      Facial recognition at a gate would identify pupils as they arrive (school — attendance, safety).
+      Pupils and parents lose anonymity; biometric data is special-category under the DPA/UK GDPR and needs a strong lawful basis and tight security.
+      A benefit is spotting intruders or missing children faster.
+      A harm is false matches (especially for some groups) and normalising surveillance as “just school”.
+      If images leak, that is a data-protection failure as well as an ethical one.
+      Limitation: a determined visitor can still tailgate; cameras do not replace staff.
+      Conclusion: a visitor-badge process plus human supervision is easier to justify than biometric tracking of every child every morning.
+  - id: e4
+    topic: "1.6.1"
+    kind: think
+    title: Environmental — both sides
+    task: |
+      Video-call a meeting instead of flying. Give one environmental benefit
+      and one environmental cost of “the internet option”.
+    hint: Planes vs data centres and device manufacture.
+    answer: |
+      Benefit: far fewer flight emissions for that meeting.
+
+      Cost: devices, networks and data centres still use electricity and create e-waste; always-on video is not “zero carbon”.
+quiz:
+  - id: q1
+    topic: "1.6.1"
+    type: single
+    prompt: Unauthorised access to a computer system is covered mainly by the…
+    options:
+      - Data Protection Act 2018
+      - Computer Misuse Act 1990
+      - Copyright, Designs and Patents Act 1988
+      - Highway Code
+    correct: Computer Misuse Act 1990
+    explain: CMA is the “hacking / unauthorised access / unauthorised modification” law. DPA is about personal data. CDPA is copying creative work.
+  - id: q2
+    topic: "1.6.1"
+    type: single
+    prompt: Selling a customer email list without a lawful basis most clearly breaks…
+    options:
+      - Computer Misuse Act
+      - Data Protection law (DPA 2018 / UK GDPR)
+      - Only school rules
+      - Binary addition
+    correct: Data Protection law (DPA 2018 / UK GDPR)
+    explain: Personal data must be used fairly, for stated purposes, with a lawful basis. Selling a list “because we have it” is the classic fail.
+  - id: q3
+    topic: "1.6.1"
+    type: single
+    prompt: Open-source software means…
+    options:
+      - There is no copyright at all
+      - The source code is available and the licence allows use/modification under stated terms
+      - It cannot be used in schools
+      - It always costs more than proprietary software
+    correct: The source code is available and the licence allows use/modification under stated terms
+    explain: Open source is still copyrighted. The licence grants freedoms (and duties). It is often cheaper, not always.
+  - id: q4
+    topic: "1.6.1"
+    type: multi
+    prompt: Which of these are stakeholders in a city CCTV-and-AI scheme? (Select all that apply)
+    options:
+      - Residents being filmed
+      - The council
+      - The vendor selling the cameras
+      - Only the CPU manufacturer in another country, forever, exclusively
+    correct:
+      - Residents being filmed
+      - The council
+      - The vendor selling the cameras
+    explain: Anyone affected or with an interest. You would mention residents, council, police, vendor — not “only Intel”.
+  - id: q5
+    topic: "1.6.1"
+    type: single
+    prompt: A “discuss” question is best answered by…
+    options:
+      - One word
+      - Benefits and drawbacks (or two viewpoints) plus a conclusion
+      - Drawing a logic gate
+      - Only listing protocol names
+    correct: Benefits and drawbacks (or two viewpoints) plus a conclusion
+    explain: Discuss = both sides. A one-sided rant caps the mark band.
+  - id: q6
+    topic: "1.6.1"
+    type: truefalse
+    prompt: Copying a commercial game and putting it on a USB for a friend is allowed if you already bought the disc.
+    options:
+      - True
+      - False
+    correct: "False"
+    explain: Buying a copy is usually a licence for you, not a right to duplicate and distribute. That is CDPA territory.

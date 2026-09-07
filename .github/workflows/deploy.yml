@@ -101,3 +101,51 @@ jobs:
           site_id: logistics
           repo: Tyneside-Software/logistics.tyneside.software
           token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.green
+        if: ${{ hashFiles('output/green/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: green
+          repo: Tyneside-Software/tyneside.green
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.garden
+        if: ${{ hashFiles('output/garden/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: garden
+          repo: Tyneside-Software/tyneside.garden
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.beer
+        if: ${{ hashFiles('output/beer/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: beer
+          repo: Tyneside-Software/tyneside.beer
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.academy
+        if: ${{ hashFiles('output/academy/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: academy
+          repo: Tyneside-Software/tyneside.academy
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.church
+        if: ${{ hashFiles('output/church/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: church
+          repo: Tyneside-Software/tyneside.church
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+
+      - name: Deploy tyneside.store
+        if: ${{ hashFiles('output/store/**') != '' }}
+        uses: ./.github/actions/deploy-site
+        with:
+          site_id: store
+          repo: Tyneside-Software/tyneside.store
+          token: ${{ secrets.PAGES_DEPLOY_TOKEN }}

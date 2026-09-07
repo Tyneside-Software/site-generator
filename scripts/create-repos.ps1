@@ -40,6 +40,30 @@ $repos = @(
     @{
         name = "logistics.tyneside.software"
         description = "GitHub Pages site for logistics.tyneside.software — field ops web app + docs"
+    },
+    @{
+        name = "tyneside.green"
+        description = "GitHub Pages site for tyneside.green — Tyneside Green (aspirational / not live yet)"
+    },
+    @{
+        name = "tyneside.garden"
+        description = "GitHub Pages site for tyneside.garden — Tyneside Garden (aspirational / not live yet)"
+    },
+    @{
+        name = "tyneside.beer"
+        description = "GitHub Pages site for tyneside.beer — Tyneside Beer (aspirational / joke domain)"
+    },
+    @{
+        name = "tyneside.academy"
+        description = "GitHub Pages site for tyneside.academy — Tyneside Academy (aspirational / early GCSEs sketch)"
+    },
+    @{
+        name = "tyneside.church"
+        description = "GitHub Pages site for tyneside.church — Tyneside Church (aspirational / multi-faith conversation)"
+    },
+    @{
+        name = "tyneside.store"
+        description = "GitHub Pages site for tyneside.store — Tyneside Store (aspirational / RST Wholesale sketch)"
     }
 )
 

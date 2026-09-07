@@ -1,0 +1,137 @@
+title: "2.4 Boolean logic"
+hero_title: "Boolean logic"
+kicker: "Paper 2 · J277/02 · unit 2.4"
+description: >-
+  AND, OR, NOT, truth tables, combined expressions, logic diagrams. Practice
+  tables and a quiz — skip around freely.
+template: academy_cs_unit.html
+doc_id: "2-4"
+unit_id: "2.4"
+strip_leading_h1: true
+exercises:
+  - id: e1
+    topic: "2.4.1"
+    kind: paper
+    title: Fill AND / OR / NOT
+    task: |
+      Without looking up, write the output column for:
+
+      1. NOT 0 and NOT 1
+      2. 1 AND 0
+      3. 1 OR 0
+      4. 1 AND 1
+      5. 0 OR 0
+    hint: AND is the strict one. OR is generous. NOT flips.
+    answer: |
+      1. 1 and 0
+      2. 0
+      3. 1
+      4. 1
+      5. 0
+  - id: e2
+    topic: "2.4.1"
+    kind: paper
+    title: Two-input expression
+    task: |
+      Q = (A OR B) AND (NOT A)
+
+      Complete a 4-row table with columns A, B, A OR B, NOT A, Q.
+    hint: When A is 1, NOT A is 0, so AND makes Q 0. When A is 0, Q equals B.
+    answer: |
+      A B | AORB | NOTA | Q
+      0 0 |  0  |  1  | 0
+      0 1 |  1  |  1  | 1
+      1 0 |  1  |  0  | 0
+      1 1 |  1  |  0  | 0
+
+      Q is 1 only on row A=0, B=1.
+  - id: e3
+    topic: "2.4.1"
+    kind: paper
+    title: Expression from English
+    task: |
+      A lamp turns on if the switch is on AND (it is night OR the override is on).
+      Inputs: S, N, O. Write Q = ...
+    hint: Brackets around the OR.
+    answer: Q = S AND (N OR O)
+  - id: e4
+    topic: "2.4.1"
+    kind: think
+    title: Draw it
+    task: |
+      On paper, draw gates for Q = A AND (NOT B). Two inputs, one NOT, one AND.
+      Then pick one row (A=1, B=1) and write the output of each gate.
+    hint: >-
+      NOT B first, then AND with A. For A=1 and B=1, NOT B is 0 so Q is 0.
+    answer: |
+      NOT gate on B. AND gate takes A and the NOT output.
+
+      A=1, B=1 → NOT B = 0 → 1 AND 0 = 0.
+quiz:
+  - id: q1
+    topic: "2.4.1"
+    type: single
+    prompt: The output of AND is 1 only when…
+    options:
+      - At least one input is 1
+      - Both inputs are 1
+      - Both inputs are 0
+      - The CPU is overclocked
+    correct: Both inputs are 1
+    explain: AND is 1 only on 1,1. OR is 1 if any input is 1.
+  - id: q2
+    topic: "2.4.1"
+    type: single
+    prompt: How many rows does a truth table with 3 inputs need?
+    options:
+      - "3"
+      - "6"
+      - "8"
+      - "9"
+    correct: "8"
+    explain: 2³ = 8. Two inputs → 4 rows. Four inputs → 16.
+  - id: q3
+    topic: "2.4.1"
+    type: single
+    prompt: NOT 1 equals…
+    options:
+      - "1"
+      - "0"
+      - "2"
+      - A AND 1
+    correct: "0"
+    explain: NOT flips. NOT 0 is 1.
+  - id: q4
+    topic: "2.4.1"
+    type: single
+    prompt: 1 OR 1 equals…
+    options:
+      - "0"
+      - "1"
+      - Undefined
+      - Only used in hex
+    correct: "1"
+    explain: Inclusive OR. Both 1 still outputs 1.
+  - id: q5
+    topic: "2.4.1"
+    type: truefalse
+    prompt: You should include extra columns for sub-expressions in a combined truth table.
+    options:
+      - True
+      - False
+    correct: "True"
+    explain: Working columns stop arithmetic-style mistakes and often earn method marks.
+  - id: q6
+    topic: "2.4.1"
+    type: multi
+    prompt: Which are Boolean operators in this spec? (Select all that apply)
+    options:
+      - AND
+      - OR
+      - NOT
+      - MOD
+    correct:
+      - AND
+      - OR
+      - NOT
+    explain: MOD is arithmetic remainder (2.2), not a logic gate.

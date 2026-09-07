@@ -1,0 +1,187 @@
+title: "1.1 Systems architecture"
+hero_title: "Systems architecture"
+kicker: "Paper 1 · J277/01 · unit 1.1"
+description: >-
+  CPU purpose, Von Neumann, ALU/CU/cache/registers, fetch–execute, performance
+  factors, and embedded systems. Exercises and a self-check quiz — nothing locked.
+template: academy_cs_unit.html
+doc_id: "1-1"
+unit_id: "1.1"
+strip_leading_h1: true
+exercises:
+  - id: e1
+    topic: "1.1.1"
+    kind: paper
+    title: Name the register
+    task: |
+      For each sentence, write PC, ACC, MAR, MDR or CIR.
+
+      1. Holds the address of the next instruction to be fetched.
+      2. Holds the instruction currently being decoded.
+      3. Holds the address of the memory location being read or written.
+      4. Holds data copied from memory, or data about to be written to memory.
+      5. Holds the result of an addition just done by the ALU.
+    hint: Addresses live in PC and MAR. The instruction itself ends up in CIR. ACC is a working value.
+    answer: |
+      1. PC
+      2. CIR
+      3. MAR
+      4. MDR
+      5. ACC
+  - id: e2
+    topic: "1.1.1"
+    kind: paper
+    title: Fetch–execute in order
+    task: |
+      Write these steps in the order they happen for a normal (non-jump) instruction:
+
+      A. PC is incremented
+      B. Instruction copied into CIR
+      C. Address copied from PC to MAR
+      D. CU decodes the instruction
+      E. Memory contents copied into MDR
+      F. Instruction is executed
+    hint: You cannot decode what you have not fetched. PC usually ticks after the instruction is safely in the CPU.
+    answer: |
+      C → E → B → A → D → F
+
+      (Some mark schemes swap the exact moment PC increments with copying into CIR — both “after fetch, before execute” is the idea. If you put A immediately after C, say why: some textbooks increment as soon as the address has been copied.)
+  - id: e3
+    topic: "1.1.2"
+    kind: paper
+    title: Three factors, three sentences
+    task: |
+      A games console is upgraded from 2 cores at 1.5 GHz with 1 MB cache
+      to 4 cores at 2.5 GHz with 4 MB cache.
+
+      Write three short paragraphs (clock, cores, cache). Each must say
+      what changed, how that can improve performance, and one reason it
+      might not double the frame rate.
+    hint: Parallelism needs software that can use cores. Clock hits heat. Cache still is not RAM.
+    answer: |
+      Clock: 1.5 → 2.5 GHz means more cycles per second so more instructions in the same time, but heat/power limits and RAM waits still cap real speed.
+
+      Cores: 2 → 4 can run more fetch–execute cycles at once if the game is written to split work; a single-threaded part will not go twice as fast.
+
+      Cache: 1 MB → 4 MB holds more recently used instructions/data on-chip, fewer RAM trips; it is still tiny compared with main memory so misses still happen.
+  - id: e4
+    topic: "1.1.3"
+    kind: think
+    title: Embedded or not?
+    task: |
+      Say embedded or general-purpose, and one reason:
+
+      1. Digital microwave controller
+      2. School laptop
+      3. ABS braking computer in a car
+      4. Smartphone
+      5. Traffic-light controller at a junction
+    hint: Dedicated function inside another device vs “install whatever you want”.
+    answer: |
+      1. Embedded — dedicated cooking program, inside the microwave
+      2. General-purpose — runs many applications the user chooses
+      3. Embedded — real-time dedicated safety function in the car
+      4. General-purpose — full OS, arbitrary apps, even though it is small
+      5. Embedded — dedicated control of lights, not a desktop
+  - id: e5
+    topic: "1.1.1"
+    kind: paper
+    title: Exam-style 4 marks
+    task: |
+      Describe the purpose of the ALU and the CU in a CPU. (4)
+    hint: Two marks each if you give purpose + a concrete example of what it does.
+    answer: |
+      ALU: performs arithmetic (e.g. addition) and logical operations (e.g. AND/OR/compare) on data in registers such as the accumulator.
+
+      CU: decodes instructions in the CIR and sends control signals that coordinate the ALU, registers and memory so the instruction is actually carried out.
+quiz:
+  - id: q1
+    topic: "1.1.1"
+    type: single
+    prompt: Which register holds the address of the next instruction to be fetched?
+    options:
+      - Accumulator (ACC)
+      - Program Counter (PC)
+      - Current Instruction Register (CIR)
+      - Memory Data Register (MDR)
+    correct: Program Counter (PC)
+    explain: The PC stores an address, not the instruction itself. The instruction is fetched into the MDR and then the CIR.
+  - id: q2
+    topic: "1.1.1"
+    type: single
+    prompt: In Von Neumann architecture, what is shared between instructions and data?
+    options:
+      - Two separate caches that never meet
+      - One memory and typically one bus
+      - Only the accumulator
+      - The clock crystal
+    correct: One memory and typically one bus
+    explain: Instructions and data live in the same memory and compete for the same bus — the Von Neumann bottleneck.
+  - id: q3
+    topic: "1.1.1"
+    type: multi
+    prompt: Which of these are registers in the OCR J277 CPU model? (Select all that apply)
+    options:
+      - MAR
+      - ALU
+      - CIR
+      - Cache
+      - MDR
+    correct:
+      - MAR
+      - CIR
+      - MDR
+    explain: ALU is a unit, cache is fast memory, not a named register. MAR, CIR and MDR are registers.
+  - id: q4
+    topic: "1.1.1"
+    type: single
+    prompt: During fetch, the address of the instruction is first copied from the PC into the…
+    options:
+      - ACC
+      - MAR
+      - CU
+      - Cache only
+    correct: MAR
+    explain: Memory is addressed via the MAR. The PC’s value is copied there so memory knows which location to return.
+  - id: q5
+    topic: "1.1.2"
+    type: single
+    prompt: Increasing the number of cores improves performance mainly because…
+    options:
+      - Each core stores the entire operating system
+      - More fetch–execute cycles can run at the same time if the software can split work
+      - The clock speed automatically doubles
+      - RAM becomes unnecessary
+    correct: More fetch–execute cycles can run at the same time if the software can split work
+    explain: Cores are parallel processors. Software that cannot use them will not magically go twice as fast.
+  - id: q6
+    topic: "1.1.2"
+    type: single
+    prompt: Why does a larger cache often improve CPU performance?
+    options:
+      - Cache is slower than RAM so the CPU rests more
+      - More recently used instructions and data can be held close to the CPU, so fewer slow RAM accesses
+      - Cache replaces the need for secondary storage
+      - It increases clock speed directly
+    correct: More recently used instructions and data can be held close to the CPU, so fewer slow RAM accesses
+    explain: Cache is faster than RAM. Bigger cache → higher chance the next item is already there.
+  - id: q7
+    topic: "1.1.3"
+    type: single
+    prompt: Which device is the best example of an embedded system?
+    options:
+      - A school desktop used for many subjects
+      - A washing-machine controller
+      - A laptop running Python and a browser
+      - A games console used as a general computer with apps
+    correct: A washing-machine controller
+    explain: Dedicated function inside another product. Phones and PCs are general-purpose even when small.
+  - id: q8
+    topic: "1.1.3"
+    type: truefalse
+    prompt: A smartphone is an embedded system because it is small and battery-powered.
+    options:
+      - True
+      - False
+    correct: "False"
+    explain: Size and battery do not define embedded. A smartphone is a general-purpose computer with a full OS and arbitrary apps.

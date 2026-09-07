@@ -11,6 +11,12 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.games](https://tyneside.games) | `games` | `Tyneside-Software/tyneside.games` |
 | [tyneside.technology](https://tyneside.technology) | `technology` | `Tyneside-Software/tyneside.technology` |
 | [logistics.tyneside.software](https://logistics.tyneside.software) | `logistics` | `Tyneside-Software/logistics.tyneside.software` |
+| [tyneside.green](https://tyneside.green) | `green` | `Tyneside-Software/tyneside.green` (aspirational — not in family nav yet) |
+| [tyneside.garden](https://tyneside.garden) | `garden` | `Tyneside-Software/tyneside.garden` (aspirational — not in family nav yet) |
+| [tyneside.beer](https://tyneside.beer) | `beer` | `Tyneside-Software/tyneside.beer` (aspirational — not in family nav yet) |
+| [tyneside.academy](https://tyneside.academy) | `academy` | `Tyneside-Software/tyneside.academy` (aspirational — not in family nav yet) |
+| [tyneside.church](https://tyneside.church) | `church` | `Tyneside-Software/tyneside.church` (aspirational — not in family nav yet) |
+| [tyneside.store](https://tyneside.store) | `store` | `Tyneside-Software/tyneside.store` (aspirational — not in family nav yet) |
 
 Interactive brands pair with **[tyneside-api](https://github.com/Tyneside-Software/tyneside-api)** (`app/brands/<id>/`). See **[PAIRING.md](./PAIRING.md)**.
 
@@ -27,6 +33,8 @@ output/<id>/         # local build output (gitignored)
 .github/workflows/   # build + push to Pages repos
 PAIRING.md           # site ↔ API brand pairing model
 ```
+
+The top nav/footer only lists doors with `nav_order` set (currently software, cleaning, tech, games, group). Everything else is reached from [tyneside.group](https://tyneside.group). Aspirational brands (`aspirational=True`) also appear on [tyneside.group/next.html](https://tyneside.group/next.html).
 
 ### Adding a game (tyneside.games)
 
@@ -49,6 +57,32 @@ python -m site_generator --list
 ```
 
 Output lands in `output/<site_id>/` (includes `index.html`, `CNAME`, `.nojekyll`, assets).
+
+## Audio (xAI TTS)
+
+Josh-book and church `/bible` voice text via `https://api.x.ai/v1/tts` (`scripts/xai_tts.py`). **Never commit the key.**
+
+1. Copy `secrets/xai.key.example` to `secrets/xai.key` and paste a key from [console.x.ai](https://console.x.ai) (gitignored).
+2. From this folder:
+
+```powershell
+python scripts/church_bible.py check-key
+.\scripts\tts-bible.ps1            # Genesis 1 + Revelation 22 only
+.\scripts\tts-bible.ps1 -Force     # regenerate those two
+```
+
+Details: `secrets/README.md` and `sites/church/README.md`.
+
+## Bible (tyneside.software/bible)
+
+Whole Protestant canon in the public-domain **World English Bible**, same reader chrome as `/michael-book/`.
+
+```powershell
+python scripts/build_bible.py
+python -m site_generator software
+```
+
+Writes `sites/software/static/bible/` (index + one HTML file per book). CI copies static into the Pages repo.
 
 ## Org bootstrap (one-time)
 
