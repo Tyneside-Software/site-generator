@@ -246,9 +246,9 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=audio5"
+    css = f"{asset_prefix}bible.css?v=audio6"
     canon = f"{asset_prefix}canon.js"
-    js = f"{asset_prefix}bible.js?v=audio5"
+    js = f"{asset_prefix}bible.js?v=audio6"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,12 +276,6 @@ def page_shell(
     </main>
   </div>
   <a class="top" href="#">Top</a>
-  <audio id="bible-audio" preload="none" playsinline webkit-playsinline></audio>
-  <div id="audio-dock" hidden>
-    <button type="button" id="dock-toggle">Pause</button>
-    <span id="dock-label"></span>
-    <span id="dock-time"></span>
-  </div>
 </body>
 </html>
 """
@@ -380,17 +374,16 @@ def chapter_audio_html(stem: str, name: str, n: int, url: str) -> str:
     if not url:
         return ""
     label = f"Psalm {n}" if name == "Psalms" else f"{name} chapter {n}"
-    fname = f"henson-{stem}-{n:03d}.mp3"
+    fname = f"web-{stem}-{n:03d}.mp3"
     src = escape(url)
     return (
         f'<div class="ch-audio" data-src="{src}" data-label="{escape(label)}">'
-        f'<button type="button" class="btn-play" aria-label="Play {escape(label)}">Play</button>'
-        f'<a class="btn-dl" href="{src}" download="{escape(fname)}">Download</a>'
-        f'<span class="audio-time" hidden>0:00</span>'
+        f'<audio class="ch-player" controls preload="none" playsinline '
+        f'webkit-playsinline src="{src}">'
+        f'<a href="{src}">Listen to {escape(label)}</a>'
+        f"</audio>"
+        f'<a class="btn-dl" href="{src}" download="{escape(fname)}">Download MP3</a>'
         f'<span class="audio-err" hidden></span>'
-        f'<div class="progress-wrap" hidden>'
-        f'<div class="progress-bar" role="slider" aria-label="Seek">'
-        f'<div class="progress-fill"></div></div></div>'
         f"</div>"
     )
 
