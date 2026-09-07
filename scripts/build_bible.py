@@ -246,9 +246,9 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=audio8"
+    css = f"{asset_prefix}bible.css?v=audio9"
     canon = f"{asset_prefix}canon.js"
-    js = f"{asset_prefix}bible.js?v=audio8"
+    js = f"{asset_prefix}bible.js?v=audio9"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>

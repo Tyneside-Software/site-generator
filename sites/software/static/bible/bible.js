@@ -297,7 +297,7 @@
       p.catch(function () {
         if (err) {
           err.hidden = false;
-          err.textContent = "Could not play this chapter. Use Download.";
+          err.textContent = "Could not play this chapter. Use Download. A VPN can block this host.";
         }
         setBarState(bar, "paused");
       });
@@ -306,7 +306,7 @@
       if (currentBar !== bar || audio.paused || audio.ended || audio.currentTime > 0) return;
       if (err) {
         err.hidden = false;
-        err.textContent = "Still waiting for the file. Try Download, or wait — the host can be slow on mobile.";
+        err.textContent = "Still waiting for the file. Try Download, or wait — the host can be slow on mobile, and VPNs sometimes stop playback.";
       }
     }, 8000);
     preloadNext(bar);
@@ -376,7 +376,7 @@
       var err = currentBar.querySelector(".audio-err");
       if (err) {
         err.hidden = false;
-        err.textContent = "Could not load audio. Use Download.";
+        err.textContent = "Could not load audio. Use Download. A VPN can block this host.";
       }
       setBarState(currentBar, "paused");
     });
