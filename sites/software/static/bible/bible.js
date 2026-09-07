@@ -215,20 +215,157 @@
     } catch (e) {}
   }
 
-  var players = document.querySelectorAll("audio.ch-player");
-  players.forEach(function (el) {
-    el.addEventListener("play", function () {
-      players.forEach(function (other) {
-        if (other !== el) other.pause();
+  var audio = document.getElementById("bible-audio");
+  var bars = Array.prototype.slice.call(document.querySelectorAll(".ch-audio[data-src]"));
+  var dock = document.getElementById("audio-dock");
+  var dockToggle = document.getElementById("dock-toggle");
+  var dockLabel = document.getElementById("dock-label");
+  var dockTime = document.getElementById("dock-time");
+  var currentBar = null;
+
+  function fmt(t) {
+    if (!isFinite(t)) return "0:00";
+    var m = Math.floor(t / 60);
+    var s = Math.floor(t % 60);
+    return m + ":" + String(s).padStart(2, "0");
+  }
+
+  function setBarState(bar, state) {
+    bars.forEach(function (b) {
+      var on = b === bar && state === "playing";
+      var loading = b === bar && state === "loading";
+      var btn = b.querySelector(".btn-play");
+      var wrap = b.querySelector(".progress-wrap");
+      var time = b.querySelector(".audio-time");
+      b.classList.toggle("playing", on);
+      if (btn) {
+        btn.classList.toggle("playing", on);
+        btn.textContent = loading ? "Loading…" : on ? "Pause" : "Play";
+        btn.disabled = !!loading;
+      }
+      if (wrap) wrap.hidden = !on && !loading;
+      if (time) time.hidden = !on && !loading;
+    });
+    if (dock) {
+      var show = state === "playing" || state === "loading" || state === "paused";
+      dock.hidden = !show || !bar;
+      body.classList.toggle("audio-on", show && !!bar);
+      if (dockToggle) dockToggle.textContent = state === "playing" ? "Pause" : "Play";
+      if (dockLabel && bar) dockLabel.textContent = bar.getAttribute("data-label") || "";
+    }
+  }
+
+  function playBar(bar) {
+    if (!audio || !bar) return;
+    var src = bar.getAttribute("data-src");
+    if (!src) return;
+    var err = bar.querySelector(".audio-err");
+    if (err) {
+      err.hidden = true;
+      err.textContent = "";
+    }
+    currentBar = bar;
+    if (audio.getAttribute("src") !== src) {
+      audio.src = src;
+    }
+    setBarState(bar, "loading");
+    var art = bar.closest("article.chapter");
+    if (art) art.scrollIntoView({ block: "start" });
+    var p = audio.play();
+    if (p && p.catch) {
+      p.catch(function () {
+        if (err) {
+          err.hidden = false;
+          err.textContent = "Could not play this chapter. Use Download.";
+        }
+        setBarState(bar, "paused");
       });
+    }
+  }
+
+  if (audio && bars.length) {
+    bars.forEach(function (bar) {
+      var btn = bar.querySelector(".btn-play");
+      if (btn) {
+        btn.addEventListener("click", function () {
+          if (currentBar === bar && !audio.paused && !audio.ended) {
+            audio.pause();
+            setBarState(bar, "paused");
+            return;
+          }
+          playBar(bar);
+        });
+      }
+      var pbar = bar.querySelector(".progress-bar");
+      if (pbar) {
+        pbar.addEventListener("click", function (e) {
+          if (!audio.duration || currentBar !== bar) return;
+          var r = pbar.getBoundingClientRect();
+          audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+        });
+      }
     });
-    el.addEventListener("ended", function () {
-      var art = el.closest("article.chapter");
-      var next = art && art.nextElementSibling;
-      var na = next && next.querySelector("audio.ch-player");
-      if (!na) return;
-      next.scrollIntoView({ block: "start" });
-      na.play();
+
+    audio.addEventListener("playing", function () {
+      if (currentBar) setBarState(currentBar, "playing");
     });
-  });
+    audio.addEventListener("pause", function () {
+      if (currentBar && !audio.ended) setBarState(currentBar, "paused");
+    });
+    audio.addEventListener("timeupdate", function () {
+      if (!currentBar) return;
+      var fill = currentBar.querySelector(".progress-fill");
+      var time = currentBar.querySelector(".audio-time");
+      var stamp = fmt(audio.currentTime) + " / " + fmt(audio.duration);
+      if (fill && audio.duration) {
+        fill.style.width = (100 * audio.currentTime / audio.duration) + "%";
+      }
+      if (time) time.textContent = stamp;
+      if (dockTime) dockTime.textContent = stamp;
+    });
+    audio.addEventListener("ended", function () {
+      if (!currentBar) return;
+      var art = currentBar.closest("article.chapter");
+      var nextArt = art && art.nextElementSibling;
+      var nextBar = nextArt && nextArt.querySelector && nextArt.querySelector(".ch-audio[data-src]");
+      if (nextBar) {
+        playBar(nextBar);
+        return;
+      }
+      setBarState(currentBar, "paused");
+      var nextBook = body.getAttribute("data-next");
+      if (nextBook) {
+        try { sessionStorage.setItem("tyneside-bible-autoplay", "1"); } catch (e) {}
+        window.location.href = nextBook + ".html#c-1";
+      }
+    });
+    audio.addEventListener("error", function () {
+      if (!currentBar) return;
+      var err = currentBar.querySelector(".audio-err");
+      if (err) {
+        err.hidden = false;
+        err.textContent = "Could not load audio. Use Download.";
+      }
+      setBarState(currentBar, "paused");
+    });
+
+    if (dockToggle) {
+      dockToggle.addEventListener("click", function () {
+        if (!currentBar) return;
+        if (audio.paused) playBar(currentBar);
+        else {
+          audio.pause();
+          setBarState(currentBar, "paused");
+        }
+      });
+    }
+
+    try {
+      if (sessionStorage.getItem("tyneside-bible-autoplay") === "1") {
+        sessionStorage.removeItem("tyneside-bible-autoplay");
+        var first = bars[0];
+        if (first) playBar(first);
+      }
+    } catch (e) {}
+  }
 })();
