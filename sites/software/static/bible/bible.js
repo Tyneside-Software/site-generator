@@ -214,4 +214,21 @@
       }
     } catch (e) {}
   }
+
+  var players = document.querySelectorAll("audio.ch-player");
+  players.forEach(function (el) {
+    el.addEventListener("play", function () {
+      players.forEach(function (other) {
+        if (other !== el) other.pause();
+      });
+    });
+    el.addEventListener("ended", function () {
+      var art = el.closest("article.chapter");
+      var next = art && art.nextElementSibling;
+      var na = next && next.querySelector("audio.ch-player");
+      if (!na) return;
+      next.scrollIntoView({ block: "start" });
+      na.play();
+    });
+  });
 })();

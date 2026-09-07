@@ -246,7 +246,7 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=guides2"
+    css = f"{asset_prefix}bible.css?v=audio"
     canon = f"{asset_prefix}canon.js"
     js = f"{asset_prefix}bible.js"
     return f"""<!DOCTYPE html>
@@ -355,6 +355,35 @@ def load_overview() -> dict:
             raise SystemExit(f"chapter guide {stem} must be a list of notes")
         books[stem]["chapters"] = [str(n).strip() for n in notes]
     return data
+
+
+def load_audio() -> dict:
+    path = OUT_DIR / "audio-manifest.json"
+    if not path.is_file():
+        raise SystemExit(
+            f"Missing {path}. Run: python scripts/fetch_bible_audio.py"
+        )
+    data = json.loads(path.read_text(encoding="utf-8"))
+    books = data.get("books") if isinstance(data, dict) else None
+    if not isinstance(books, dict):
+        raise SystemExit("audio-manifest.json must have a books map")
+    return data
+
+
+def chapter_audio_html(stem: str, name: str, n: int, url: str) -> str:
+    if not url:
+        return ""
+    label = f"Psalm {n}" if name == "Psalms" else f"{name} chapter {n}"
+    fname = f"webbe-{stem}-{n:03d}.mp3"
+    src = escape(url)
+    return (
+        f'<div class="ch-audio">'
+        f'<audio class="ch-player" controls preload="none" src="{src}">'
+        f'<a href="{src}">Listen to {escape(label)}</a>'
+        f"</audio>"
+        f'<a class="audio-dl" href="{src}" download="{escape(fname)}">Download MP3</a>'
+        f"</div>"
+    )
 
 
 def about_html(meta: dict, *, teaser: bool = False, stem: str = "") -> str:
@@ -624,7 +653,7 @@ def render_index(stats: list[dict], total_chapters: int, total_words: int, built
       <header class="hero">
         <div class="badge">World English Bible · public domain</div>
         <h1>Holy Bible</h1>
-        <p>The whole Protestant canon in modern English, laid out like a book — chapters you can sit with, a sidebar that knows where you are, and a jump box for John 3:16.</p>
+        <p>The whole Protestant canon in modern English, laid out like a book — chapters you can sit with, a sidebar that knows where you are, a jump box for John 3:16, and play or download audio for every chapter.</p>
         <div class="hero-actions">
           <a class="btn-fill" href="books/genesis.html#c-1">Begin Genesis</a>
           <a class="btn-ghost" href="overview.html">The whole story</a>
@@ -632,13 +661,14 @@ def render_index(stats: list[dict], total_chapters: int, total_words: int, built
           <a class="btn-ghost" id="resume-link" href="books/genesis.html" hidden>Continue reading</a>
         </div>
       </header>
-      <p class="library-lead"><a href="overview.html">What each book is about →</a> Summaries and a chapter guide for every book, then the text itself.</p>
+      <p class="library-lead"><a href="overview.html">What each book is about →</a> Summaries and a chapter guide for every book, then the text itself. Each chapter has British Edition audio — play in the page, or download the MP3.</p>
       <section class="library" id="library">
         {cards("ot", "Old Testament")}
         {cards("nt", "New Testament")}
       </section>
       <footer class="foot">
         World English Bible (public domain) · {len(stats)} books · {total_chapters:,} chapters ·
+        audio: WEB British Edition, public domain ·
         <a href="../michael-book/">ΑΩ</a> · tyneside.software
       </footer>
     """
@@ -661,6 +691,7 @@ def render_book(
     next_book: dict | None,
     built: str,
     book_meta: dict | None = None,
+    audio_chapters: dict | None = None,
 ) -> str:
     name, stem, testament, group, aliases = spec
     nchap = max(chapters)
@@ -692,12 +723,17 @@ def render_book(
             if i < len(ordered) - 1
             else "<span></span>"
         )
+        url = ""
+        if audio_chapters:
+            url = str(audio_chapters.get(str(n)) or audio_chapters.get(n) or "")
+        audio = chapter_audio_html(stem, name, n, url)
         sections.append(
             f'<article class="chapter" id="c-{n}">'
             f'<header class="ch-head">'
             f'<p class="kicker">{escape(kicker_book)}</p>'
             f"<h2>{escape(heading)}</h2>"
             f'<p class="meta">{len(rec["verses"])} verses · {rec["words"]:,} words · World English Bible</p>'
+            f"{audio}"
             f"</header>"
             f'<div class="body">{"".join(rec["parts"])}</div>'
             f'<p class="ch-end">{prev_link}{next_link}</p>'
@@ -769,7 +805,8 @@ def render_book(
       {"".join(sections)}
       <nav class="book-nav" aria-label="Nearby books">{prev_html}{next_html}</nav>
       <footer class="foot">
-        {escape(name)} · World English Bible · <a href="../overview.html#{stem}">Overview</a> · <a href="../index.html">Holy Bible</a>
+        {escape(name)} · World English Bible · audio: WEB British Edition (public domain) ·
+        <a href="../overview.html#{stem}">Overview</a> · <a href="../index.html">Holy Bible</a>
       </footer>
     """
     return page_shell(
@@ -802,6 +839,9 @@ python -m site_generator software
 Writes `sites/software/static/bible/index.html`, `overview.html`, and `books/*.html`.
 Book summaries live in `sites/software/bible-source/about.json` (merged into overview.json at build).
 Chapter guides live in `sites/software/bible-source/chapter-guides/` (one note per chapter).
+Chapter audio URLs live in `sites/software/static/bible/audio-manifest.json`
+(refresh with `python scripts/fetch_bible_audio.py`). Files are streamed from
+eBible.org — the zip is ~1.1 GB and does not belong in GitHub Pages.
 The site generator copies `static/` into `output/software/bible/`.
 Push `site-generator` `main` and CI publishes tyneside.software. If the token is missing: `.\scripts\deploy-pages.ps1 software`.
 
@@ -811,6 +851,15 @@ Push `site-generator` `main` and CI publishes tyneside.software. If the token is
 from the American Standard Version, with paragraph and poetic line data from
 [TehShrike/world-english-bible](https://github.com/TehShrike/world-english-bible).
 Sixty-six book Protestant canon. Not NIV/NLT/ESV.
+
+## Audio
+
+Each chapter has play and download. Source:
+[World English Bible British Edition MP3s](https://ebible.org/eng-webbe/mp3/)
+via eBible.org / PublicDomainAudioBibles.com, public domain, one file per chapter.
+British/international English. No North-East English WEB narration is known.
+On-page text is the American WEB; the audio uses British spelling and LORD
+rather than Yahweh.
 """,
         encoding="utf-8",
     )
@@ -846,6 +895,14 @@ def build() -> None:
     total_chapters = sum(s["chapter_count"] for s in stats)
     total_words = sum(s["words"] for s in stats)
     overview = load_overview()
+    audio = load_audio()
+    audio_books = audio.get("books") or {}
+    for s in stats:
+        notes = audio_books.get(s["stem"]) or {}
+        if len(notes) != s["chapter_count"]:
+            raise SystemExit(
+                f"{s['stem']}: audio has {len(notes)} files, book has {s['chapter_count']} chapters"
+            )
     (OUT_DIR / "index.html").write_text(
         render_index(stats, total_chapters, total_words, built), encoding="utf-8"
     )
@@ -865,6 +922,7 @@ def build() -> None:
             next_book,
             built,
             book_meta=(overview.get("books") or {}).get(spec[1]) or {},
+            audio_chapters=audio_books.get(spec[1]) or {},
         )
         (BOOKS_DIR / f"{spec[1]}.html").write_text(html, encoding="utf-8")
 

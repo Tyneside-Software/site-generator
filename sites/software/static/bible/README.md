@@ -15,6 +15,9 @@ python -m site_generator software
 Writes `sites/software/static/bible/index.html`, `overview.html`, and `books/*.html`.
 Book summaries live in `sites/software/bible-source/about.json` (merged into overview.json at build).
 Chapter guides live in `sites/software/bible-source/chapter-guides/` (one note per chapter).
+Chapter audio URLs live in `sites/software/static/bible/audio-manifest.json`
+(refresh with `python scripts/fetch_bible_audio.py`). Files are streamed from
+eBible.org — the zip is ~1.1 GB and does not belong in GitHub Pages.
 The site generator copies `static/` into `output/software/bible/`.
 Push `site-generator` `main` and CI publishes tyneside.software. If the token is missing: `.\scripts\deploy-pages.ps1 software`.
 
@@ -24,3 +27,12 @@ Push `site-generator` `main` and CI publishes tyneside.software. If the token is
 from the American Standard Version, with paragraph and poetic line data from
 [TehShrike/world-english-bible](https://github.com/TehShrike/world-english-bible).
 Sixty-six book Protestant canon. Not NIV/NLT/ESV.
+
+## Audio
+
+Each chapter has play and download. Source:
+[World English Bible British Edition MP3s](https://ebible.org/eng-webbe/mp3/)
+via eBible.org / PublicDomainAudioBibles.com, public domain, one file per chapter.
+British/international English. No North-East English WEB narration is known.
+On-page text is the American WEB; the audio uses British spelling and LORD
+rather than Yahweh.
