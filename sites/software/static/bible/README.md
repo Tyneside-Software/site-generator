@@ -31,8 +31,6 @@ Sixty-six book Protestant canon. Not NIV/NLT/ESV.
 ## Audio
 
 Each chapter has play and download. Source:
-[World English Bible British Edition MP3s](https://ebible.org/eng-webbe/mp3/)
-via eBible.org / PublicDomainAudioBibles.com, public domain, one file per chapter.
-British/international English. No North-East English WEB narration is known.
-On-page text is the American WEB; the audio uses British spelling and LORD
-rather than Yahweh.
+[Winfred Wardell Henson](https://ebible.org/eng-web/audio/) reading the classic
+World English Bible. Professional voice artist, one narrator, public domain.
+LibriVox 4.4/5 (97 ratings). Matches the on-page WEB text.

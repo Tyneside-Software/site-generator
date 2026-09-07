@@ -223,10 +223,6 @@
   var dockTime = document.getElementById("dock-time");
   var currentBar = null;
   var currentSrc = "";
-  var cache = {};
-  var prefetchQueue = [];
-  var prefetchBusy = 0;
-  var PREFETCH_MAX = 2;
 
   function fmt(t) {
     if (!isFinite(t)) return "0:00";
@@ -245,8 +241,7 @@
       b.classList.toggle("playing", on);
       if (btn) {
         btn.classList.toggle("playing", on);
-        btn.textContent = loading ? "Loading…" : on ? "Pause" : "Play";
-        btn.disabled = !!loading;
+        btn.textContent = loading ? "Starting…" : on ? "Pause" : "Play";
       }
       if (wrap) wrap.hidden = !on && !loading;
       if (time) time.hidden = !on && !loading;
@@ -260,46 +255,24 @@
     }
   }
 
-  function resolvedSrc(url) {
-    var hit = cache[url];
-    return hit && hit !== "pending" ? hit : url;
-  }
-
-  function pumpPrefetch() {
-    while (prefetchBusy < PREFETCH_MAX && prefetchQueue.length) {
-      var url = prefetchQueue.shift();
-      prefetchBusy += 1;
-      fetch(url, { mode: "cors", credentials: "omit" })
-        .then(function (r) {
-          if (!r.ok) throw new Error(String(r.status));
-          return r.blob();
-        })
-        .then(function (blob) {
-          cache[url] = URL.createObjectURL(blob);
-        })
-        .catch(function () {
-          delete cache[url];
-        })
-        .then(function () {
-          prefetchBusy -= 1;
-          pumpPrefetch();
-        });
-    }
-  }
-
-  function prefetch(url) {
-    if (!url || cache[url]) return;
-    cache[url] = "pending";
-    prefetchQueue.push(url);
-    pumpPrefetch();
-  }
-
-  function prefetchAround(bar) {
+  function preloadNext(bar) {
     var i = bars.indexOf(bar);
-    if (i < 0) i = 0;
-    [i, i + 1, i + 2].forEach(function (n) {
-      if (bars[n]) prefetch(bars[n].getAttribute("data-src"));
-    });
+    var next = i >= 0 ? bars[i + 1] : null;
+    var url = next && next.getAttribute("data-src");
+    var id = "bible-audio-preload";
+    var old = document.getElementById(id);
+    if (!url) {
+      if (old) old.remove();
+      return;
+    }
+    if (old && old.getAttribute("href") === url) return;
+    if (old) old.remove();
+    var link = document.createElement("link");
+    link.id = id;
+    link.rel = "preload";
+    link.as = "audio";
+    link.href = url;
+    document.head.appendChild(link);
   }
 
   function playBar(bar) {
@@ -312,16 +285,13 @@
       err.textContent = "";
     }
     currentBar = bar;
-    var playSrc = resolvedSrc(src);
     if (currentSrc !== src) {
       currentSrc = src;
-      audio.src = playSrc;
+      audio.src = src;
     } else if (audio.ended) {
       audio.currentTime = 0;
     }
-    setBarState(bar, cache[src] && cache[src] !== "pending" ? "playing" : "loading");
-    var art = bar.closest("article.chapter");
-    if (art) art.scrollIntoView({ block: "start" });
+    setBarState(bar, "loading");
     var p = audio.play();
     if (p && p.catch) {
       p.catch(function () {
@@ -332,7 +302,7 @@
         setBarState(bar, "paused");
       });
     }
-    prefetchAround(bar);
+    preloadNext(bar);
   }
 
   if (audio && bars.length) {
@@ -358,8 +328,14 @@
       }
     });
 
+    audio.addEventListener("canplay", function () {
+      if (currentBar && !audio.paused) setBarState(currentBar, "playing");
+    });
     audio.addEventListener("playing", function () {
-      if (currentBar) setBarState(currentBar, "playing");
+      if (currentBar) {
+        setBarState(currentBar, "playing");
+        preloadNext(currentBar);
+      }
     });
     audio.addEventListener("pause", function () {
       if (currentBar && !audio.ended) setBarState(currentBar, "paused");
@@ -382,14 +358,11 @@
       var nextBar = nextArt && nextArt.querySelector && nextArt.querySelector(".ch-audio[data-src]");
       if (nextBar) {
         playBar(nextBar);
+        var nextEl = nextBar.closest("article.chapter");
+        if (nextEl) nextEl.scrollIntoView({ block: "start" });
         return;
       }
       setBarState(currentBar, "paused");
-      var nextBook = body.getAttribute("data-next");
-      if (nextBook) {
-        try { sessionStorage.setItem("tyneside-bible-autoplay", "1"); } catch (e) {}
-        window.location.href = nextBook + ".html#c-1";
-      }
     });
     audio.addEventListener("error", function () {
       if (!currentBar) return;
@@ -409,39 +382,6 @@
           audio.pause();
           setBarState(currentBar, "paused");
         }
-      });
-    }
-
-    try {
-      if (sessionStorage.getItem("tyneside-bible-autoplay") === "1") {
-        sessionStorage.removeItem("tyneside-bible-autoplay");
-        var first = bars[0];
-        if (first) playBar(first);
-      }
-    } catch (e) {}
-
-    var start = 0;
-    var hash = (location.hash || "").replace(/^#c-/, "");
-    var hashNum = parseInt(hash, 10);
-    if (hashNum) {
-      bars.forEach(function (b, i) {
-        var art = b.closest("article.chapter");
-        if (art && art.id === "c-" + hashNum) start = i;
-      });
-    }
-    prefetchAround(bars[start] || bars[0]);
-    if ("IntersectionObserver" in window) {
-      var seen = new WeakSet();
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting || seen.has(entry.target)) return;
-          seen.add(entry.target);
-          var bar = entry.target.querySelector(".ch-audio[data-src]");
-          if (bar) prefetchAround(bar);
-        });
-      }, { rootMargin: "400px 0px", threshold: 0.01 });
-      document.querySelectorAll("article.chapter").forEach(function (art) {
-        io.observe(art);
       });
     }
   }

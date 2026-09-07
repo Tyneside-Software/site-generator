@@ -246,9 +246,9 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=audio3"
+    css = f"{asset_prefix}bible.css?v=audio5"
     canon = f"{asset_prefix}canon.js"
-    js = f"{asset_prefix}bible.js?v=audio3"
+    js = f"{asset_prefix}bible.js?v=audio5"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,7 +276,7 @@ def page_shell(
     </main>
   </div>
   <a class="top" href="#">Top</a>
-  <audio id="bible-audio" preload="auto" crossorigin="anonymous"></audio>
+  <audio id="bible-audio" preload="none" playsinline webkit-playsinline></audio>
   <div id="audio-dock" hidden>
     <button type="button" id="dock-toggle">Pause</button>
     <span id="dock-label"></span>
@@ -380,7 +380,7 @@ def chapter_audio_html(stem: str, name: str, n: int, url: str) -> str:
     if not url:
         return ""
     label = f"Psalm {n}" if name == "Psalms" else f"{name} chapter {n}"
-    fname = f"webbe-{stem}-{n:03d}.mp3"
+    fname = f"henson-{stem}-{n:03d}.mp3"
     src = escape(url)
     return (
         f'<div class="ch-audio" data-src="{src}" data-label="{escape(label)}">'
@@ -670,14 +670,14 @@ def render_index(stats: list[dict], total_chapters: int, total_words: int, built
           <a class="btn-ghost" id="resume-link" href="books/genesis.html" hidden>Continue reading</a>
         </div>
       </header>
-      <p class="library-lead"><a href="overview.html">What each book is about →</a> Summaries and a chapter guide for every book, then the text itself. Each chapter has British Edition audio — play in the page, or download the MP3.</p>
+      <p class="library-lead"><a href="overview.html">What each book is about →</a> Summaries and a chapter guide for every book, then the text itself. Each chapter has audio read by Winfred Henson — play in the page, or download the MP3.</p>
       <section class="library" id="library">
         {cards("ot", "Old Testament")}
         {cards("nt", "New Testament")}
       </section>
       <footer class="foot">
         World English Bible (public domain) · {len(stats)} books · {total_chapters:,} chapters ·
-        audio: WEB British Edition, public domain ·
+        audio: Winfred Henson, public domain ·
         <a href="../michael-book/">ΑΩ</a> · tyneside.software
       </footer>
     """
@@ -814,7 +814,7 @@ def render_book(
       {"".join(sections)}
       <nav class="book-nav" aria-label="Nearby books">{prev_html}{next_html}</nav>
       <footer class="foot">
-        {escape(name)} · World English Bible · audio: WEB British Edition (public domain) ·
+        {escape(name)} · World English Bible · audio: Winfred Henson (public domain) ·
         <a href="../overview.html#{stem}">Overview</a> · <a href="../index.html">Holy Bible</a>
       </footer>
     """
@@ -867,11 +867,9 @@ Sixty-six book Protestant canon. Not NIV/NLT/ESV.
 ## Audio
 
 Each chapter has play and download. Source:
-[World English Bible British Edition MP3s](https://ebible.org/eng-webbe/mp3/)
-via eBible.org / PublicDomainAudioBibles.com, public domain, one file per chapter.
-British/international English. No North-East English WEB narration is known.
-On-page text is the American WEB; the audio uses British spelling and LORD
-rather than Yahweh.
+[Winfred Wardell Henson](https://ebible.org/eng-web/audio/) reading the classic
+World English Bible. Professional voice artist, one narrator, public domain.
+LibriVox 4.4/5 (97 ratings). Matches the on-page WEB text.
 """,
         encoding="utf-8",
     )
