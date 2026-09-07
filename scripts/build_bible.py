@@ -246,9 +246,9 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=audio2"
+    css = f"{asset_prefix}bible.css?v=audio3"
     canon = f"{asset_prefix}canon.js"
-    js = f"{asset_prefix}bible.js"
+    js = f"{asset_prefix}bible.js?v=audio3"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,7 +276,7 @@ def page_shell(
     </main>
   </div>
   <a class="top" href="#">Top</a>
-  <audio id="bible-audio" preload="none"></audio>
+  <audio id="bible-audio" preload="auto" crossorigin="anonymous"></audio>
   <div id="audio-dock" hidden>
     <button type="button" id="dock-toggle">Pause</button>
     <span id="dock-label"></span>

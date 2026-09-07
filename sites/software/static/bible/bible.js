@@ -222,6 +222,11 @@
   var dockLabel = document.getElementById("dock-label");
   var dockTime = document.getElementById("dock-time");
   var currentBar = null;
+  var currentSrc = "";
+  var cache = {};
+  var prefetchQueue = [];
+  var prefetchBusy = 0;
+  var PREFETCH_MAX = 2;
 
   function fmt(t) {
     if (!isFinite(t)) return "0:00";
@@ -255,6 +260,48 @@
     }
   }
 
+  function resolvedSrc(url) {
+    var hit = cache[url];
+    return hit && hit !== "pending" ? hit : url;
+  }
+
+  function pumpPrefetch() {
+    while (prefetchBusy < PREFETCH_MAX && prefetchQueue.length) {
+      var url = prefetchQueue.shift();
+      prefetchBusy += 1;
+      fetch(url, { mode: "cors", credentials: "omit" })
+        .then(function (r) {
+          if (!r.ok) throw new Error(String(r.status));
+          return r.blob();
+        })
+        .then(function (blob) {
+          cache[url] = URL.createObjectURL(blob);
+        })
+        .catch(function () {
+          delete cache[url];
+        })
+        .then(function () {
+          prefetchBusy -= 1;
+          pumpPrefetch();
+        });
+    }
+  }
+
+  function prefetch(url) {
+    if (!url || cache[url]) return;
+    cache[url] = "pending";
+    prefetchQueue.push(url);
+    pumpPrefetch();
+  }
+
+  function prefetchAround(bar) {
+    var i = bars.indexOf(bar);
+    if (i < 0) i = 0;
+    [i, i + 1, i + 2].forEach(function (n) {
+      if (bars[n]) prefetch(bars[n].getAttribute("data-src"));
+    });
+  }
+
   function playBar(bar) {
     if (!audio || !bar) return;
     var src = bar.getAttribute("data-src");
@@ -265,10 +312,14 @@
       err.textContent = "";
     }
     currentBar = bar;
-    if (audio.getAttribute("src") !== src) {
-      audio.src = src;
+    var playSrc = resolvedSrc(src);
+    if (currentSrc !== src) {
+      currentSrc = src;
+      audio.src = playSrc;
+    } else if (audio.ended) {
+      audio.currentTime = 0;
     }
-    setBarState(bar, "loading");
+    setBarState(bar, cache[src] && cache[src] !== "pending" ? "playing" : "loading");
     var art = bar.closest("article.chapter");
     if (art) art.scrollIntoView({ block: "start" });
     var p = audio.play();
@@ -281,6 +332,7 @@
         setBarState(bar, "paused");
       });
     }
+    prefetchAround(bar);
   }
 
   if (audio && bars.length) {
@@ -367,5 +419,30 @@
         if (first) playBar(first);
       }
     } catch (e) {}
+
+    var start = 0;
+    var hash = (location.hash || "").replace(/^#c-/, "");
+    var hashNum = parseInt(hash, 10);
+    if (hashNum) {
+      bars.forEach(function (b, i) {
+        var art = b.closest("article.chapter");
+        if (art && art.id === "c-" + hashNum) start = i;
+      });
+    }
+    prefetchAround(bars[start] || bars[0]);
+    if ("IntersectionObserver" in window) {
+      var seen = new WeakSet();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting || seen.has(entry.target)) return;
+          seen.add(entry.target);
+          var bar = entry.target.querySelector(".ch-audio[data-src]");
+          if (bar) prefetchAround(bar);
+        });
+      }, { rootMargin: "400px 0px", threshold: 0.01 });
+      document.querySelectorAll("article.chapter").forEach(function (art) {
+        io.observe(art);
+      });
+    }
   }
 })();
