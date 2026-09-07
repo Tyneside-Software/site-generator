@@ -115,6 +115,13 @@ Cross-repo push needs a secret on **site-generator**:
 
 On every push to `main`, the workflow builds all sites and force-updates each Pages repo’s `main` branch with the generated files.
 
+If `PAGES_DEPLOY_TOKEN` is missing, CI will build and then fail on the first Pages checkout. Local fallback (same copy-and-push as the Action):
+
+```powershell
+python -m site_generator
+.\scripts\deploy-pages.ps1
+```
+
 ### GitHub Pages + custom domains
 
 For each of the four site repos:
