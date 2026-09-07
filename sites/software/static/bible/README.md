@@ -7,14 +7,16 @@ Public-domain modern English. Same reader chrome as [michael-book](https://tynes
 ## Build
 
 ```powershell
-cd C:\Users\MichaelThomson\source\TTS
+cd C:\\Users\\MichaelThomson\\source\\TTS
 python scripts/build_bible.py
 python -m site_generator software
 ```
 
-Writes `sites/software/static/bible/index.html` and `books/*.html`.
+Writes `sites/software/static/bible/index.html`, `overview.html`, and `books/*.html`.
+Book summaries live in `sites/software/bible-source/about.json` (merged into overview.json at build).
+Chapter guides live in `sites/software/bible-source/chapter-guides/` (one note per chapter).
 The site generator copies `static/` into `output/software/bible/`.
-Push `site-generator` `main` and CI publishes tyneside.software.
+Push `site-generator` `main` and CI publishes tyneside.software. If the token is missing: `.\scripts\deploy-pages.ps1 software`.
 
 ## Translation
 

@@ -1,0 +1,281 @@
+{
+  "lead": "Sixty-six books, one long story: God makes a world, a people go wrong and are called, judged, and kept, and in the end the story opens onto a city where there is no more curse. This page is the map. Each book has a proper summary, then a chapter guide — one line per chapter — so you can see the shape before you open the text.",
+  "ot": "The Old Testament is Israel’s scriptures: law, history, songs, and prophets. It runs from creation to a people waiting, after exile, for God to act again.",
+  "nt": "The New Testament is the story of Jesus of Nazareth, the church that grew from him, letters that teach and correct that church, and a last vision of how the story ends.",
+  "groups": {
+    "ot:Law": "The Torah — five books. How the world begins, how a family becomes a nation, and the covenant given at Sinai.",
+    "ot:History": "From the land, through kings and a split nation, into exile and a fragile return. What happens when the people try (and fail) to live the covenant.",
+    "ot:Wisdom": "Poems and sayings for living, suffering, praying, and loving. Not a timeline — a voice.",
+    "ot:Prophets": "Warnings, grief, and hope spoken into politics and worship. Longer books first, then the twelve shorter ones.",
+    "nt:Gospels": "Four tellings of Jesus: who he is, what he did, how he died, and that he rose. Same Lord, four cameras.",
+    "nt:History": "The church’s first years — from Jerusalem toward the ends of the earth.",
+    "nt:Letters": "Mail to churches and friends: doctrine, dispute, encouragement, and how to live together.",
+    "nt:Revelation": "An unveiling. Pictures, not a puzzle book: the Lamb wins, and the story is not over until God is with his people."
+  },
+  "books": {
+    "genesis": {
+      "tagline": "Beginnings",
+      "about": "God speaks a world into being. Humans are made for it, then break it. Flood, a fresh start, then a family: Abraham, Isaac, Jacob, and Joseph — promised a land and a people, ending in Egypt, waiting."
+    },
+    "exodus": {
+      "tagline": "Out of slavery",
+      "about": "Israel is enslaved in Egypt. God sends Moses, plague and Passover, a path through the sea. At Sinai they receive the covenant and begin to build a dwelling so God can travel with them."
+    },
+    "leviticus": {
+      "tagline": "Holy, in the camp",
+      "about": "How a holy God lives among an unholy people: priests, offerings, clean and unclean, the Day of Atonement, and a call to be holy in ordinary life — food, land, neighbours, festivals."
+    },
+    "numbers": {
+      "tagline": "Wilderness",
+      "about": "Census, camp, and a long walk that should have been short. Complaint, spies, forty years of wandering. A new generation stands on the edge of the land."
+    },
+    "deuteronomy": {
+      "tagline": "Moses’ last word",
+      "about": "Moses restates the law to people who were children at Sinai. Choose life. Love God with all you are. Then he dies in sight of the land he will not enter."
+    },
+    "joshua": {
+      "tagline": "Into the land",
+      "about": "Joshua leads the crossing of the Jordan, Jericho, a campaign, and the allotment of territory. The book ends with a charge: serve the Lord. The land is gift, not trophy."
+    },
+    "judges": {
+      "tagline": "Everyone did what was right in their own eyes",
+      "about": "A grim cycle: the people forget, they are oppressed, a judge rises, peace, then it happens again. Ehud, Deborah, Gideon, Samson — deliverance that never quite holds."
+    },
+    "ruth": {
+      "tagline": "Loyalty in the dark years",
+      "about": "A Moabite widow clings to her Israelite mother-in-law, gleans in Bethlehem, and is redeemed by Boaz. A quiet story of kindness that feeds the line of David."
+    },
+    "1samuel": {
+      "tagline": "Prophet, king, and a shepherd",
+      "about": "Hannah’s child Samuel, Israel’s last judge. The people demand a king: Saul rises and unravels. David is anointed, fights Goliath, and waits while Saul hunts him."
+    },
+    "2samuel": {
+      "tagline": "David’s throne, and the crack in it",
+      "about": "David becomes king, brings the ark, receives a promise of a house forever — then Bathsheba, murder, and a family tearing itself apart. Glory and wreckage in the same life."
+    },
+    "1kings": {
+      "tagline": "Temple, then split",
+      "about": "Solomon asks for wisdom, builds the temple, then his heart turns. The kingdom splits: Israel in the north, Judah in the south. Elijah stands against Ahab and Baal."
+    },
+    "2kings": {
+      "tagline": "Both houses fall",
+      "about": "Elisha’s ministry, a parade of kings, the north taken by Assyria, the south by Babylon. Jerusalem burns. The book ends with a king in exile, eating at a foreign table."
+    },
+    "1chronicles": {
+      "tagline": "David, again, toward worship",
+      "about": "Genealogies from Adam, then David’s reign retold with the temple in view — less scandal, more liturgy. Written for people who need to remember who they are after exile."
+    },
+    "2chronicles": {
+      "tagline": "Judah’s kings, and a way home",
+      "about": "Solomon through the fall of Jerusalem, focused on Judah and the temple. Reformers and disasters. It ends with Cyrus telling the exiles they may go up and build."
+    },
+    "ezra": {
+      "tagline": "Return and rebuild",
+      "about": "Exiles come home. The altar and temple rise under opposition. Ezra the scribe arrives later to teach the law. Identity after empire is the work."
+    },
+    "nehemiah": {
+      "tagline": "The wall, and the book",
+      "about": "Nehemiah rebuilds Jerusalem’s wall in the teeth of mockery. The law is read aloud. The people confess and try to live as a distinct community again."
+    },
+    "esther": {
+      "tagline": "Hidden hand, public deliverance",
+      "about": "A Jewish woman becomes queen in Persia. Haman plots genocide. Esther and Mordecai turn the decree. God is never named; the deliverance is kept as Purim."
+    },
+    "job": {
+      "tagline": "Suffering, and no tidy answer",
+      "about": "A blameless man loses everything. Friends explain it badly. Job refuses their map. God speaks from the whirlwind — not a formula, a presence — and Job’s life is restored, but not explained away."
+    },
+    "psalms": {
+      "tagline": "The prayerbook",
+      "about": "One hundred and fifty songs: praise, rage, fear, thanks, royal hope, wisdom. Israel’s hymnal, still how the church learns to speak to God when it has no words of its own."
+    },
+    "proverbs": {
+      "tagline": "Wisdom for Tuesday",
+      "about": "Short sayings and longer poems on speech, money, sex, work, justice, and the fear of the Lord. Wisdom is a woman calling in the street. Folly is loud too."
+    },
+    "ecclesiastes": {
+      "tagline": "Under the sun",
+      "about": "A teacher turns every human project over and finds vapour — toil, pleasure, even wisdom, in a world that dies. Still: fear God, keep the commands, enjoy the day’s bread."
+    },
+    "songofsolomon": {
+      "tagline": "Love, unembarrassed",
+      "about": "A sequence of love poems — desire, search, delight, the garden. Read as human love, or as a figure of God and his people. Either way it refuses to be ashamed of the body."
+    },
+    "isaiah": {
+      "tagline": "Holy, holy, holy — and a servant",
+      "about": "Judgment on Judah and the nations, a vision of God high and lifted up, a remnant, a child, a suffering servant, and a promise of new heavens and a new earth. The longest prophetic book, and the one the Gospels quote most."
+    },
+    "jeremiah": {
+      "tagline": "The prophet who could not stop",
+      "about": "Called young, opposed always. He says Jerusalem will fall, and it does. He also speaks a new covenant written on the heart. Weeping is not unbelief here; it is the job."
+    },
+    "lamentations": {
+      "tagline": "A city in ruins",
+      "about": "Five poems of grief after Jerusalem falls. Acrostic in Hebrew, raw in any language. Great is your faithfulness sits next to the rubble. This is how you tell the truth about loss."
+    },
+    "ezekiel": {
+      "tagline": "Visions in exile",
+      "about": "A priest by the Chebar canal sees wheels, a departing glory, dry bones that live, and a future temple. Strange, heavy, and aimed at a people who thought God had left for good."
+    },
+    "daniel": {
+      "tagline": "Faithful under empire",
+      "about": "Court stories: diet, furnace, lions, a hand on the wall. Then visions of beasts and kingdoms. The point is not the timetable. It is that God still rules when Babylon (or anyone) looks final."
+    },
+    "hosea": {
+      "tagline": "Love that will not quit",
+      "about": "Hosea’s marriage is the sermon: unfaithful partner, stubborn love. Israel has chased other gods. God will not be done with them. Come, let us return."
+    },
+    "joel": {
+      "tagline": "Locusts, and the Spirit",
+      "about": "A locust plague becomes the day of the Lord. Rend your hearts. Then a promise: God will pour out his Spirit on all flesh — the line Peter stands up and claims at Pentecost."
+    },
+    "amos": {
+      "tagline": "Let justice roll down",
+      "about": "A herdsman from Judah preaches to the northern kingdom. Worship without justice is noise. The poor are crushed. The day of the Lord will not be a picnic for the comfortable."
+    },
+    "obadiah": {
+      "tagline": "Edom, briefly",
+      "about": "The shortest Old Testament book. Edom stood by while Jerusalem fell. Pride will be brought down. The kingdom will be the Lord’s."
+    },
+    "jonah": {
+      "tagline": "The prophet who ran",
+      "about": "God sends Jonah to Nineveh. He boards a ship the other way, meets a storm and a fish, preaches a sentence, and sulks when the city repents. The book’s last word is God’s pity on people — and cattle."
+    },
+    "micah": {
+      "tagline": "Do justice, love kindness",
+      "about": "Judgment and a ruler from Bethlehem. What does the Lord require? To do justice, love kindness, and walk humbly with God. High worship is not a substitute for that."
+    },
+    "nahum": {
+      "tagline": "Nineveh falls",
+      "about": "Where Jonah showed mercy, Nahum shows the end of an empire that would not stay turned. Assyria’s capital is finished. The oppressed are told: it will not last forever."
+    },
+    "habakkuk": {
+      "tagline": "How long?",
+      "about": "The prophet argues with God about violence and about using a worse nation as a tool. The answer is not tidy. The righteous shall live by faith. God is still in his temple."
+    },
+    "zephaniah": {
+      "tagline": "The great day",
+      "about": "The day of the Lord against Judah and the nations — and a remnant that sings. The Lord is in your midst; you will not be afraid. Judgment and comfort in a short span."
+    },
+    "haggai": {
+      "tagline": "Rebuild the house",
+      "about": "Returned exiles have panelled houses and a ruined temple. Haggai says: consider your ways, get timber, build. A modest second temple still matters because God says he is with them."
+    },
+    "zechariah": {
+      "tagline": "Night visions, a coming king",
+      "about": "Eight visions, priestly and royal hope, a king on a donkey, a fountain opened. After exile, the future is not small. The Gospels hear this book when Jesus rides into Jerusalem."
+    },
+    "malachi": {
+      "tagline": "The last word, then a wait",
+      "about": "Weary priests, cheap offerings, marriage and justice going thin. I have loved you, says the Lord — and you ask, how? A messenger will come. Then the Old Testament goes quiet."
+    },
+    "matthew": {
+      "tagline": "The Messiah, as Scripture said",
+      "about": "Jesus as son of David and son of Abraham, fulfilling the law and the prophets. Teaching (the Sermon on the Mount), conflict, cross, empty tomb, and a charge to the nations."
+    },
+    "mark": {
+      "tagline": "Immediately",
+      "about": "The shortest gospel, fast and spare. The Son of God who serves and suffers. Disciples who do not understand. A crucifixion, and a resurrection that sends you back to Galilee to see."
+    },
+    "luke": {
+      "tagline": "An orderly account, for outsiders too",
+      "about": "A careful narrative from birth announcements to resurrection meals. Women, the poor, Samaritans, meals, the Holy Spirit. Jesus sets his face toward Jerusalem, then opens the Scriptures on the road."
+    },
+    "john": {
+      "tagline": "The Word became flesh",
+      "about": "Not a second Mark. Signs, long conversations, I am. In the beginning was the Word. Believe, and live. The passion is glory. Thomas is invited to touch, and to trust."
+    },
+    "acts": {
+      "tagline": "From Jerusalem, outward",
+      "about": "The risen Jesus sends; the Spirit comes. Peter, then Paul. Preaching, prison, council, shipwreck. The church is not a club in one city. The book ends with Paul in Rome, still talking."
+    },
+    "romans": {
+      "tagline": "The gospel, laid out",
+      "about": "Paul’s longest argument: all have sinned, God justifies the ungodly by faith, Abraham, Adam, the Spirit, Israel, and a life that is a living sacrifice. Nothing can separate us from the love of God."
+    },
+    "1corinthians": {
+      "tagline": "A gifted, messy church",
+      "about": "Factions, lawsuits, sex, food, worship, spiritual gifts. The still more excellent way is love. Then the resurrection chapter — if Christ is not raised, the whole thing collapses."
+    },
+    "2corinthians": {
+      "tagline": "Weakness, and a new covenant",
+      "about": "Paul defends his ministry without swagger. Treasure in clay jars. Super-apostles. A thorn, and grace sufficient. Boasting only in weakness, because that is where the power shows."
+    },
+    "galatians": {
+      "tagline": "Free, not back under the law",
+      "about": "A fierce letter. You did not begin by the Spirit in order to finish by the flesh. Justification by faith, Abraham’s family opened, fruit of the Spirit. Stand firm in the freedom."
+    },
+    "ephesians": {
+      "tagline": "The body, and the armour",
+      "about": "Blessed in Christ, saved by grace, one new humanity, church as body and temple. Then walk: unity, household, and the armour of God against powers, not flesh."
+    },
+    "philippians": {
+      "tagline": "Joy, from prison",
+      "about": "Paul in chains, glad. The Christ-hymn: emptied, obedient, exalted. Work out your salvation. Rejoice. Think on what is true. A thank-you note that became a school of contentment."
+    },
+    "colossians": {
+      "tagline": "Christ holds all things",
+      "about": "Against rival spiritualities, Paul says the fullness of God dwells in Christ. He is before all things. You died and were raised with him — so put to death what is earthly, and put on love."
+    },
+    "1thessalonians": {
+      "tagline": "Hope, while you wait",
+      "about": "A young church, loved and encouraged. Live quietly, love well. The Lord will come; the dead in Christ will rise. Do not grieve as those who have no hope."
+    },
+    "2thessalonians": {
+      "tagline": "Not yet the end",
+      "about": "Some thought the day of the Lord had already come. Paul says not so, and not an excuse to stop working. Stand firm. The Lord is faithful."
+    },
+    "1timothy": {
+      "tagline": "Order in the household of God",
+      "about": "False teaching, prayer, overseers and deacons, care of widows, godliness with contentment. How a church should carry itself when the gospel is under pressure."
+    },
+    "2timothy": {
+      "tagline": "Finish the race",
+      "about": "Likely Paul’s last letter. Do not be ashamed. Preach the word. A good fight, a finished course, a crown. Come before winter. Names of friends and deserters, side by side."
+    },
+    "titus": {
+      "tagline": "Sound doctrine, good works",
+      "about": "Elders in Crete, rebuke of empty talk, grace that trains us to live upright lives. The gospel is not an idea you only agree with. It shows in a people."
+    },
+    "philemon": {
+      "tagline": "Receive him as a brother",
+      "about": "A runaway enslaved man, Onesimus, has become a Christian. Paul writes to Philemon: take him back no longer as a slave but as a beloved brother. A small letter with a large ask."
+    },
+    "hebrews": {
+      "tagline": "Better",
+      "about": "Jesus is better than angels, Moses, and the old priesthood — the high priest who offered himself. Faith’s roll-call. Do not drift. We are looking for a city that is to come."
+    },
+    "james": {
+      "tagline": "Faith that does something",
+      "about": "Trials, the tongue, partiality toward the rich, wisdom from above. Faith without works is dead. Not a rival to Paul — a refusal to let ‘faith’ mean words only."
+    },
+    "1peter": {
+      "tagline": "Exiles, with a living hope",
+      "about": "To scattered believers under pressure. Born again to a living hope. Be holy. Honour the emperor, love the family, suffer like Christ. Shepherd the flock. The God of all grace will restore you."
+    },
+    "2peter": {
+      "tagline": "False teachers, delayed coming",
+      "about": "Reminders before Peter’s death. False teachers, destruction, a delayed coming that is patience, not slackness. New heavens and a new earth, where righteousness lives. Grow in grace."
+    },
+    "1john": {
+      "tagline": "That you may know",
+      "about": "Light, love, and truth against a split community. God is love. Test the spirits. We know we have passed from death to life because we love the brothers and sisters."
+    },
+    "2john": {
+      "tagline": "Truth and love, in one page",
+      "about": "Walk in love, and do not welcome those who deny that Jesus Christ has come in the flesh. A postcard with a sharp edge."
+    },
+    "3john": {
+      "tagline": "Hospitality, and a name",
+      "about": "Gaius is praised for receiving missionaries. Diotrephes loves to be first and shuts the door. Demetrius is well spoken of. Church politics, in miniature, with a verdict."
+    },
+    "jude": {
+      "tagline": "Contend for the faith",
+      "about": "A short, fierce warning: certain people have crept in. Remember what you were taught. Keep yourselves in the love of God. He is able to keep you from falling."
+    },
+    "revelation": {
+      "tagline": "The Lamb, and the city",
+      "about": "John on Patmos sees the risen Christ, writes to seven churches, then a sequence of seals, trumpets, bowls, beasts, and Babylon falling. The Lamb is on the throne. No more curse. Come, Lord Jesus."
+    }
+  }
+}

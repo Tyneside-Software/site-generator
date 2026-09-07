@@ -20,6 +20,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC_DIR = ROOT / "sites" / "software" / "bible-source" / "web"
+OVERVIEW_PATH = ROOT / "sites" / "software" / "bible-source" / "overview.json"
+CHAPTERS_PATH = ROOT / "sites" / "software" / "bible-source" / "chapters.json"
 CHURCH_WEB = ROOT / "sites" / "church" / "bible-source" / "web"
 OUT_DIR = ROOT / "sites" / "software" / "static" / "bible"
 BOOKS_DIR = OUT_DIR / "books"
@@ -244,7 +246,7 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=lilac"
+    css = f"{asset_prefix}bible.css?v=guides2"
     canon = f"{asset_prefix}canon.js"
     js = f"{asset_prefix}bible.js"
     return f"""<!DOCTYPE html>
@@ -318,6 +320,247 @@ def grouped_book_nav_fixed(stats: list[dict], current: str | None = None) -> str
     return "".join(parts)
 
 
+def load_overview() -> dict:
+    if not OVERVIEW_PATH.is_file():
+        raise SystemExit(f"Missing {OVERVIEW_PATH}")
+    data = json.loads(OVERVIEW_PATH.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not isinstance(data.get("books"), dict):
+        raise SystemExit(f"overview.json must be an object with a books map")
+    books = data["books"]
+    about_path = OVERVIEW_PATH.parent / "about.json"
+    if about_path.is_file():
+        abouts = json.loads(about_path.read_text(encoding="utf-8"))
+        if not isinstance(abouts, dict):
+            raise SystemExit("about.json must be an object keyed by book stem")
+        for stem, paras in abouts.items():
+            if stem not in books:
+                raise SystemExit(f"about.json unknown book: {stem}")
+            books[stem]["about"] = paras
+    extra: dict = {}
+    if CHAPTERS_PATH.is_file():
+        extra = json.loads(CHAPTERS_PATH.read_text(encoding="utf-8"))
+    guides_dir = OVERVIEW_PATH.parent / "chapter-guides"
+    if guides_dir.is_dir():
+        for path in sorted(guides_dir.glob("*.json")):
+            chunk = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(chunk, dict):
+                raise SystemExit(f"{path.name} must be an object keyed by book stem")
+            extra.update(chunk)
+    if not isinstance(extra, dict):
+        raise SystemExit("chapter guides must be an object keyed by book stem")
+    for stem, notes in extra.items():
+        if stem not in books:
+            raise SystemExit(f"chapter guide unknown book: {stem}")
+        if not isinstance(notes, list):
+            raise SystemExit(f"chapter guide {stem} must be a list of notes")
+        books[stem]["chapters"] = [str(n).strip() for n in notes]
+    return data
+
+
+def about_html(meta: dict, *, teaser: bool = False, stem: str = "") -> str:
+    about = meta.get("about") or ""
+    paras = [str(p).strip() for p in (about if isinstance(about, list) else [about]) if str(p).strip()]
+    if not paras:
+        return ""
+    if teaser and len(paras) > 2:
+        shown = paras[:2]
+        rest = len(paras) - 2
+        href = f"books/{stem}.html#about" if stem else "#about"
+        more = (
+            f'<p class="ov-more"><a href="{escape(href)}">'
+            f"Full summary on the book page ({rest} more "
+            f"{'paragraphs' if rest != 1 else 'paragraph'}) →</a></p>"
+        )
+        return "".join(f'<p class="ov-about">{escape(p)}</p>' for p in shown) + more
+    return "".join(f'<p class="ov-about">{escape(p)}</p>' for p in paras)
+
+
+def chapter_guide_html(
+    stem: str,
+    name: str,
+    notes: list[str],
+    *,
+    href_prefix: str,
+    details: bool,
+    open_by_default: bool = False,
+) -> str:
+    if not notes:
+        return ""
+    label = "Psalm" if name == "Psalms" else "Chapter"
+    items = []
+    for i, note in enumerate(notes, 1):
+        href = f"{href_prefix}#c-{i}"
+        items.append(
+            f'<li><a href="{href}">{escape(label)} {i}</a>'
+            f'<span>{escape(note)}</span></li>'
+        )
+    ol = f'<ol class="ov-chapters">{"".join(items)}</ol>'
+    heading = f"Chapter guide · {len(notes)}"
+    if not details:
+        return (
+            f'<section class="book-guide" id="guide">'
+            f"<h2>Chapter guide</h2>"
+            f"<p class=\"guide-lead\">One line on each {label.lower()}, then the text below. "
+            f"Jump to a chapter from here or the sidebar.</p>"
+            f"{ol}</section>"
+        )
+    open_attr = " open" if open_by_default else ""
+    return (
+        f'<details class="ov-guide"{open_attr}>'
+        f"<summary>{escape(heading)}</summary>{ol}</details>"
+    )
+
+
+def _group_anchor(testament: str, group: str) -> str:
+    raw = f"{testament}-{group}".lower()
+    return "g-" + re.sub(r"[^a-z0-9]+", "-", raw).strip("-")
+
+
+def render_overview(
+    stats: list[dict],
+    overview: dict,
+    total_chapters: int,
+    total_words: int,
+    built: str,
+) -> str:
+    books_meta = overview.get("books") or {}
+    groups_meta = overview.get("groups") or {}
+    missing = [s["stem"] for s in stats if s["stem"] not in books_meta]
+    if missing:
+        raise SystemExit("overview.json missing books: " + ", ".join(missing))
+    no_guide = [
+        s["stem"]
+        for s in stats
+        if not (books_meta[s["stem"]].get("chapters") or [])
+    ]
+    if no_guide:
+        raise SystemExit("chapters.json missing guides: " + ", ".join(no_guide))
+
+    group_nav: list[str] = []
+    parts: list[str] = []
+    last_test: str | None = None
+    last_group: str | None = None
+    open_block = False
+
+    for s in stats:
+        if s["testament"] != last_test:
+            if open_block:
+                parts.append("</div></section>")
+                open_block = False
+            last_test = s["testament"]
+            last_group = None
+            heading = "Old Testament" if last_test == "ot" else "New Testament"
+            hid = "ot" if last_test == "ot" else "nt"
+            blurb = overview.get(hid) or ""
+            parts.append(f'<h2 id="{hid}">{escape(heading)}</h2>')
+            if blurb:
+                parts.append(f'<p class="ov-test-lead">{escape(blurb)}</p>')
+        if s["group"] != last_group:
+            if open_block:
+                parts.append("</div></section>")
+            last_group = s["group"]
+            gk = f"{s['testament']}:{s['group']}"
+            anchor = _group_anchor(s["testament"], s["group"])
+            prefix = "OT" if s["testament"] == "ot" else "NT"
+            group_nav.append(
+                f'<a class="nav-item" href="#{anchor}">'
+                f'<span class="t">{escape(prefix)} · {escape(s["group"])}</span></a>'
+            )
+            gblurb = groups_meta.get(gk) or ""
+            parts.append(f'<section class="ov-group" id="{anchor}">')
+            parts.append(f"<h3>{escape(s['group'])}</h3>")
+            if gblurb:
+                parts.append(f'<p class="ov-group-lead">{escape(gblurb)}</p>')
+            parts.append('<div class="ov-books">')
+            open_block = True
+
+        meta = books_meta[s["stem"]]
+        tag = str(meta.get("tagline") or "")
+        nch = s["chapter_count"]
+        notes = meta.get("chapters") or []
+        if notes and len(notes) != nch:
+            raise SystemExit(
+                f"{s['stem']}: chapter guide has {len(notes)} notes, book has {nch} chapters"
+            )
+        ch_label = "1 chapter" if nch == 1 else f"{nch} chapters"
+        tag_html = f'<p class="ov-tag">{escape(tag)}</p>' if tag else ""
+        guide = chapter_guide_html(
+            s["stem"],
+            s["name"],
+            notes,
+            href_prefix=f"books/{s['stem']}.html",
+            details=True,
+            open_by_default=nch <= 8,
+        )
+        parts.append(
+            f'<article class="ov-book" id="{escape(s["stem"])}">'
+            f"<header>{tag_html}"
+            f"<h4><a href=\"books/{s['stem']}.html\">{escape(s['name'])}</a></h4>"
+            f'<p class="ov-meta">{ch_label} · {s["words"]:,} words</p>'
+            f"</header>"
+            f"{about_html(meta, teaser=True, stem=s['stem'])}"
+            f"{guide}"
+            f'<p class="ov-actions">'
+            f'<a href="books/{s["stem"]}.html">Read {escape(s["name"])} →</a>'
+            f'<a href="books/{s["stem"]}.html#guide">Chapter guide</a>'
+            f"</p></article>"
+        )
+
+    if open_block:
+        parts.append("</div></section>")
+
+    lead = str(overview.get("lead") or "")
+    nav = grouped_book_nav_fixed(stats)
+    aside = f"""
+    <div class="side-head">
+      <div class="brand"><a href="../index.html">tyneside.software</a> · <a href="index.html">bible</a></div>
+      <h1>The whole story</h1>
+      <p class="sub">What each book is about</p>
+      <div class="epigraph">
+        A map of the sixty-six: a proper summary of each book, then a chapter guide.
+      </div>
+      <div class="stats">
+        <div><strong>{len(stats)}</strong> books</div>
+        <div><strong>{total_chapters:,}</strong> chapters</div>
+        <div><strong>{total_words:,}</strong> words</div>
+        <div>{escape(built)}</div>
+      </div>
+      {jump_block()}
+    </div>
+    <p class="side-lib"><a href="index.html">← All books</a></p>
+    <nav class="nav" aria-label="Sections">{"".join(group_nav)}</nav>
+    <nav class="nav" aria-label="Books">{nav}</nav>
+    """
+
+    main = f"""
+      <header class="hero">
+        <div class="badge">Overview · sixty-six books</div>
+        <h1>The whole story</h1>
+        <p>{escape(lead)}</p>
+        <div class="hero-actions">
+          <a class="btn-fill" href="#ot">Old Testament</a>
+          <a class="btn-ghost" href="#nt">New Testament</a>
+          <a class="btn-ghost" href="index.html">Library of books</a>
+        </div>
+      </header>
+      <section class="overview" id="overview">
+        {"".join(parts)}
+      </section>
+      <footer class="foot">
+        World English Bible · overview · <a href="index.html">Holy Bible</a>
+      </footer>
+    """
+    return page_shell(
+        title="The whole story — Holy Bible",
+        description="A map of the whole Bible: a longer summary of each of the sixty-six books, and a chapter guide for every book.",
+        asset_prefix="",
+        body_attrs='data-page="overview"',
+        toggle_label="Books",
+        aside=aside,
+        main=main,
+    )
+
+
 def jump_block() -> str:
     return """
       <form class="jump" id="jump-form" action="#" method="get">
@@ -348,6 +591,7 @@ def render_index(stats: list[dict], total_chapters: int, total_words: int, built
       </div>
       {jump_block()}
     </div>
+    <p class="side-lib"><a href="overview.html">The whole story — what each book is about</a></p>
     <nav class="nav" aria-label="Books">{nav}</nav>
     """
 
@@ -383,10 +627,12 @@ def render_index(stats: list[dict], total_chapters: int, total_words: int, built
         <p>The whole Protestant canon in modern English, laid out like a book — chapters you can sit with, a sidebar that knows where you are, and a jump box for John 3:16.</p>
         <div class="hero-actions">
           <a class="btn-fill" href="books/genesis.html#c-1">Begin Genesis</a>
+          <a class="btn-ghost" href="overview.html">The whole story</a>
           <a class="btn-ghost" href="books/john.html#c-1">Open John</a>
           <a class="btn-ghost" id="resume-link" href="books/genesis.html" hidden>Continue reading</a>
         </div>
       </header>
+      <p class="library-lead"><a href="overview.html">What each book is about →</a> Summaries and a chapter guide for every book, then the text itself.</p>
       <section class="library" id="library">
         {cards("ot", "Old Testament")}
         {cards("nt", "New Testament")}
@@ -414,6 +660,7 @@ def render_book(
     prev_book: dict | None,
     next_book: dict | None,
     built: str,
+    book_meta: dict | None = None,
 ) -> str:
     name, stem, testament, group, aliases = spec
     nchap = max(chapters)
@@ -468,6 +715,26 @@ def render_book(
         else '<a href="../index.html">All books →</a>'
     )
 
+    meta = book_meta or {}
+    notes = meta.get("chapters") or []
+    if notes and len(notes) != nchap:
+        raise SystemExit(
+            f"{stem}: chapter guide has {len(notes)} notes, book has {nchap} chapters"
+        )
+    about = about_html(meta)
+    guide = chapter_guide_html(
+        stem,
+        name,
+        notes,
+        href_prefix="",
+        details=False,
+    )
+    summary_block = ""
+    if about or guide:
+        summary_block = (
+            f'<section class="book-summary" id="about">{about}{guide}</section>'
+        )
+
     aside = f"""
     <div class="side-head">
       <div class="brand"><a href="../../index.html">tyneside.software</a> · <a href="../index.html">bible</a></div>
@@ -483,7 +750,7 @@ def render_book(
       {jump_block()}
     </div>
     <nav class="nav" aria-label="Chapters">{"".join(chap_nav)}</nav>
-    <p class="side-lib"><a href="../index.html">← All books</a></p>
+    <p class="side-lib"><a href="../index.html">← All books</a> · <a href="../overview.html#{stem}">What this book is</a></p>
     """
 
     main = f"""
@@ -491,12 +758,18 @@ def render_book(
         <div class="badge">{escape(testament_label)} · {escape(group)}</div>
         <h1>{escape(name)}</h1>
         <p>{nchap} chapters · {verses:,} verses · {words:,} words</p>
+        <div class="hero-actions">
+          <a class="btn-ghost" href="#guide">Chapter guide</a>
+          <a class="btn-ghost" href="#c-1">Begin chapter 1</a>
+          <a class="btn-ghost" href="../overview.html#{stem}">In the whole story</a>
+        </div>
       </header>
       <nav class="book-nav" aria-label="Nearby books">{prev_html}{next_html}</nav>
+      {summary_block}
       {"".join(sections)}
       <nav class="book-nav" aria-label="Nearby books">{prev_html}{next_html}</nav>
       <footer class="foot">
-        {escape(name)} · World English Bible · <a href="../index.html">Holy Bible</a>
+        {escape(name)} · World English Bible · <a href="../overview.html#{stem}">Overview</a> · <a href="../index.html">Holy Bible</a>
       </footer>
     """
     return page_shell(
@@ -512,7 +785,7 @@ def render_book(
 
 def write_readme() -> None:
     (OUT_DIR / "README.md").write_text(
-        """# Holy Bible — World English Bible
+        r"""# Holy Bible — World English Bible
 
 **Live:** https://tyneside.software/bible/
 
@@ -526,9 +799,11 @@ python scripts/build_bible.py
 python -m site_generator software
 ```
 
-Writes `sites/software/static/bible/index.html` and `books/*.html`.
+Writes `sites/software/static/bible/index.html`, `overview.html`, and `books/*.html`.
+Book summaries live in `sites/software/bible-source/about.json` (merged into overview.json at build).
+Chapter guides live in `sites/software/bible-source/chapter-guides/` (one note per chapter).
 The site generator copies `static/` into `output/software/bible/`.
-Push `site-generator` `main` and CI publishes tyneside.software.
+Push `site-generator` `main` and CI publishes tyneside.software. If the token is missing: `.\scripts\deploy-pages.ps1 software`.
 
 ## Translation
 
@@ -570,14 +845,27 @@ def build() -> None:
     write_canon(stats)
     total_chapters = sum(s["chapter_count"] for s in stats)
     total_words = sum(s["words"] for s in stats)
+    overview = load_overview()
     (OUT_DIR / "index.html").write_text(
         render_index(stats, total_chapters, total_words, built), encoding="utf-8"
+    )
+    (OUT_DIR / "overview.html").write_text(
+        render_overview(stats, overview, total_chapters, total_words, built),
+        encoding="utf-8",
     )
 
     for i, (spec, chapters) in enumerate(parsed):
         prev_book = stats[i - 1] if i else None
         next_book = stats[i + 1] if i < len(stats) - 1 else None
-        html = render_book(spec, chapters, stats, prev_book, next_book, built)
+        html = render_book(
+            spec,
+            chapters,
+            stats,
+            prev_book,
+            next_book,
+            built,
+            book_meta=(overview.get("books") or {}).get(spec[1]) or {},
+        )
         (BOOKS_DIR / f"{spec[1]}.html").write_text(html, encoding="utf-8")
 
     write_readme()
