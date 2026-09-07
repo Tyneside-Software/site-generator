@@ -246,9 +246,9 @@ def page_shell(
     aside: str,
     main: str,
 ) -> str:
-    css = f"{asset_prefix}bible.css?v=audio6"
+    css = f"{asset_prefix}bible.css?v=audio7"
     canon = f"{asset_prefix}canon.js"
-    js = f"{asset_prefix}bible.js?v=audio6"
+    js = f"{asset_prefix}bible.js?v=audio7"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -846,7 +846,7 @@ Book summaries live in `sites/software/bible-source/about.json` (merged into ove
 Chapter guides live in `sites/software/bible-source/chapter-guides/` (one note per chapter).
 Chapter audio URLs live in `sites/software/static/bible/audio-manifest.json`
 (refresh with `python scripts/fetch_bible_audio.py`). Files are streamed from
-eBible.org — the zip is ~1.1 GB and does not belong in GitHub Pages.
+eBible.org — the zip is ~5.4 GB and does not belong in GitHub Pages.
 The site generator copies `static/` into `output/software/bible/`.
 Push `site-generator` `main` and CI publishes tyneside.software. If the token is missing: `.\scripts\deploy-pages.ps1 software`.
 
