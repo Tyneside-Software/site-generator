@@ -16,7 +16,7 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.beer](https://tyneside.beer) | `beer` | `Tyneside-Software/tyneside.beer` (aspirational — not in family nav yet) |
 | [tyneside.academy](https://tyneside.academy) | `academy` | `Tyneside-Software/tyneside.academy` (aspirational — not in family nav yet) |
 | [tyneside.church](https://tyneside.church) | `church` | `Tyneside-Software/tyneside.church` (aspirational — not in family nav yet) |
-| [tyneside.store](https://tyneside.store) | `store` | `Tyneside-Software/tyneside.store` (aspirational — not in family nav yet) |
+| [tyneside.store](https://tyneside.store) | `store` | `Tyneside-Software/tyneside.store` (Katie’s squishy shop — not in family nav) |
 
 Interactive brands pair with **[tyneside-api](https://github.com/Tyneside-Software/tyneside-api)** (`app/brands/<id>/`). See **[PAIRING.md](./PAIRING.md)**.
 

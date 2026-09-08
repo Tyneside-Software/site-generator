@@ -4,7 +4,7 @@ Aspirational brand site. Domain was bought as a **joke**. The idea behind it is 
 
 Dropship beer from [Dynamite Valley](https://www.dynamitevalley.co.uk/) (Ponsanooth, Cornwall) — a brewery a friend of Michael’s owns. Not produced on Tyneside.
 
-The money idea matches [tyneside.store](https://tyneside.store/): order through Tyneside, **+2% to [tyneside.charity](https://tyneside.charity/)**, the actual order goes to the friend’s shop (here: the brewery). Not live — no till, no licence on this brand.
+The money idea: order through Tyneside, **+2% to [tyneside.charity](https://tyneside.charity/)**, the actual order goes to the friend’s brewery. Not live — no till, no licence on this brand.
 
 Listed on the group sketchbook: [tyneside.group/next.html](https://tyneside.group/next.html).
 

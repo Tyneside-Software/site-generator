@@ -312,9 +312,14 @@ def build_site(site: Site) -> Path:
     template_name = meta.get("template", "page.html")
 
     context = _site_context(site, meta, body_html)
-    template = env.get_template(template_name)
-    html = template.render(**context)
-    (dest / "index.html").write_text(html, encoding="utf-8")
+    static_index = content_dir / "static" / "index.html"
+    if static_index.is_file():
+        # Site provides its own homepage (e.g. Katie's shop on tyneside.store).
+        shutil.copy2(static_index, dest / "index.html")
+    else:
+        template = env.get_template(template_name)
+        html = template.render(**context)
+        (dest / "index.html").write_text(html, encoding="utf-8")
 
     # Extra pages: any *.md (recursive) with a sibling *.yaml, except site root index.md
     for md_path in sorted(content_dir.rglob("*.md")):
@@ -383,14 +388,6 @@ def build_site(site: Site) -> Path:
 
     _copy_static(site, dest)
     _copy_site_app(site, dest)
-
-    # Store catalogue JSON (if present) for client/debug + future checkout
-    catalog_src = content_dir / "catalog"
-    if catalog_src.exists():
-        catalog_dest = dest / "catalog"
-        if catalog_dest.exists():
-            shutil.rmtree(catalog_dest)
-        shutil.copytree(catalog_src, catalog_dest)
 
     _write_cname(site, dest)
     _write_nojekyll(dest)

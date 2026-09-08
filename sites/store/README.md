@@ -1,18 +1,17 @@
 # tyneside.store
 
-Aspirational brand site. **Not a Tyneside till.**
+**Katie's squishy shop** — [fidget squish](https://tyneside.store/).
 
-A friend’s shop: [RST Wholesale](https://rst-wholesale.com/). This site mirrors the public catalogue so people can browse with Tyneside framing; every product and collection **links through to RST**.
+Squishies, homemade, and slime. Email [katie@tyneside.software](mailto:katie@tyneside.software) to buy. Not a Tyneside checkout.
 
-Later stretch (not happening on those click-throughs): take the order here, add 2%, donate that 2% to [tyneside.charity](https://tyneside.charity/). Gift Aid only if that programme is a registered charity — it is not today.
+The shop lives in `static/` (its own look, not the family chrome). Old links on tyneside.software `/katie/` redirect here.
 
-Listed on the group sketchbook: [tyneside.group/next.html](https://tyneside.group/next.html).
-
-## Catalogue sync
+## Build
 
 ```powershell
-python scripts/sync_rst_catalog.py
 python -m site_generator store
 ```
 
-Open `output/store/index.html`.
+Open `output/store/index.html`. Deploy: `.\scripts\deploy-pages.ps1 store`.
+
+RST Wholesale was an earlier idea for this domain. It is not this site. Leftover `catalog/` JSON is unused and is not published.

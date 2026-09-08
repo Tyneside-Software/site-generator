@@ -3,185 +3,23 @@
 {% block body %}
   <header class="hero">
     <div class="wrap">
-      <p class="hero-kicker">Open sketch · not our till · a friend’s shop</p>
-      <h1>TYNESIDE<br>STORE</h1>
+      <p class="hero-kicker">Katie’s shop · email to buy</p>
+      <h1>FIDGET<br>SQUISH</h1>
       <p class="hero-tag">
-        RST Wholesale, through our door.<br>
-        Browse here. Buy there.<br>
-        Charity markup is the later idea.
+        Squishies.<br>
+        Homemade.<br>
+        Slime.
       </p>
       <p class="hero-lead">
-        This is a <strong>sketch</strong>, not an active Tyneside shop.
-        A friend runs <strong>RST Wholesale</strong>
-        (<a href="https://rst-wholesale.com/" rel="noopener" target="_blank">rst-wholesale.com</a>) —
-        craft blanks, drinkware, stationery, clothing.
-        We mirror their public catalogue so it can wear a Tyneside face.
-        Every collection and product still <strong>opens on RST</strong>.
-        They take the order. They ship. We do not hold stock and we do not take payment.
+        This door is <strong>Katie’s squishy shop</strong>, not a Tyneside till
+        and not a wholesale catalogue. Browse the stock, then email
+        <a href="mailto:katie@tyneside.software">katie@tyneside.software</a>
+        to buy. Packed in cardboard boxes with stickers. No returns.
       </p>
-      <div class="panel" style="margin:1.25rem 0 0;text-align:left">
-        <h3 style="margin-top:0">Honest status</h3>
-        <p style="margin:0">
-          No Tyneside checkout. Clicking through to RST means you pay
-          <strong>RST’s price</strong>, not a Tyneside markup.
-          The +2% to
-          <a href="https://tyneside.charity/">tyneside.charity</a>
-          only works if we ever take the order ourselves — and that charity
-          is not registered yet, so no Gift Aid either. Until then this page is
-          a signpost to a friend’s wholesale shop.
-        </p>
-      </div>
       <div class="hero-actions">
-        <a class="btn btn-fill btn-lg" href="#shop">Browse catalogue →</a>
-        <a class="btn btn-secondary btn-lg" href="https://rst-wholesale.com/" rel="noopener" target="_blank">RST Wholesale</a>
-        <a class="btn btn-secondary btn-lg" href="https://tyneside.group/next.html">Other sketches</a>
+        <a class="btn btn-fill btn-lg" href="mailto:katie@tyneside.software?subject=Order%20from%20fidget%20squish">Email to buy →</a>
+        <a class="btn btn-secondary btn-lg" href="https://tyneside.group/">Tyneside Group</a>
       </div>
     </div>
   </header>
-
-  <section class="section" id="model">
-    <div class="wrap">
-      <h2>Today vs later</h2>
-      <div class="stat-row">
-        <div class="stat">
-          <span class="value">RST</span>
-          <span class="label">Friend’s shop · buy there</span>
-        </div>
-        <div class="stat">
-          <span class="value">Here</span>
-          <span class="label">Browse · then click through</span>
-        </div>
-        <div class="stat">
-          <span class="value">+2%</span>
-          <span class="label">Sketch · only if we take the order</span>
-        </div>
-      </div>
-      <div class="grid-3" style="margin-top:1.25rem">
-        <div class="panel panel-c">
-          <h3>1. You browse here</h3>
-          <p>
-            Same RST catalogue, Tyneside framing.
-            Collections and products below all go to
-            <a href="https://rst-wholesale.com/" rel="noopener" target="_blank">rst-wholesale.com</a>.
-          </p>
-        </div>
-        <div class="panel panel-m">
-          <h3>2. You buy on RST</h3>
-          <p>
-            Their till, their fulfilment, their wholesale account rules.
-            No fake Tyneside warehouse. The friend already has the shop.
-          </p>
-        </div>
-        <div class="panel">
-          <h3>3. Later: +2% to charity</h3>
-          <p>
-            If this door ever takes payment, the idea is RST price
-            <strong>+ 2%</strong>, and that 2% to
-            <a href="https://tyneside.charity/">tyneside.charity</a>
-            (Howden welcome-home cleans). Example: RST £10.00 → £10.20 here
-            (£0.20 charity). Same pattern as
-            <a href="https://tyneside.beer/">tyneside.beer</a>
-            (Dynamite Valley dropship). That is not what happens on a click-through today.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="shop">
-    <div class="wrap-wide">
-      <h2>Catalogue (opens on RST)</h2>
-      {% if store.product_count %}
-        <p class="lede">
-          {{ store.product_count }} products · {{ store.collection_count }} collections
-          {% if store.synced_at %} · synced {{ store.synced_at[:10] }}{% endif %}
-          · every link goes to <strong>rst-wholesale.com</strong>
-        </p>
-      {% else %}
-        <p class="lede">
-          Catalogue not synced yet. Meanwhile the real shop is
-          <a href="https://rst-wholesale.com/" rel="noopener" target="_blank">rst-wholesale.com</a>.
-        </p>
-      {% endif %}
-
-      {% if store.top_collections %}
-        <h3 class="store-subhead">Collections</h3>
-        <div class="store-collection-grid">
-          {% for c in store.top_collections %}
-            <a class="store-collection-card" href="{{ c.rst_url }}" rel="noopener" target="_blank">
-              {% if c.image %}
-                <img src="{{ c.image }}" alt="" loading="lazy" width="320" height="200">
-              {% endif %}
-              <span class="title">{{ c.title }}</span>
-              <span class="meta">{{ c.products_count }} products · view on RST →</span>
-            </a>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      {% if store.featured_products %}
-        <h3 class="store-subhead">Featured products</h3>
-        <div class="store-product-grid">
-          {% for p in store.featured_products %}
-            <article class="store-product-card">
-              {% if p.image %}
-                <a href="{{ p.rst_url }}" rel="noopener" target="_blank" class="thumb">
-                  <img src="{{ p.image }}" alt="{{ p.title }}" loading="lazy" width="280" height="280">
-                </a>
-              {% endif %}
-              <h4>{{ p.title }}</h4>
-              <p class="price">
-                <span class="customer">RST £{{ p.pricing.rst_gbp }}</span>
-                <span class="split">buy on RST · later sketch +{{ store.markup_pct | int }}% (£{{ p.pricing.charity_gbp }} charity)</span>
-              </p>
-              <p class="actions">
-                <a class="btn btn-fill" href="{{ p.rst_url }}" rel="noopener" target="_blank">View on RST</a>
-              </p>
-              {% if not p.available %}
-                <p class="badge-out">Check availability on RST</p>
-              {% endif %}
-            </article>
-          {% endfor %}
-        </div>
-      {% endif %}
-    </div>
-  </section>
-
-  <section class="section" id="better">
-    <div class="wrap">
-      <h2>What this page is for</h2>
-      <ul class="list-features">
-        <li>Named supplier — RST Wholesale, a friend’s shop — no fake warehouse</li>
-        <li>Every product and collection still opens on rst-wholesale.com</li>
-        <li>A place to hang the later +2% charity idea without pretending it is live</li>
-        <li>Catalogue sync from RST’s public Shopify API</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="family">
-    <div class="wrap">
-      <h2>Where it sits</h2>
-      <p class="lede">
-        On the group sketchbook until it earns a homepage door.
-        Charity is the stretch. RST is the shop that already exists.
-      </p>
-      <div class="btn-row">
-        <a class="btn btn-secondary" href="https://tyneside.group/next.html">All sketches →</a>
-        <a class="btn btn-secondary" href="https://rst-wholesale.com/" rel="noopener" target="_blank">RST Wholesale</a>
-        <a class="btn btn-secondary" href="https://tyneside.charity/">Charity (not registered yet)</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-cta" id="contact">
-    <div class="wrap">
-      <h2>Want the white-label version?</h2>
-      <p class="lede">
-        Trade, bulk blanks, or actually taking payment here with the 2% —
-        that is a conversation, not a button. Product supply stays with RST.
-      </p>
-      {% include "includes/contact_block.html" %}
-    </div>
-  </section>
 {% endblock %}

@@ -29,7 +29,7 @@ Family nav/footer only includes sites with `nav_order` set (software, cleaning, 
 | `beer` | tyneside.beer | yes | no | Aspirational. Dropship Dynamite Valley; order here, +2% to charity. Not in family nav. Listed on `tyneside.group/next.html` |
 | `academy` | tyneside.academy | yes | no | Aspirational. Lewis early GCSEs + notes site; possible group tutoring. Not in family nav. Listed on `tyneside.group/next.html` |
 | `church` | tyneside.church | yes | no | Aspirational. Multi-faith conversation / maybe monthly meetup. Not in family nav. Listed on `tyneside.group/next.html` |
-| `store` | tyneside.store | yes | no | Aspirational. RST Wholesale (friend’s shop) click-through; +2% charity later. Not in family nav. Listed on `tyneside.group/next.html` |
+| `store` | tyneside.store | yes | no | Katie’s squishy shop (fidget squish). Email to buy. Not in family nav. |
 
 ## Logistics layout (reference pair)
 

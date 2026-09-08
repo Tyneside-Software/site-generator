@@ -200,7 +200,7 @@ SITES: tuple[Site, ...] = (
         description=(
             "Joke domain, real brewery friend (Dynamite Valley, Cornwall). "
             "Dropship: order through tyneside.beer, they fulfil. "
-            "+2% to tyneside.charity — same idea as the store. No shop yet."
+            "+2% to tyneside.charity. No shop yet."
         ),
         email=CONTACT_EMAIL,
         cta_label="WhatsApp the sketch",
@@ -242,17 +242,15 @@ SITES: tuple[Site, ...] = (
         id="store",
         domain="tyneside.store",
         repo="tyneside.store",
-        title="Tyneside Store",
+        title="fidget squish",
         brand_word="STORE",
-        tagline="A friend's wholesale shop (RST). Browse here, buy there. Sketch, not our till.",
+        tagline="Katie's squishy and fidget shop. Email to buy.",
         description=(
-            "White-label idea over RST Wholesale — a friend's shop. "
-            "Catalogue links through to rst-wholesale.com. "
-            "Later stretch: +2% to tyneside.charity. Not our checkout yet."
+            "Katie's shop: squishies, homemade, and slime. "
+            "Email katie@tyneside.software to buy. Not a Tyneside checkout."
         ),
-        email=CONTACT_EMAIL,
-        cta_label="WhatsApp the sketch",
-        aspirational=True,
+        email="katie@tyneside.software",
+        cta_label="Email Katie",
     ),
 )
 
