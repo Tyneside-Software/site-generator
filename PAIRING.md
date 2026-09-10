@@ -27,7 +27,7 @@ Family nav/footer only includes sites with `nav_order` set (software, cleaning, 
 | `green` | tyneside.green | yes | no | Aspirational. Lifetime carbon via Greenacres + volunteers; Gift Aid via charity later. Not in family nav. Listed on `tyneside.group/next.html` |
 | `garden` | tyneside.garden | yes | no | Aspirational. Paid local gardening / outdoor maintenance. Not in family nav. Listed on `tyneside.group/next.html` |
 | `beer` | tyneside.beer | yes | no | Aspirational. Dropship Dynamite Valley; order here, +2% to charity. Not in family nav. Listed on `tyneside.group/next.html` |
-| `academy` | tyneside.academy | yes | no | Aspirational. Lewis early GCSEs + notes site; possible group tutoring. Not in family nav. Listed on `tyneside.group/next.html` |
+| `academy` | tyneside.academy | **standalone repo** | no | Lewis’s site. Not built or deployed from site-generator. Edit `Tyneside-Software/tyneside.academy`. Listed on `tyneside.group/next.html` |
 | `church` | tyneside.church | yes | no | Aspirational. Multi-faith conversation / maybe monthly meetup. Not in family nav. Listed on `tyneside.group/next.html` |
 | `store` | tyneside.store | yes | no | Katie’s squishy shop (fidget squish). Email to buy. Not in family nav. |
 

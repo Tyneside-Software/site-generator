@@ -55,7 +55,7 @@ $repos = @(
     },
     @{
         name = "tyneside.academy"
-        description = "GitHub Pages site for tyneside.academy — Tyneside Academy (aspirational / early GCSEs sketch)"
+        description = "Standalone GitHub Pages site for tyneside.academy — Lewis's GCSE notes (not built by site-generator)"
     },
     @{
         name = "tyneside.church"

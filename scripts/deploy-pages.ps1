@@ -13,7 +13,7 @@
 .EXAMPLE
   python -m site_generator
   .\scripts\deploy-pages.ps1
-  .\scripts\deploy-pages.ps1 academy,software
+  .\scripts\deploy-pages.ps1 software
 #>
 $ErrorActionPreference = "Stop"
 $Root = Split-Path $PSScriptRoot -Parent
@@ -30,7 +30,6 @@ $all = @(
     @{ id = "green";       repo = "tyneside.green" }
     @{ id = "garden";      repo = "tyneside.garden" }
     @{ id = "beer";        repo = "tyneside.beer" }
-    @{ id = "academy";     repo = "tyneside.academy" }
     @{ id = "church";      repo = "tyneside.church" }
     @{ id = "store";       repo = "tyneside.store" }
 )
@@ -38,6 +37,12 @@ $all = @(
 $filter = @()
 if ($args.Count -gt 0) {
     $filter = ($args[0] -split ",") | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ }
+}
+
+if ($filter -contains "academy") {
+    Write-Host "skip  academy  (standalone — https://github.com/Tyneside-Software/tyneside.academy)"
+    $filter = @($filter | Where-Object { $_ -ne "academy" })
+    if ($filter.Count -eq 0) { exit 0 }
 }
 
 $sha = (git -C $Root rev-parse --short HEAD).Trim()

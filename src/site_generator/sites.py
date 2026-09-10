@@ -28,6 +28,8 @@ class Site:
     aspirational: bool = False
     # Family nav/footer order. None = not in the top bar; reach it from tyneside.group.
     nav_order: int | None = None
+    # When True: lives in its own repo. Not built or deployed by this generator.
+    standalone: bool = False
 
     @property
     def content_dir(self) -> Path:
@@ -221,6 +223,7 @@ SITES: tuple[Site, ...] = (
         email=CONTACT_EMAIL,
         cta_label="Open the course",
         aspirational=True,
+        standalone=True,
     ),
     Site(
         id="church",

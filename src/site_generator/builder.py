@@ -409,9 +409,18 @@ def _copy_site_app(site: Site, dest: Path) -> None:
 
 
 def build_all(site_ids: list[str] | None = None) -> list[Path]:
-    """Build selected sites (default: all)."""
+    """Build selected sites (default: all non-standalone)."""
     if site_ids:
-        selected = [get_site(sid) for sid in site_ids]
+        selected: list[Site] = []
+        for sid in site_ids:
+            site = get_site(sid)
+            if site.standalone:
+                raise SystemExit(
+                    f"{site.id} is standalone — edit "
+                    f"https://github.com/Tyneside-Software/{site.repo} "
+                    "directly. This generator will not build or overwrite it."
+                )
+            selected.append(site)
     else:
-        selected = list(SITES)
+        selected = [s for s in SITES if not s.standalone]
     return [build_site(site) for site in selected]

@@ -14,7 +14,7 @@ Python static site generator for the **Tyneside** brand websites. One repo build
 | [tyneside.green](https://tyneside.green) | `green` | `Tyneside-Software/tyneside.green` (aspirational — not in family nav yet) |
 | [tyneside.garden](https://tyneside.garden) | `garden` | `Tyneside-Software/tyneside.garden` (aspirational — not in family nav yet) |
 | [tyneside.beer](https://tyneside.beer) | `beer` | `Tyneside-Software/tyneside.beer` (aspirational — not in family nav yet) |
-| [tyneside.academy](https://tyneside.academy) | `academy` | `Tyneside-Software/tyneside.academy` (aspirational — not in family nav yet) |
+| [tyneside.academy](https://tyneside.academy) | `academy` | `Tyneside-Software/tyneside.academy` (**standalone** — Lewis edits that repo; not built here) |
 | [tyneside.church](https://tyneside.church) | `church` | `Tyneside-Software/tyneside.church` (aspirational — not in family nav yet) |
 | [tyneside.store](https://tyneside.store) | `store` | `Tyneside-Software/tyneside.store` (Katie’s squishy shop — not in family nav) |
 
@@ -24,6 +24,7 @@ Interactive brands pair with **[tyneside-api](https://github.com/Tyneside-Softwa
 
 ```
 sites/<id>/          # content per brand (meta.yaml + markdown)
+sites/academy/       # pointer only — Lewis works in Tyneside-Software/tyneside.academy
 sites/logistics/     # docs/ + static/app/ shell (API-paired brand)
 sites/games/         # games.yaml shelf + static/play/<slug>/index.html
 templates/           # shared Jinja2 templates

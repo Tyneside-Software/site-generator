@@ -27,7 +27,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.list:
         for site in SITES:
-            print(f"{site.id:12}  {site.domain:22}  -> {site.repo}")
+            extra = "  [standalone]" if site.standalone else ""
+            print(f"{site.id:12}  {site.domain:22}  -> {site.repo}{extra}")
         return 0
 
     try:
