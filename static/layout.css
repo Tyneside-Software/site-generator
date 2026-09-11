@@ -458,7 +458,13 @@ a.quiet-cv:focus {
 }
 
 .cv-role {
-  margin-bottom: 1.15rem;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid var(--border, rgba(0, 0, 0, 0.12));
+}
+
+.cv-role:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .cv-role-head {
@@ -467,11 +473,11 @@ a.quiet-cv:focus {
   justify-content: space-between;
   gap: 0.35rem 1.25rem;
   align-items: baseline;
-  margin-bottom: 0.65rem;
 }
 
 .cv-role-head h3 {
   margin: 0;
+  font-size: 1.1rem;
 }
 
 .cv-org {
@@ -484,6 +490,16 @@ a.quiet-cv:focus {
   font-size: 0.88rem;
   color: var(--muted);
   white-space: nowrap;
+}
+
+.cv-role ul {
+  margin: 0.65rem 0 0;
+  padding: 0 0 0 1.15rem;
+  color: var(--text);
+}
+
+.cv-role li {
+  margin: 0.3rem 0;
 }
 
 @media print {
