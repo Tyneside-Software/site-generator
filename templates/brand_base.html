@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page.title }}</title>
   <meta name="description" content="{{ page.description }}">
-  <link rel="canonical" href="https://{{ site.domain }}/">
+  <link rel="canonical" href="{% if page.canonical %}{{ page.canonical }}{% else %}https://{{ site.domain }}/{% endif %}">
   <link rel="icon" href="{{ root }}logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ root }}layout.css?v=20260904ac">
-  <link rel="stylesheet" href="{{ root }}themes.css?v=20260904ac">
+  <link rel="stylesheet" href="{{ root }}layout.css?v=20260911cv">
+  <link rel="stylesheet" href="{{ root }}themes.css?v=20260911cv">
   {% block head_extra %}{% endblock %}
 </head>
 <body class="site theme-{{ site.id }}{% if page.body_class %} {{ page.body_class }}{% endif %}">

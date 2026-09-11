@@ -112,6 +112,7 @@ def build() -> Path:
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ΑΩ — by Me, God</title>
   <meta name="description" content="ΑΩ by Me, God. A comic philosophical novel in ninety-nine chapters.">
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <style>
     :root {{
       --bg: #0f1419;

@@ -1,0 +1,282 @@
+{% extends "brand_base.html" %}
+
+{% block head_extra %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Michael Thomson",
+    "givenName": "Michael",
+    "familyName": "Thomson",
+    "jobTitle": "Chief Technology Officer",
+    "description": "CTO and co-founder of Cloud Connect Software. Previously Head of Engineering at Advanced following the acquisition of CloudTrade. Builds software teams, products, and people.",
+    "url": "https://tyneside.software/michael/cv/",
+    "email": "mailto:michael@tyneside.software",
+    "telephone": "+447411949215",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "North Tyneside",
+      "addressRegion": "Tyne and Wear",
+      "addressCountry": "GB"
+    },
+    "birthPlace": {
+      "@type": "Place",
+      "name": "Seaham, County Durham, United Kingdom"
+    },
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Newcastle University"
+    },
+    "worksFor": [
+      {
+        "@type": "Organization",
+        "name": "Cloud Connect Software",
+        "url": "https://www.cloudconnectsoftware.com/"
+      },
+      {
+        "@type": "Organization",
+        "name": "Tyneside Software Ltd",
+        "url": "https://tyneside.software/"
+      }
+    ],
+    "sameAs": [
+      "https://uk.linkedin.com/in/michael-thomson-8614b273",
+      "https://www.cloudconnectsoftware.com/",
+      "https://tyneside.software/about.html"
+    ]
+  }
+  </script>
+{% endblock %}
+
+{% block body %}
+  <header class="hero cv-hero">
+    <div class="wrap">
+      <p class="hero-kicker">Curriculum vitae</p>
+      <h1>MICHAEL<br>THOMSON</h1>
+      <p class="hero-tag">
+        CTO &amp; Co-Founder, Cloud Connect Software.<br>
+        Previously Head of Engineering, Advanced / CloudTrade.
+      </p>
+      <p class="hero-lead">
+        Engineering leader from the North East. Twelve years in document data capture
+        and invoice automation — from the fifth hire at CloudTrade, through a
+        <strong>£27.3m acquisition</strong>{% include "includes/cloudtrade_exit_sources.html" %},
+        to founding the next company. Day job is Cloud Connect.
+        Tyneside Software is the evening side project: mentoring, building, a bit of good.
+      </p>
+      <p class="hero-meta">
+        North Tyneside · Born Seaham, 1992
+        · <a href="{{ site.mailto }}">{{ site.email }}</a>
+        · <a href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp {{ site.phone_display }}</a>
+        · <a href="https://uk.linkedin.com/in/michael-thomson-8614b273" rel="noopener" target="_blank">LinkedIn</a>
+        · <a href="{{ home_href }}">tyneside.software</a>
+      </p>
+    </div>
+  </header>
+
+  <section class="section" id="profile">
+    <div class="wrap">
+      <h2>Profile</h2>
+      <div class="panel">
+        <p>
+          I build software teams and products in document automation —
+          high-volume invoices and messy real-world documents, where accuracy and flexibility actually matter.
+          I started as a software engineer on 22 July 2013, grew into Head of Engineering,
+          took CloudTrade through acquisition into Advanced, and in March 2025 co-founded
+          <a href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">Cloud Connect Software</a>
+          as CTO.
+        </p>
+        <p style="margin-top:0.85rem;margin-bottom:0">
+          I care about making engineering a place people can think differently,
+          including neurodivergent minds. Mentoring is how I spend one evening a week.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="experience">
+    <div class="wrap">
+      <h2>Experience</h2>
+
+      <article class="cv-role panel panel-c">
+        <header class="cv-role-head">
+          <div>
+            <h3>CTO &amp; Co-Founder</h3>
+            <p class="cv-org">
+              <a href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">Cloud Connect Software</a>
+            </p>
+          </div>
+          <p class="cv-dates">March 2025 – present</p>
+        </header>
+        <p>
+          Day job. Separate company from Tyneside Software.
+          Co-founded with Steve Britton (CEO) and Calum Formby to take document data capture
+          forward after CloudTrade / Advanced — accounts payable and accounts receivable automation,
+          including AI and rules-based extraction, for organisations processing tens of thousands
+          of invoices a year.
+        </p>
+        <ul class="list-features" style="margin-top:0.85rem">
+          <li>Technical direction, architecture, and product engineering for a hybrid AI / rules capture platform</li>
+          <li>Customers in the 50,000+ invoices/year class; commercial viability sits at that volume</li>
+          <li>Competes on flexibility and accuracy against the rest of the document-capture market</li>
+          <li>~£600k ARR with growth</li>
+        </ul>
+      </article>
+
+      <article class="cv-role panel">
+        <header class="cv-role-head">
+          <div>
+            <h3>Head of Engineering</h3>
+            <p class="cv-org">Advanced (OneAdvanced) — CloudTrade business</p>
+          </div>
+          <p class="cv-dates">October 2021 – February 2025</p>
+        </header>
+        <p>
+          After Advanced acquired CloudTrade, I led engineering through the integration:
+          new ownership, new processes, same product family. Senior CloudTrade leadership
+          retired; the job was to keep delivery honest while the company adopted Advanced’s
+          structures, and to grow the engineering organisation (on the order of a dozen
+          developers toward ~30 after the deal).
+        </p>
+        <ul class="list-features" style="margin-top:0.85rem">
+          <li>Engineering leadership for the acquired CloudTrade / data-automation stack on Azure</li>
+          <li>Acquisition integration — roughly six to twelve months of that work as a primary job</li>
+          <li>Delivery discipline and technical direction at a larger-company scale</li>
+        </ul>
+      </article>
+
+      <article class="cv-role panel">
+        <header class="cv-role-head">
+          <div>
+            <h3>Head of Engineering</h3>
+            <p class="cv-org">CloudTrade Technologies</p>
+          </div>
+          <p class="cv-dates">2018 – October 2021</p>
+        </header>
+        <p>
+          Promoted through software engineer, senior engineer, and technical lead from joining
+          as the fifth person in the company (one of two in engineering). Hands-on product and
+          engineering leadership through Calculus Capital investment (2018) and the sale to
+          Advanced on 14 October 2021 for a
+          <strong>£27.3m total cash consideration</strong>{% include "includes/cloudtrade_exit_sources.html" %}.
+        </p>
+        <ul class="list-features" style="margin-top:0.85rem">
+          <li>Document interpretation and e-invoicing: invoices, orders, and related business documents into ERP / AP systems</li>
+          <li>Patented capture technology (Gramatica and related) — engineering contribution to the CloudTrade stack</li>
+          <li>Scaled the engineering team and the product through the investment and exit period</li>
+        </ul>
+      </article>
+
+      <article class="cv-role panel">
+        <header class="cv-role-head">
+          <div>
+            <h3>Software Engineer → Technical Lead</h3>
+            <p class="cv-org">CloudTrade Technologies</p>
+          </div>
+          <p class="cv-dates">22 July 2013 – 2018</p>
+        </header>
+        <p>
+          First professional software job. Built and shipped the document-automation platform
+          that later became the acquisition story: intelligent data capture from PDFs and other
+          human-readable documents, high accuracy, non-disruptive supplier onboarding.
+        </p>
+      </article>
+
+      <article class="cv-role panel panel-m">
+        <header class="cv-role-head">
+          <div>
+            <h3>Founder</h3>
+            <p class="cv-org">
+              <a href="{{ home_href }}">Tyneside Software Ltd</a>
+              · Company #17326934
+            </p>
+          </div>
+          <p class="cv-dates">Incorporated 8 July 2026 – present · evenings</p>
+        </header>
+        <p>
+          Evening side project. Once a week, five or six hours, I sit down and write
+          software with university students who want real commercial experience, and with my
+          own children. Mentoring, building teams, and making new bits of software —
+          paid work welcome, day jobs and studies stay in place.
+        </p>
+        <p style="margin-top:0.85rem;margin-bottom:0">
+          Also pushing forward a welcome-home cleaning programme for new parents
+          (<a href="https://tyneside.charity/">tyneside.charity</a>).
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="education">
+    <div class="wrap">
+      <h2>Education</h2>
+      <div class="panel">
+        <header class="cv-role-head">
+          <div>
+            <h3>BSc Computer Science</h3>
+            <p class="cv-org">Newcastle University</p>
+          </div>
+          <p class="cv-dates">2010 – 2013</p>
+        </header>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="skills">
+    <div class="wrap">
+      <h2>What I actually do</h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3>Product &amp; platform</h3>
+          <ul class="list-features">
+            <li>Document data capture and invoice automation at enterprise volume</li>
+            <li>Rules engines and interpretation of messy real-world documents</li>
+            <li>Cloud platforms (Azure) and the operational path from prototype to production</li>
+            <li>Field / logistics software as a current passion project</li>
+          </ul>
+        </div>
+        <div class="panel panel-c">
+          <h3>People</h3>
+          <ul class="list-features">
+            <li>Building and running engineering teams — startup through post-acquisition</li>
+            <li>Mentoring people into real delivery, not pretend internships</li>
+            <li>Neurodivergent-aware workplaces; everyone welcome</li>
+            <li>Hiring for passion and the work, not only test scores</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="talks">
+    <div class="wrap">
+      <h2>Talks</h2>
+      <div class="panel">
+        <p>
+          <a href="https://www.youtube.com/watch?v=vS1Kc8vjRoA" rel="noopener" target="_blank">
+            Good Engineers Can Be Good Managers: Never Let Anyone Tell You Otherwise
+          </a>
+          — <em>Talks with Tech Leaders</em>, May 2025.
+          CloudTrade to Advanced to Cloud Connect; teams, culture, and doing it again.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <p class="lede">
+        Cloud Connect introductions, engineering conversations, or the Tyneside evenings —
+        WhatsApp first.
+      </p>
+      {% include "includes/contact_block.html" %}
+      <p class="hero-meta" style="margin-top:1.15rem">
+        <a href="{{ home_href }}">Tyneside Software</a>
+        · <a href="{{ root }}about.html">About</a>
+        · <a href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">Cloud Connect</a>
+        · <a href="https://uk.linkedin.com/in/michael-thomson-8614b273" rel="noopener" target="_blank">LinkedIn</a>
+      </p>
+    </div>
+  </section>
+{% endblock %}

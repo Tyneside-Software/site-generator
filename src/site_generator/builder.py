@@ -277,6 +277,7 @@ def _site_context(
             "description": meta.get("description", site.description),
             "body_html": body_html,
             "body_class": meta.get("body_class", ""),
+            "canonical": meta.get("canonical", ""),
         },
         "sites": SITES,
         "nav_sites": tuple(
@@ -363,6 +364,7 @@ def build_site(site: Site) -> Path:
             "description": description,
             "body_html": body_for_page,
             "body_class": page_meta.get("body_class", ""),
+            "canonical": page_meta.get("canonical", ""),
             "kicker": page_meta.get("kicker", ""),
             "doc_id": doc_id,
             "docs_hub": bool(page_meta.get("docs_hub")),

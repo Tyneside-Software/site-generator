@@ -98,7 +98,7 @@
       var msg =
         "Hello — I have donated (or am about to donate) to the welcome-home cleans programme.\n\n" +
         line +
-        "\n\nPlease add me to the public donor list when the payment lands in Tide.";
+        "\n\nPlease match this payment when it lands in Tide.";
       waBtn.href =
         "https://wa.me/" +
         (cfg.whatsappNumber || "447411949215") +
@@ -176,7 +176,7 @@
           "Your donor line is ready." +
             apiNote +
             " Tide Instant Checkout cannot take a custom payment reference — " +
-            "we match by amount and date. We list you on the public tracker within 3 business days of payment.",
+            "we match by amount and date. We confirm by WhatsApp when the money lands — target within 3 business days.",
           false
         );
         openPayment(amount);
@@ -184,7 +184,7 @@
       .catch(function () {
         setStatus(
           "Your donor line is ready. Notify API unreachable — payment can still go ahead. " +
-            "We list you within 3 business days of payment.",
+            "We match by WhatsApp when the money lands.",
           false
         );
         openPayment(amount);

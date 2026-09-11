@@ -63,10 +63,11 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.software",
         title="Tyneside Software",
         brand_word="SOFTWARE",
-        tagline="Software with purpose. Built from the North East.",
+        tagline="An evening side project. Mentoring, building, real software.",
         description=(
-            "Vertical logistics and work-management software for field services. "
-            "Starting with cleaning — free for local businesses."
+            "Michael's side project on Tyneside: once a week, an evening of five or six hours, "
+            "we write software together. University students and his children. "
+            "Mentoring, building, fun — and a bit of good in the world."
         ),
         email=CONTACT_EMAIL,
         cta_label="WhatsApp Michael",
@@ -78,10 +79,10 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.cleaning",
         title="Tyneside Cleaning",
         brand_word="CLEANING",
-        tagline="Volume cleaning. Every pound to cleaners. Grow forever.",
+        tagline="Local cleans. Money to cleaners. Small on purpose.",
         description=(
-            "Starting Howden Ward. Market-rate £30/2-hour packs for reach and volume. "
-            "All revenue to cleaner fees — no founder draw. Based at Howden Community Hub."
+            "Howden Ward first. Market-rate £30/2-hour packs. "
+            "All revenue to cleaner fees — no founder draw."
         ),
         email=CONTACT_EMAIL,
         cta_label="Book a clean",
@@ -93,7 +94,7 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.charity",
         title="Tyneside Charity",
         brand_word="CHARITY",
-        tagline="Free cleans for new parents in Howden Ward.",
+        tagline="Welcome-home cleans for new parents. Real, and we are pushing it forward.",
         description=(
             "Free welcome-home cleans for new parents in Howden Ward. Not a registered charity yet — "
             "donations paid into Tyneside Cleaning. Promise: every £30 raised delivers one 2-hour free clean."
@@ -107,10 +108,11 @@ SITES: tuple[Site, ...] = (
         repo="tyneside.group",
         title="Tyneside Group",
         brand_word="GROUP",
-        tagline="One vision. Several doors. Jobs, care, kit, practice.",
+        tagline="Side project. Mentoring, building, a bit of good.",
         description=(
-            "Main entrance to Tyneside: software jobs engine, volume cleaning, "
-            "welcome-home charity, second-hand technology, and games for coding practice."
+            "Michael's side project on Tyneside: once a week, an evening of five or six hours, "
+            "writing code with university students and his children. "
+            "Software, local cleaning, welcome-home cleans, kit, and games."
         ),
         email=CONTACT_EMAIL,
         cta_label="WhatsApp Michael",

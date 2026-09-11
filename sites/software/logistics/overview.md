@@ -121,7 +121,7 @@ Do **not** invent a parallel “cleaning module” that bypasses jobs.
 
 ## Related brands
 
-- [tyneside.software](https://tyneside.software/) — jobs engine story  
+- [tyneside.software](https://tyneside.software/) — evening software project  
 - [tyneside.cleaning](https://tyneside.cleaning/) — Phase 2 demand  
 - [tyneside.group](https://tyneside.group/) — family portal  
 - [tyneside-api](https://github.com/Tyneside-Software/tyneside-api) — shared backend  

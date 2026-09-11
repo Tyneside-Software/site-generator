@@ -2,7 +2,7 @@
 
 **Live:** https://tyneside.software/bible/
 
-Public-domain modern English. Same reader chrome as [michael-book](https://tyneside.software/michael-book/).
+Public-domain modern English. Scripture-style reader chrome with sidebar navigation.
 
 ## Build
 

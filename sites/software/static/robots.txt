@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /michael-book/
+Disallow: /michael-book
+
+User-agent: Googlebot
+Disallow: /michael-book/
+Disallow: /michael-book

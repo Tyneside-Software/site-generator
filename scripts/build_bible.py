@@ -1,6 +1,6 @@
 """Build the tyneside.software/bible reader from the World English Bible.
 
-Public-domain modern English. Same chrome as michael-book: sidebar nav,
+Public-domain modern English. Scripture-style chrome: sidebar nav,
 serif reading column, gold on dark. One HTML file per book (the whole
 Bible is ~780k words — too large for a single page).
 
@@ -678,7 +678,7 @@ def render_index(stats: list[dict], total_chapters: int, total_words: int, built
       <footer class="foot">
         World English Bible (public domain) · {len(stats)} books · {total_chapters:,} chapters ·
         audio: Winfred Henson, public domain ·
-        <a href="../michael-book/">ΑΩ</a> · tyneside.software
+        tyneside.software
       </footer>
     """
     return page_shell(
@@ -838,7 +838,7 @@ def write_readme() -> None:
 
 **Live:** https://tyneside.software/bible/
 
-Public-domain modern English. Same reader chrome as [michael-book](https://tyneside.software/michael-book/).
+Public-domain modern English. Scripture-style reader chrome with sidebar navigation.
 
 ## Build
 

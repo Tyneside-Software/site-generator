@@ -5,7 +5,7 @@
 Ninety-nine chapters. Terry Pratchett spirit. Experiential axiom → dual monogram.  
 Final line: **It's a funny old life.**
 
-**Live:** https://tyneside.software/michael-book/
+Unlisted. Not linked from the public sites. Leave it that way.
 
 ## Law
 

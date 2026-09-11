@@ -1,7 +1,7 @@
 # ΑΩ — Status
 
 **Standard:** Perfect only (`docs/QUALITY-BAR.md`). Opus magnum — not “full enough”.  
-**Live:** https://tyneside.software/michael-book/  
+Unlisted. Not linked from the public sites.  
 **Truth:** spine complete; continuous Perfect line-edit in progress. See `docs/QUALITY-AUDIT.md`.
 
 | Range | Honest state |

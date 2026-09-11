@@ -7,7 +7,7 @@ Final line: **It's a funny old life.**
 
 ## Read
 
-https://tyneside.software/michael-book/
+Unlisted. Not linked from the public sites.
 
 ## Build
 

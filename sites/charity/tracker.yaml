@@ -1,7 +1,7 @@
-# Public donations & cleans tracker for tyneside.charity
-# Manual update process: add a row under donations when payment is confirmed in Tide
-# (target: within 3 business days), then rebuild & deploy.
-# Cleans delivered: count only — keep recipient families anonymous.
+# Internal donations & cleans tracker for tyneside.charity
+# Cleans delivered is NOT published on the site.
+# Manual update: add a row under donations when payment is confirmed in Tide
+# (target: within 3 business days). Keep recipient families anonymous.
 
 updated: "2026-07-18"
 gbp_per_clean: 30

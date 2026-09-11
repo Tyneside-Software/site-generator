@@ -76,7 +76,7 @@ Details: `secrets/README.md` and `sites/church/README.md`.
 
 ## Bible (tyneside.software/bible)
 
-Whole Protestant canon in the public-domain **World English Bible**, same reader chrome as `/michael-book/`.
+Whole Protestant canon in the public-domain **World English Bible**, scripture-style reader chrome.
 
 ```powershell
 python scripts/build_bible.py

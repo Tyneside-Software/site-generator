@@ -3,18 +3,18 @@
 {% block body %}
   <header class="hero">
     <div class="wrap">
-      <p class="hero-kicker">Howden Ward · Howden Community Hub</p>
+      <p class="hero-kicker">Howden Ward · North Tyneside</p>
       <h1>FREE CLEANS<br>FOR NEW PARENTS</h1>
       <p class="hero-tag">
-        Starting in Howden Ward.<br>
-        Scaling ward by ward.<br>
-        Real jobs. Real support.
+        A welcome-home clean.<br>
+        Two hours of peace.<br>
+        Real, and we are pushing it forward.
       </p>
       <p class="hero-lead">
-        Not a one-off gift — a way to <strong>multiply prosperity</strong> in the North East:
-        two hours of peace for new parents, paid work for local cleaners, and software that makes it all run.
-        Based at <strong>Howden Community Hub</strong>. First area:
-        <strong>Howden Ward</strong> — about <strong>150 births a year</strong> as a planning estimate when fully covered.
+        Two hours of practical help when a baby arrives: paid work for a local cleaner,
+        a bit of rest for new parents.
+        First area: <strong>Howden Ward</strong>.
+        Two hours of peace, paid hours for a cleaner — and we are pushing it forward.
       </p>
       <div class="panel panel-c" style="margin:1.25rem 0 0;text-align:left">
         <h3 style="margin-top:0">Important — not a registered charity (yet)</h3>
@@ -32,109 +32,18 @@
       </div>
       <div class="hero-actions">
         <a class="btn btn-fill btn-lg" href="#donate">Donate →</a>
-        <a class="btn btn-secondary btn-lg" href="#tracker">Tracker</a>
         <a class="btn btn-secondary btn-lg" href="#why">Why this</a>
       </div>
     </div>
   </header>
 
-  <section class="section" id="tracker">
-    <div class="wrap">
-      <h2>Donations &amp; cleans tracker</h2>
-      <p class="lede">
-        Public board of gifts and how many free cleans they have paid for.
-        Families who receive cleans stay <strong>anonymous</strong> — we only publish counts.
-        {% if tracker.updated %}
-        Last updated <strong>{{ tracker.updated }}</strong>.
-        {% endif %}
-      </p>
-
-      <div class="stat-row-4" style="margin-top:0">
-        <div class="stat stat-accent">
-          <span class="value">£{{ "{:,}".format(tracker.total_raised_gbp) }}</span>
-          <span class="label">Raised so far</span>
-        </div>
-        <div class="stat">
-          <span class="value">{{ tracker.cleans_paid_for }}</span>
-          <span class="label">Cleans paid for</span>
-        </div>
-        <div class="stat">
-          <span class="value">{{ tracker.cleans_delivered }}</span>
-          <span class="label">Cleans delivered</span>
-        </div>
-        <div class="stat">
-          <span class="value">{{ tracker.cleans_outstanding }}</span>
-          <span class="label">Still to deliver</span>
-        </div>
-      </div>
-
-      {% if tracker.remainder_gbp %}
-      <p class="hero-meta" style="margin-top:0.75rem;text-align:center">
-        £{{ tracker.remainder_gbp }} toward the next 2-hour clean
-        (every £{{ tracker.gbp_per_clean }} pays for one).
-      </p>
-      {% endif %}
-
-      <div class="panel" style="margin-top:1.25rem">
-        <h3>How we keep this honest</h3>
-        <ul class="list-features" style="margin-top:0.75rem;max-width:none">
-          <li>
-            <strong>Promise:</strong> for every <strong>£{{ tracker.gbp_per_clean }} raised</strong>,
-            we deliver <strong>one 2-hour free clean</strong>.
-          </li>
-          <li>
-            After you pay, we add your <strong>name, location, amount, and date</strong>
-            to the donor list within <strong>3 business days</strong> (manual update from Tide).
-          </li>
-          <li>
-            Cleans delivered are a <strong>count only</strong> — no family names, no addresses.
-          </li>
-        </ul>
-      </div>
-
-      <h3 style="margin-top:1.75rem">Donor list</h3>
-      {% if tracker.donations %}
-      <div class="table-wrap" style="margin-top:0.75rem">
-        <table class="data-table" id="donor-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Name</th>
-              <th>Location</th>
-              <th class="num">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for d in tracker.donations %}
-            <tr>
-              <td>{{ d.date }}</td>
-              <td>{{ d.name }}</td>
-              <td>{{ d.location }}</td>
-              <td class="num">£{{ "{:,}".format(d.amount_gbp) }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="3">Total raised</td>
-              <td class="num">£{{ "{:,}".format(tracker.total_raised_gbp) }}</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      {% else %}
-      <p class="lede">No donations listed yet.</p>
-      {% endif %}
-    </div>
-  </section>
-
-  <section class="section section-alt" id="donate">
+  <section class="section" id="donate">
     <div class="wrap">
       <h2>Donate</h2>
       <p class="lede">
         Give what you can. If money is tight, a little still helps.
-        If you have more, we hope you will give more — that is how this scales ward by ward.
-        Your name appears on the public donor list with amount, location, and date.
+        If you have more, we hope you will give more.
+        We match payments privately.
       </p>
 
       <div class="panel" style="margin-bottom:1.25rem">
@@ -152,19 +61,22 @@
             <strong>one 2-hour free clean</strong> for a family.
           </li>
           <li>
-            Cleaners are paid fairly for the work. This is not free labour.
+            Cleaners are paid fairly for the work.
+          </li>
+          <li>
+            Families who receive a clean stay anonymous.
           </li>
         </ul>
       </div>
 
       <form class="donate-form panel" id="donate-form" novalidate>
-        <h3 style="margin-top:0">Your details for the donor list</h3>
+        <h3 style="margin-top:0">Your details</h3>
         <p class="hero-meta" style="margin-bottom:1rem">
-          These appear publicly when we confirm payment. Use the name and place you want listed.
+          So we can match the Tide payment. Use the name and place you are happy for us to have on file.
         </p>
 
         <div class="form-row">
-          <label class="form-label" for="donate-name">Name on donor list</label>
+          <label class="form-label" for="donate-name">Your name</label>
           <input class="form-input" id="donate-name" name="name" type="text" autocomplete="name" required placeholder="e.g. Jane Smith" maxlength="80">
         </div>
         <div class="form-row">
@@ -179,7 +91,7 @@
               <input type="radio" name="donate-amount" value="3">
               <span class="amount-card">
                 <span class="amount-value">£3</span>
-                <span class="amount-hint">Give a little · 10% clean</span>
+                <span class="amount-hint">Give a little</span>
               </span>
             </label>
             <label class="amount-option">
@@ -200,7 +112,7 @@
               <input type="radio" name="donate-amount" value="3000">
               <span class="amount-card">
                 <span class="amount-value">£3,000</span>
-                <span class="amount-hint">100 cleans</span>
+                <span class="amount-hint">Give a lot</span>
               </span>
             </label>
           </div>
@@ -215,14 +127,13 @@
           <p>
             We use <strong>Tide Instant Checkout</strong> links for fixed amounts.
             Those links are reusable product links: Tide does <strong>not</strong> let us
-            inject your name into a custom payment reference via the URL
-            (there is no public “reference” parameter like some other providers).
+            inject your name into a custom payment reference via the URL.
           </p>
           <p style="margin-top:0.75rem;margin-bottom:0">
             What we do instead: you enter name and location here; we open the Tide payment;
-            we give you a <strong>donor line</strong> to WhatsApp so we can match the Tide payment
-            and list you within <strong>3 business days</strong>. Name Instant Checkout items in Tide
-            clearly (e.g. “Welcome-home clean donation · £30”) so the bank feed is obvious.
+            we give you a <strong>donor line</strong> to WhatsApp so we can match the Tide payment.
+            Name Instant Checkout items in Tide clearly (e.g. “Welcome-home clean donation · £30”)
+            so the bank feed is obvious.
           </p>
         </div>
 
@@ -243,8 +154,7 @@
             <a class="btn btn-fill" id="donate-whatsapp-ref" href="{{ site.whatsapp }}" rel="noopener" target="_blank">WhatsApp this line</a>
           </div>
           <p class="hero-meta" style="margin-top:0.85rem;margin-bottom:0">
-            After Tide shows payment, keep any receipt. We update the
-            <a href="#tracker">tracker</a> by hand when the money lands —
+            After Tide shows payment, keep any receipt. We match by hand when the money lands —
             target <strong>within 3 business days</strong>.
           </p>
         </div>
@@ -262,9 +172,9 @@
     <div class="wrap">
       <h2>Why I’m doing this</h2>
       <p class="lede">
-        My ambition is to bring <strong>prosperity to the North East</strong> — somehow.
-        I’ve been looking at my own life for the highest-leverage personal way to do that.
-        I don’t want to give money once. I want it to <strong>multiply</strong>.
+        I want to put a little prosperity back into the North East — somehow.
+        I don’t want to give money once. I want it to do something useful:
+        two hours of peace, and paid hours for a cleaner.
       </p>
 
       <div class="panel" style="margin-bottom:1.25rem">
@@ -296,27 +206,10 @@
       </div>
 
       <div class="panel panel-c">
-        <h3>Ripple effects — not just a gift</h3>
+        <h3>How it multiplies</h3>
         <p>
-          The vision isn’t only the clean. It’s the side effects that make the impact ripple:
-        </p>
-        <ul class="list-features" style="margin-top:1rem">
-          <li>
-            <strong>Local cleaners</strong> — a pool of new customers and paid work
-            (we’ve started companies to make that real)
-          </li>
-          <li>
-            <strong>Field-services software</strong> — this is my real job;
-            the programme is also a serious excuse to build excellent logistics and work-management tools
-          </li>
-          <li>
-            <strong>Multiplied money</strong> — train people, win commercial work, fund more cleans and more jobs
-          </li>
-        </ul>
-        <p style="margin-top:1rem;color:var(--muted)">
-          Start where we are — <strong>Howden Community Hub</strong> and <strong>Howden Ward</strong>.
-          Prove it. Scale ward by ward.
-          Discussed in that spirit with <strong>Julie Marriott</strong> (Family Gateway).
+          Local cleaners get paid work. The evening software group gets a real thing to support.
+          We start in <strong>Howden Ward</strong>, and we keep doing the work.
         </p>
       </div>
 
@@ -326,7 +219,7 @@
           There is more under this than a single rough patch or one newborn week —
           childhood coping that stuck, a long self-engineered path I am only now
           fully seeing, and a choice to walk through the door with open eyes.
-          That story lives on this page only; it is not a commercial pitch.
+          That story lives on this page.
         </p>
         <p style="margin-top:1rem;margin-bottom:0">
           <a class="btn btn-secondary" href="#door">I’m choosing to walk through that door →</a>
@@ -341,100 +234,25 @@
       <div class="stat-row">
         <div class="stat">
           <span class="value">2 hours</span>
-          <span class="label">Deep clean package</span>
+          <span class="label">Welcome-home clean</span>
         </div>
         <div class="stat">
           <span class="value">£30</span>
-          <span class="label">Promises one 2-hour clean</span>
+          <span class="label">Pays for one 2-hour clean</span>
         </div>
         <div class="stat">
-          <span class="value">~150</span>
-          <span class="label">Births / year (Howden Ward, est.)</span>
+          <span class="value">Howden</span>
+          <span class="label">First area we can cover</span>
         </div>
       </div>
       <p class="lede">
         Free core package for new parents in <strong>Howden Ward</strong> first.
-        Cleaners paid fairly. Software free to the programme.
-        Planning figure ~150 births/year for a ward of ~12–13k people (approx. UK-scale birth rate — refine as local data lands).
+        Cleaners paid fairly. Software from the evening project, as we build it.
       </p>
     </div>
   </section>
 
-  <section class="section section-alt" id="funding">
-    <div class="wrap-wide">
-      <h2>Funding phases — Howden Ward</h2>
-      <p class="lede">
-        Early phases are self-fundable personally; donations paid into
-        <strong>Tyneside Cleaning</strong> cover scale as we grow.
-        <strong>Promise:</strong> for every <strong>£30 raised</strong>, we deliver
-        <strong>one 2-hour free clean</strong>.
-        This programme is <strong>not a registered charity</strong> yet.
-      </p>
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Phase</th>
-              <th class="num">Additional cleans</th>
-              <th class="num">Cost this phase</th>
-              <th class="num">Cumulative cleans</th>
-              <th class="num">Cumulative cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Pilot (launch)</td>
-              <td class="num">10</td>
-              <td class="num">£300</td>
-              <td class="num">10</td>
-              <td class="num">£300</td>
-            </tr>
-            <tr>
-              <td>First expansion</td>
-              <td class="num">+30</td>
-              <td class="num">£900</td>
-              <td class="num">40</td>
-              <td class="num">£1,200</td>
-            </tr>
-            <tr>
-              <td>Second expansion</td>
-              <td class="num">+50</td>
-              <td class="num">£1,500</td>
-              <td class="num">90</td>
-              <td class="num">£2,700</td>
-            </tr>
-            <tr>
-              <td>Third expansion</td>
-              <td class="num">+40</td>
-              <td class="num">£1,200</td>
-              <td class="num">130</td>
-              <td class="num">£3,900</td>
-            </tr>
-            <tr>
-              <td>Full Howden Ward</td>
-              <td class="num">+20 (to ~150)</td>
-              <td class="num">£600</td>
-              <td class="num">150</td>
-              <td class="num">£4,500</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="4">Total annual cost — fully scaled Howden Ward (est.)</td>
-              <td class="num">£4,500 / year</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <p class="lede" style="margin-top:1.25rem;margin-bottom:0">
-        <strong>Promise:</strong> for every <strong>£30 raised</strong>, we deliver
-        <strong>one 2-hour free clean</strong> (paid to the cleaner via Tyneside Cleaning).
-        Full-ward target ~150 cleans/year ≈ <strong>£4,500 / year</strong> (planning estimate).
-      </p>
-    </div>
-  </section>
-
-  <section class="section" id="gift">
+  <section class="section section-alt" id="gift">
     <div class="wrap">
       <h2>Extend or gift a clean</h2>
       <div class="grid-2">
@@ -455,34 +273,14 @@
       </div>
       <p class="lede" style="margin-top:1.25rem;margin-bottom:0">
         Prefer a general gift to the programme?
-        <a href="#donate">See donation amounts</a> — from £3 up to £3,000, or WhatsApp another figure.
+        <a href="#donate">See donation amounts</a> — from £3 up, or WhatsApp another figure.
       </p>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="software">
-    <div class="wrap">
-      <h2>Powered by Tyneside Software</h2>
-      <p class="lede">
-        The software company builds booking, scheduling, routing, and customer portals
-        <strong>for free</strong> for cleaners on this programme.
-      </p>
-      <ul class="list-features">
-        <li>Professional tools at zero cost to cleaners</li>
-        <li>Easy online booking for parents</li>
-        <li>Transparent and efficient from day one</li>
-        <li>Same stack scales ward by ward</li>
-      </ul>
-      <div class="btn-row" style="margin-top:1.5rem">
-        <a class="btn btn-secondary" href="https://tyneside.software/">tyneside.software →</a>
-        <a class="btn btn-secondary" href="https://tyneside.cleaning/">tyneside.cleaning →</a>
-      </div>
     </div>
   </section>
 
   <section class="section" id="who">
     <div class="wrap-wide">
-      <h2>Who benefits</h2>
+      <h2>Who this is for</h2>
       <div class="grid-3">
         <div class="panel">
           <h3>New parents</h3>
@@ -490,11 +288,11 @@
         </div>
         <div class="panel panel-m">
           <h3>Local cleaners</h3>
-          <p>Paid work on programme cleans. Free software. Real jobs, not free labour.</p>
+          <p>Paid work on programme cleans.</p>
         </div>
         <div class="panel panel-c">
-          <h3>The region</h3>
-          <p>Hyper-local proof in Howden Ward from Howden Community Hub, then the next ward.</p>
+          <h3>Howden Ward first</h3>
+          <p>We start where we can show up.</p>
         </div>
       </div>
     </div>
@@ -502,8 +300,8 @@
 
   <section class="section section-alt" id="family">
     <div class="wrap-wide">
-      <h2>Part of the three-pronged plan</h2>
-      <p class="lede">Community cleans, cleaning business, and software — one North East jobs engine.</p>
+      <h2>Part of the same small project</h2>
+      <p class="lede">Community cleans, cleaning work, and software — one evening-a-week Tyneside.</p>
       {% include "includes/family_cards.html" %}
     </div>
   </section>
@@ -544,12 +342,11 @@
       <h2>Get involved</h2>
       <p class="lede">
         Donate, gift a clean, refer a Howden Ward family, or join as a cleaner.
-        Find us at Howden Community Hub.
         Remember: this is <strong>not a registered charity yet</strong> — payments go via
         <a href="https://tyneside.cleaning/">Tyneside Cleaning</a>.
       </p>
       <div class="btn-row" style="margin-top:0.5rem">
-        <a class="btn btn-fill btn-lg" href="#donate">Donate £3–£3,000 →</a>
+        <a class="btn btn-fill btn-lg" href="#donate">Donate →</a>
         <a class="btn btn-secondary btn-lg" href="{{ site.whatsapp }}" rel="noopener" target="_blank">
           WhatsApp · {{ site.phone_display }}
         </a>
@@ -562,7 +359,6 @@
       <p class="hero-meta" style="margin-top:1rem">
         With <a href="https://tyneside.cleaning/">Cleaning</a>
         · On <a href="https://tyneside.software/">Software</a>
-        · Howden Community Hub &amp; Family Gateway
       </p>
     </div>
   </section>
