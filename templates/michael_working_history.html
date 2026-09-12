@@ -1,0 +1,43 @@
+{% extends "brand_base.html" %}
+
+{% block body %}
+  <header class="hero cv-hero">
+    <div class="wrap">
+      <p class="hero-kicker">Working history</p>
+      <h1>MICHAEL<br>THOMSON</h1>
+      <p class="hero-tag">
+        The long version of the working life.<br>
+        The short version is the CV.
+      </p>
+      <p class="hero-meta">
+        North Tyneside · Born Seaham, 1992
+        · <a href="{{ root }}michael/cv/index.html">CV</a>
+        · <a href="{{ home_href }}">tyneside.software</a>
+      </p>
+    </div>
+  </header>
+
+  <section class="section" id="history">
+    <div class="wrap">
+      <div class="prose" style="margin-inline:auto">
+        {{ page.body_html | safe }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-cta" id="contact">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <p class="lede">
+        WhatsApp first.
+      </p>
+      {% include "includes/contact_block.html" %}
+      <p class="hero-meta" style="margin-top:1.15rem">
+        <a href="{{ root }}michael/cv/index.html">CV</a>
+        · <a href="{{ home_href }}">Tyneside Software</a>
+        · <a href="{{ root }}about.html">About</a>
+        · <a href="https://www.cloudconnectsoftware.com/" rel="noopener" target="_blank">Cloud Connect</a>
+      </p>
+    </div>
+  </section>
+{% endblock %}
