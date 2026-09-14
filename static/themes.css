@@ -652,6 +652,7 @@
   Row 2 (auto) is the CTA on the bottom edge. No content can “drop” mid-card.
 */
 .theme-group .portal-card {
+  position: relative;
   display: grid;
   grid-template-rows: 1fr auto;
   align-content: stretch;
@@ -712,6 +713,19 @@
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
+}
+
+/* When the card is an article (needed for an inner link), the CTA
+   stretches over the card. Inner links sit above that overlay. */
+.theme-group .portal-card > a.portal-go::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.theme-group .portal-card-main a {
+  position: relative;
+  z-index: 2;
 }
 
 .theme-group .portal-card.portal-software {
