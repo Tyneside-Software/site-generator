@@ -2,12 +2,9 @@
   var PRODUCTS = [
     { group: "squishies", name: "Dumpling", price: "£4", meta: "Glow in the dark mystery dumpling", photos: ["photos/mystery-dumpling.jpeg"], mail: "Order Dumpling" },
     { group: "squishies", name: "4 pack of mini squishies", price: "Email for price", meta: "Four mini squishies in a pack.", photos: ["photos/4-pack-of-mini-squishies.jpeg"], mail: "Order 4 pack of mini squishies" },
-    { group: "squishies", name: "Noodles and mochies", price: "£2", meta: "Stretchy", photos: [], mail: "Order Noodles and mochies" },
     { group: "squishies", name: "Santa popit", price: "£5.49", meta: "Red and white popit", photos: ["photos/santa-popit.jpeg"], mail: "Order Santa popit" },
     { group: "squishies", name: "Popit", price: "£4.99", meta: "Fidget dice popit", photos: ["photos/popit-die.jpeg"], mail: "Order Popit" },
-    { group: "squishies", name: "Taba dumplings", price: "£2.49", meta: "Sticky taba dumplings", photos: [], mail: "Order Taba dumplings" },
     { group: "squishies", name: "Fidget spinner", price: "£3.99", meta: "Earth fidget spinner", photos: ["photos/earth-fidget-spinner.jpeg"], mail: "Order Fidget spinner" },
-    { group: "squishies", name: "Capybara watermelon", price: "£1.99", meta: "Slow-rise capybara squishie", photos: [], mail: "Order Capybara watermelon" },
     { group: "squishies", name: "Cheese", price: "£4.99", meta: "Super slow-rise cheese", photos: ["photos/slowrise-cheese.jpeg"], mail: "Order Cheese" },
     { group: "homemade", name: "Homemade balloon squishy", price: "10p – £1", meta: "There might be extras, or a balloon to fill and squish.", photos: [], mail: "Order homemade balloon squishy" },
     { group: "homemade", name: "Homemade balloon squishy", price: "10p – £1", meta: "Matches the photo.", photos: [], mail: "Order homemade balloon squishy" },
