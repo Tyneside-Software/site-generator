@@ -35,6 +35,24 @@
       "description": "Super slow-rise cheese",
       "price": "£4.99",
       "photos": ["photos/slowrise-cheese.jpeg"]
+    },
+    {
+      "name": "Homemade balloon squishies",
+      "description": "Homemade balloon squishies.",
+      "price": "50p",
+      "photos": []
+    },
+    {
+      "name": "Homemade squishie",
+      "description": "Homemade squishie.",
+      "price": "£2",
+      "photos": []
+    },
+    {
+      "name": "Squishie skin",
+      "description": "Squishie skin.",
+      "price": "£1",
+      "photos": []
     }
   ]
 }
