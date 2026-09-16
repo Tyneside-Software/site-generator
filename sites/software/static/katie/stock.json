@@ -4,7 +4,13 @@
       "name": "Dumpling",
       "description": "Glow in the dark mystery dumpling",
       "price": "£4",
-      "photos": ["photos/1.jpeg"]
+      "photos": ["photos/mystery-dumpling.jpeg"]
+    },
+    {
+      "name": "4 pack of mini squishies",
+      "description": "Four mini squishies in a pack.",
+      "price": "Email for price",
+      "photos": ["photos/4-pack-of-mini-squishies.jpeg"]
     },
     {
       "name": "Noodles and mochies",
@@ -16,13 +22,13 @@
       "name": "Santa popit",
       "description": "Red and white popit",
       "price": "£5.49",
-      "photos": []
+      "photos": ["photos/santa-popit.jpeg"]
     },
     {
       "name": "Popit",
       "description": "Fidget dice popit",
       "price": "£4.99",
-      "photos": []
+      "photos": ["photos/popit-die.jpeg"]
     },
     {
       "name": "Taba dumplings",
@@ -34,7 +40,7 @@
       "name": "Fidget spinner",
       "description": "Earth fidget spinner",
       "price": "£3.99",
-      "photos": []
+      "photos": ["photos/earth-fidget-spinner.jpeg"]
     },
     {
       "name": "Capybara watermelon",
@@ -46,7 +52,7 @@
       "name": "Cheese",
       "description": "Super slow-rise cheese",
       "price": "£4.99",
-      "photos": []
+      "photos": ["photos/slowrise-cheese.jpeg"]
     }
   ]
 }
