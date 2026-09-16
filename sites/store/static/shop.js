@@ -27,6 +27,15 @@
       .replace(/"/g, "&quot;");
   }
 
+  function assetUrl(src) {
+    var el = document.querySelector('script[src*="shop.js"]');
+    var base = "";
+    if (el && el.src) {
+      base = el.src.replace(/shop\.js(\?.*)?$/, "");
+    }
+    return base + src;
+  }
+
   function query() {
     var input = document.querySelector("[data-search] input");
     return ((input && input.value) || "").trim().toLowerCase();
@@ -43,7 +52,7 @@
     if (photos.length) {
       slides = photos.map(function (src, i) {
         var on = i === 0 ? " is-on" : "";
-        return '<div class="slide' + on + '"><img src="' + esc(src) + '" alt="' + esc(p.name) + '"></div>';
+        return '<div class="slide' + on + '"><img src="' + esc(assetUrl(src)) + '" alt="' + esc(p.name) + '"></div>';
       });
     } else {
       slides = ['<div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture coming</div></div>'];
