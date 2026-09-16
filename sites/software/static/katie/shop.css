@@ -1,14 +1,26 @@
-/* fidget squish — white shop. Purple, blue, pink as the sign only. */
+/* fidget squish — Katie's Amazon-ish shop */
 :root {
-  --bg: #ffffff;
+  --bg: #fff4fb;
   --ink: #111111;
   --muted: #5c5c5c;
-  --line: #e6e6e6;
-  --panel: #f6f6f6;
+  --line: #f0d4e8;
+  --panel: #fff;
   --purple: #6d28d9;
   --blue: #2563eb;
-  --pink: #db2777;
+  --pink: #ff4da6;
+  --pink-deep: #db2777;
+  --navy: #232f3e;
   --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --rainbow: linear-gradient(
+    90deg,
+    #ef4444 0%,
+    #f97316 16%,
+    #eab308 33%,
+    #22c55e 50%,
+    #3b82f6 66%,
+    #8b5cf6 83%,
+    #ec4899 100%
+  );
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,58 +38,153 @@ body.shop {
 a { color: var(--blue); }
 a:hover { color: var(--purple); }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.rainbow-bar {
+  height: 10px;
+  background: var(--rainbow);
+}
+
 .top {
-  border-bottom: 1px solid var(--line);
   background: #fff;
   position: sticky;
   top: 0;
   z-index: 20;
+  box-shadow: 0 8px 24px rgba(219, 39, 119, 0.08);
 }
+
 .top .inner {
-  width: min(1080px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
+  padding: 0.85rem 0 0.7rem;
+}
+
+.brand-row {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.65rem 1rem;
-  min-height: 3.6rem;
-  padding: 0.45rem 0;
-}
-.brand {
-  font-weight: 750;
-  font-size: 1.15rem;
-  letter-spacing: -0.02em;
+  justify-content: center;
+  gap: 0.7rem 1rem;
   text-decoration: none;
-  color: var(--ink);
-  background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink));
+  color: inherit;
+  margin-bottom: 0.75rem;
+}
+
+.brand-row:hover { text-decoration: none; color: inherit; }
+
+.giant-heart {
+  font-size: clamp(3.4rem, 10vw, 6.2rem);
+  line-height: 0.85;
+  color: var(--pink);
+  text-shadow:
+    0 0 0 #ff8ac4,
+    0 6px 0 #ff8ac4,
+    0 10px 18px rgba(255, 77, 166, 0.45);
+  transform: rotate(-8deg);
+  display: inline-block;
+}
+
+.shop-name {
+  font-size: clamp(2.1rem, 7vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink-deep));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
+
+.shop-by {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--pink-deep);
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  max-width: 52rem;
+  margin: 0 auto 0.75rem;
+  border: 3px solid var(--navy);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 0.7rem 0.9rem;
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search button {
+  border: 0;
+  background: var(--pink);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  padding: 0 1.15rem;
+  cursor: pointer;
+}
+
+.search button:hover { background: var(--pink-deep); }
+
 .nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.2rem;
-  margin-left: auto;
+  justify-content: center;
+  gap: 0.25rem;
+  padding-bottom: 0.55rem;
 }
+
 .nav a {
   text-decoration: none;
   color: var(--ink);
-  font-size: 0.88rem;
-  font-weight: 650;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
 }
+
 .nav a:hover, .nav a.is-on {
-  background: var(--panel);
-  color: var(--ink);
+  background: #ffe4f3;
+  color: var(--pink-deep);
+  text-decoration: none;
 }
-.nav a.is-on { box-shadow: inset 0 -2px 0 var(--pink); }
+
+.nav a.is-on { box-shadow: inset 0 -3px 0 var(--pink); }
+
+.nav a.buy-nav {
+  background: var(--navy);
+  color: #fff;
+  margin-left: 0.35rem;
+}
+
+.nav a.buy-nav:hover { background: var(--purple); color: #fff; }
 
 .wrap {
-  width: min(1080px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 1.35rem 0 3rem;
+  padding: 1.2rem 0 3rem;
 }
 
 .page-head h1 {
@@ -86,12 +193,62 @@ a:hover { color: var(--purple); }
   letter-spacing: -0.03em;
   margin-bottom: 0.3rem;
 }
-.page-head p { color: var(--muted); max-width: 40rem; margin-bottom: 1.25rem; }
+.page-head p { color: var(--muted); max-width: 42rem; margin-bottom: 0.5rem; }
+
+.search-empty {
+  display: none;
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  background: #fff;
+  border: 2px dashed var(--pink);
+  border-radius: 12px;
+  font-weight: 700;
+}
+.search-empty.is-on { display: block; }
+
+.group {
+  margin: 1.35rem 0 1.8rem;
+}
+.group[hidden] { display: none; }
+
+.group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.7rem;
+}
+.group-head h2 {
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+.group-head a {
+  font-weight: 750;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.group-head a:hover { text-decoration: underline; }
+
+.group-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(200px, 230px);
+  gap: 0.9rem;
+  overflow-x: auto;
+  padding: 0.35rem 0.15rem 0.85rem;
+  scroll-snap-type: x mandatory;
+}
+.group-row::-webkit-scrollbar { height: 8px; }
+.group-row::-webkit-scrollbar-thumb {
+  background: var(--rainbow);
+  border-radius: 99px;
+}
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.25rem 1rem;
+  gap: 1.1rem;
 }
 @media (max-width: 900px) {
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -100,12 +257,23 @@ a:hover { color: var(--purple); }
   .grid { grid-template-columns: 1fr; }
 }
 
-.product { min-width: 0; }
+.product {
+  min-width: 0;
+  scroll-snap-align: start;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    var(--rainbow) border-box;
+  border: 5px solid transparent;
+  border-radius: 16px;
+  padding: 0.7rem 0.7rem 0.85rem;
+  box-shadow: 0 10px 22px rgba(17, 17, 17, 0.08);
+}
 
 .gallery {
   position: relative;
   background: var(--panel);
-  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
 }
 .slides {
   aspect-ratio: 1 / 1;
@@ -148,12 +316,14 @@ a:hover { color: var(--purple); }
   transform: translateY(-50%);
   width: 2rem;
   height: 2rem;
-  border: 1px solid var(--line);
+  border: 1px solid #ddd;
   background: #fff;
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
   color: var(--ink);
+  border-radius: 50%;
+  z-index: 2;
 }
 .g-btn:hover { background: #eee; }
 .g-prev { left: 0.35rem; }
@@ -178,13 +348,13 @@ a:hover { color: var(--purple); }
   cursor: pointer;
   padding: 0;
 }
-.dots button.is-on { background: var(--purple); }
+.dots button.is-on { background: var(--pink-deep); }
 
 .price {
   margin-top: 0.55rem;
-  font-size: 1rem;
-  font-weight: 750;
-  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #b12704;
 }
 .product h2 {
   font-size: 0.92rem;
@@ -201,20 +371,26 @@ a:hover { color: var(--purple); }
   display: inline-block;
   margin-top: 0.55rem;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
-  color: #fff;
-  background: var(--ink);
-  padding: 0.4rem 0.7rem;
+  color: #111;
+  background: #ffd814;
+  padding: 0.45rem 0.75rem;
+  border-radius: 20px;
 }
-.buy:hover { background: var(--purple); color: #fff; }
+.buy:hover { background: #f7ca00; color: #111; }
 
 .policies {
-  margin-top: 2.4rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--line);
+  margin-top: 2.2rem;
+  padding: 1.1rem 1.15rem;
+  background: #fff;
+  border-radius: 14px;
   color: var(--muted);
   font-size: 0.85rem;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    var(--rainbow) border-box;
+  border: 4px solid transparent;
 }
 .policies h2 {
   color: var(--ink);
@@ -224,18 +400,19 @@ a:hover { color: var(--purple); }
 .policies ul { padding-left: 1.15rem; display: grid; gap: 0.2rem; }
 
 .foot {
-  border-top: 1px solid var(--line);
-  padding: 1rem 0 1.6rem;
+  border-top: 0;
+  padding: 0 0 1.6rem;
   color: var(--muted);
   font-size: 0.8rem;
 }
 .foot .inner {
-  width: min(1080px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 1rem;
   justify-content: space-between;
+  padding-top: 1rem;
 }
 .foot a { color: var(--muted); text-decoration: none; font-weight: 650; }
 .foot a:hover { color: var(--ink); }

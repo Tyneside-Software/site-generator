@@ -9,16 +9,30 @@
   <link rel="stylesheet" href="shop.css">
 </head>
 <body class="shop">
+  <div class="rainbow-bar" aria-hidden="true"></div>
   <header class="top">
     <div class="inner">
-      <a class="brand" href="index.html">fidget squish</a>
+      <a class="brand-row" href="index.html">
+        <span class="giant-heart" aria-hidden="true">💗</span>
+        <span>
+          <span class="shop-name">fidget squish</span>
+          <span class="shop-by">Katie’s shop</span>
+        </span>
+      </a>
+      <form class="search" role="search" data-search>
+        <label class="sr-only" for="q">Search slime</label>
+        <input id="q" type="search" placeholder="Search slime…" autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
       <nav class="nav" aria-label="Shop">
-        <a href="index.html">Squishies</a>
+        <a href="index.html">All</a>
+        <a href="index.html#squishies">Squishies</a>
         <a href="homemade.html">Homemade</a>
         <a href="slime.html" class="is-on" aria-current="page">Slime</a>
-        <a href="mailto:katie@tyneside.software?subject=Order%20slime">Email to buy</a>
+        <a class="buy-nav" href="mailto:katie@tyneside.software?subject=Order%20slime">Email to buy</a>
       </nav>
     </div>
+    <div class="rainbow-bar" aria-hidden="true"></div>
   </header>
 
   <main class="wrap">
@@ -26,91 +40,13 @@
       <h1>Slime</h1>
       <p>A few slimes for sale, and there might be homemade slimes too. Water slime, cloud slime and normal slime. Slide the photos to get to the video. Price is under the picture.</p>
     </div>
+    <p class="search-empty" data-search-empty>No slime matches that search.</p>
 
-    <section class="grid" aria-label="Slime for sale">
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this slime</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Email for price</p>
-        <h2>Water slime</h2>
-        <p class="meta">At some point. Matches the photo.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20water%20slime">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this slime</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Email for price</p>
-        <h2>Cloud slime</h2>
-        <p class="meta">At some point. Matches the photo.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20cloud%20slime">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this slime</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Email for price</p>
-        <h2>Normal slime</h2>
-        <p class="meta">A few for sale.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20normal%20slime">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this slime</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">Email for price</p>
-        <h2>Homemade slime</h2>
-        <p class="meta">There might be homemade slimes too.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20homemade%20slime">Email to buy</a>
-      </article>
+    <section class="group">
+      <div class="group-head">
+        <h2>Slime</h2>
+      </div>
+      <div class="grid" data-products="slime"></div>
     </section>
 
     <section class="policies">
@@ -124,6 +60,7 @@
   </main>
 
   <footer class="foot">
+    <div class="rainbow-bar" aria-hidden="true"></div>
     <div class="inner">
       <span>fidget squish · Katie · tyneside.store</span>
       <a href="mailto:katie@tyneside.software">katie@tyneside.software</a>

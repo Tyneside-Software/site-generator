@@ -9,16 +9,30 @@
   <link rel="stylesheet" href="shop.css">
 </head>
 <body class="shop">
+  <div class="rainbow-bar" aria-hidden="true"></div>
   <header class="top">
     <div class="inner">
-      <a class="brand" href="index.html">fidget squish</a>
+      <a class="brand-row" href="index.html">
+        <span class="giant-heart" aria-hidden="true">💗</span>
+        <span>
+          <span class="shop-name">fidget squish</span>
+          <span class="shop-by">Katie’s shop</span>
+        </span>
+      </a>
+      <form class="search" role="search" data-search>
+        <label class="sr-only" for="q">Search homemade squishies</label>
+        <input id="q" type="search" placeholder="Search homemade squishies…" autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
       <nav class="nav" aria-label="Shop">
-        <a href="index.html">Squishies</a>
+        <a href="index.html">All</a>
+        <a href="index.html#squishies">Squishies</a>
         <a href="homemade.html" class="is-on" aria-current="page">Homemade</a>
         <a href="slime.html">Slime</a>
-        <a href="mailto:katie@tyneside.software?subject=Order%20homemade%20squishy">Email to buy</a>
+        <a class="buy-nav" href="mailto:katie@tyneside.software?subject=Order%20homemade%20squishy">Email to buy</a>
       </nav>
     </div>
+    <div class="rainbow-bar" aria-hidden="true"></div>
   </header>
 
   <main class="wrap">
@@ -26,91 +40,13 @@
       <h1>Homemade squishies</h1>
       <p>Homemade balloon squishies are 10p to £1. Non-balloon homemade squishies are £2 to £5. Slide the photos to get to the video. Price is under the picture.</p>
     </div>
+    <p class="search-empty" data-search-empty>No homemade items match that search.</p>
 
-    <section class="grid" aria-label="Homemade squishies for sale">
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this homemade squishy</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">10p – £1</p>
-        <h2>Homemade balloon squishy</h2>
-        <p class="meta">There might be extras, or a balloon to fill and squish.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20homemade%20balloon%20squishy">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this homemade squishy</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">10p – £1</p>
-        <h2>Homemade balloon squishy</h2>
-        <p class="meta">Matches the photo.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20homemade%20balloon%20squishy">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this homemade squishy</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">£2 – £5</p>
-        <h2>Non-balloon homemade squishy</h2>
-        <p class="meta">Homemade, not balloon.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20non-balloon%20homemade%20squishy">Email to buy</a>
-      </article>
-
-      <article class="product">
-        <div class="gallery" data-gallery>
-          <div class="slides">
-            <div class="slide is-on"><div class="empty"><strong>Photo</strong>Picture of this homemade squishy</div></div>
-            <div class="slide"><div class="empty"><strong>Photo</strong>Another picture</div></div>
-            <div class="slide"><div class="empty"><strong>Video</strong>Slide here for the video</div></div>
-          </div>
-          <button type="button" class="g-btn g-prev" data-prev aria-label="Previous">‹</button>
-          <button type="button" class="g-btn g-next" data-next aria-label="Next">›</button>
-          <div class="dots">
-            <button type="button" data-dot class="is-on" aria-label="Photo 1"></button>
-            <button type="button" data-dot aria-label="Photo 2"></button>
-            <button type="button" data-dot aria-label="Video"></button>
-          </div>
-        </div>
-        <p class="price">£2 – £5</p>
-        <h2>Non-balloon homemade squishy</h2>
-        <p class="meta">Matches the photo. No returns.</p>
-        <a class="buy" href="mailto:katie@tyneside.software?subject=Order%20non-balloon%20homemade%20squishy">Email to buy</a>
-      </article>
+    <section class="group">
+      <div class="group-head">
+        <h2>Homemade</h2>
+      </div>
+      <div class="grid" data-products="homemade"></div>
     </section>
 
     <section class="policies">
@@ -125,6 +61,7 @@
   </main>
 
   <footer class="foot">
+    <div class="rainbow-bar" aria-hidden="true"></div>
     <div class="inner">
       <span>fidget squish · Katie · tyneside.store</span>
       <a href="mailto:katie@tyneside.software">katie@tyneside.software</a>
